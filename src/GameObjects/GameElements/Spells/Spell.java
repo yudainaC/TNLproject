@@ -1,30 +1,29 @@
 package GameObjects.GameElements.Spells;
 
+import Exceptions.NonValidManaException;
 import GameObjects.GameEntities.Entity;
 import GameObjects.Model;
 
+/**
+ * Le model plus spécifique aux sorts. Super-classe.
+ */
 public class Spell extends Model {
 
-	protected int value;
-	
-	public Spell(String itName, String itDescription) {
+	protected int mana;
+
+	// Constructeur
+	public Spell(String itName, String itDescription, int itValue) throws NonValidManaException {
 		super(itName, itDescription);
-		// TODO Auto-generated constructor stub
+		if (itValue < 0) throw new NonValidManaException();
+		this.mana = itValue;
 	}
 
-	public Spell(String itName, String itDescription, int itValue) {
-		super(itName, itDescription);
-		this.value = itValue;
-	}
-	
-	public int getValue() { return this.value; }
-	
-	public String cast(Entity opponent) {
-		return "";
-	}
-	
+	// Getter
+	public int getMana() { return this.mana; }
+
+	// Affichage
 	public String toString() {
-		String theCard = this.name + " : " + this.value + " Mana";
+		String theCard = this.name + " : " + this.mana + " Mana";
 		System.out.println(theCard);
 		return this.description;
 	}

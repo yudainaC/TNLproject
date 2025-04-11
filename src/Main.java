@@ -1,6 +1,9 @@
-import GameFight.Jeu;
-import GameObjects.FightActions.Action;
-import GameObjects.GameEntities.Entity;
+import Exceptions.NonValidLifeException;
+import Exceptions.NonValidManaException;
+import Exceptions.NonValidStrengthException;
+import Exceptions.YouAreTargetingYourselfDumbBoyException;
+import GameFight.Fight;
+import GameObjects.GameEntities.Hero;
 import GameObjects.GameEntities.Monster;
 import GameObjects.GameElements.Spells.DamageSpell;
 import GameObjects.GameElements.Spells.Spell;
@@ -10,42 +13,45 @@ import GameObjects.GameElements.Spells.SupportSpell;
 public class Main {
 	
 	//**** METHODES **//
-	public static void main(String[] args) {
+	public static void main(String[] args) throws NonValidLifeException, NonValidManaException, NonValidStrengthException, YouAreTargetingYourselfDumbBoyException {
 
-
-		Action[] theActions = new Action[5];
-		theActions[0] = Action.forfait;
-		theActions[1] = Action.attaquer;
-		theActions[2] = Action.conjurer;
-		theActions[3] = Action.defendre;
-		theActions[4] = Action.recuperer;
-		
+		// Création des sorts : a déplacer autre-part ?
 		DamageSpell bobbyKiller = new DamageSpell("Tueur de Bobby", "Un sort crée pour blesser Bobby", 10, 3);
 		SupportSpell healBobby = new SupportSpell("Booby se soigne", "Un sort crée pour rétablir Bobby", 6, -5);
+
+		// Sorts de bobby
 		Spell[] BobbySpells = new Spell[1];
 		BobbySpells[0] = healBobby;
 		System.out.println(healBobby);
+
+		// Sorts de Conny
 		Spell[] ConnySpells = new Spell[1];
 		ConnySpells[0] = bobbyKiller;
 		System.out.println(bobbyKiller);
-		Spell[] blobSpell = new Spell[1];
 
-		Monster blob=new Monster("blob","petit monstre visqueux sans réel enveloppe charnel",4,5, 2,theActions,blobSpell, 5);
+		// Sorts du Blob
+		Spell[] blobSpells = new Spell[1];
+
+		// Création des Entités
+		// Blob
+		Monster blob = new Monster("blob","Petit monstre visqueux sans réel enveloppe charnel",4,5, 2, blobSpells, 5);
+		System.out.println(blob);
 		System.out.println();
-		
-		Entity bobby = new Entity("Bobby le premier", "Bobby le premier personnage", 5, 11, 2, theActions, BobbySpells);
+
+		// Bobby
+		Hero bobby = new Hero("Bobby le premier", "Bobby le premier personnage", 5, 11, 2, BobbySpells);
 		System.out.println(bobby);
-		
 		System.out.println();
-		
-		Entity conny = new Entity("Conny le premier", "Conny est l'antagoniste", 6, 16, 2, theActions, ConnySpells);
+
+		// Conny
+		Hero conny = new Hero("Conny le premier", "Conny est l'antagoniste", 6, 16, 2, ConnySpells);
 		System.out.println(conny);
-		
 		System.out.println();
-		
-		
-		Jeu firstGame = new Jeu();
-		System.out.println(firstGame.fullGame(conny, bobby));
+
+		// Combats
+		Fight firstGame = new Fight();
+		System.out.println(firstGame.fullFight(conny, bobby));
+		System.out.println(firstGame.fullFight(blob, bobby));
 
 		System.exit(1);
 	}
