@@ -1,6 +1,7 @@
 package com.mathmaurer.jeu;
 import Cards.*;
 import Cards.Character;
+import Cards.Monster.Monster;
 
 import javax.swing.JFrame;
 
@@ -9,6 +10,8 @@ public class Main {
 	
 	//**** METHODES **//
 	public static void main(String[] args) {
+
+
 		Action[] theActions = new Action[5];
 		theActions[0] = Action.forfait;
 		theActions[1] = Action.attaquer;
@@ -24,7 +27,9 @@ public class Main {
 		Spell[] ConnySpells = new Spell[1];
 		ConnySpells[0] = bobbyKiller;
 		System.out.println(bobbyKiller);
-		
+		Spell[] blobSpell = new Spell[1];
+
+		Monster blob=new Monster("blob","petit monstre visqueux sans réel enveloppe charnel",4,5, 2,theActions,blobSpell, 5);
 		System.out.println();
 		
 		Character bobby = new Character("Bobby le premier", "Bobby le premier personnage", 5, 11, 2, theActions, BobbySpells);
