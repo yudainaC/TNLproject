@@ -49,9 +49,10 @@ public class Main {
 		System.out.println();
 
 		// Combats
-		Fight firstGame = new Fight();
-		System.out.println(firstGame.fullFight(conny, bobby));
-		System.out.println(firstGame.fullFight(blob, bobby));
+		Fight firstFight = new Fight();
+		System.out.println(firstFight.fullFight(conny, bobby));
+		Fight secondFight = new Fight();
+		System.out.println(secondFight.fullFight(blob, bobby));
 
 		System.exit(1);
 	}
