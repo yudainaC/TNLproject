@@ -16,12 +16,40 @@ public class Entity extends Model {
 	
 	protected int maxLife;
 	protected int life;
+	protected int strength;
 	protected int maxMana;
 	protected int mana;
 	protected boolean isReady;
 	protected FightAction[] actions;
 	protected Spell[] spells;
-	protected int strength;
+
+	/**
+	 * Constructeur
+	 * Génère la liste des actions et met l'attribut isReady à faux.
+	 * Les PV max de l'entité sont initiés a 5, on part du principe qu'elle est créé avec ses PV au maximum.
+	 * Le Mana max de l'entité est initié a 10, on part du principe qu'elle est créé avec sont Mana au maximum.
+	 * La force de l'entité est initié a 2, elle influe sur ses dégats et la taille de son inventaire.
+	 * La taille de départ de la liste de ses sorts est 1.
+	*/
+	public Entity(String itName, String itDescription) {
+		super(itName, itDescription);
+
+		FightAction[] theActions = new FightAction[5];
+		theActions[0] = FightAction.forfait;
+		theActions[1] = FightAction.attaquer;
+		theActions[2] = FightAction.conjurer;
+		theActions[3] = FightAction.defendre;
+		theActions[4] = FightAction.recuperer;
+
+		this.maxLife = 5;
+		this.maxMana = 10;
+		this.life = this.maxLife;
+		this.mana = this.maxMana;
+		this.strength = 2;
+		this.actions = theActions;
+		this.spells = new Spell[1];
+		this.isReady = false;
+	}
 
 	/**
 	 * Constructeur

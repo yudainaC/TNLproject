@@ -28,17 +28,26 @@ public class Monster extends Entity {
     }
 
     /**
-     * fonction qui permet de randomiser l'xp obtenu entre les personnages
-     * @param bonusXp
-     * L'experiance gagné après avoir abattu le monstre. Calculé aléatoirement.
+     * fonction qui permet de calculer aléatoirement l'xp obtenu en tuant un monstre.
      * @return
-     * Retourne l'xp obtenu par chaque perso.
+     * Retourne l'xp que le monstre lache.
      */
-    public int GetXp(Random bonusXp){
+    public int getXp(){
+        Random bonusXp = new Random();
         int xpAdd = bonusXp.nextInt(10);
         bonusXp.ints();
-        xp =xp + xpAdd;
-        return xp;
+        return this.xp + xpAdd;
+    }
+
+    /**
+     * fonction attribuant l'xp lacher par le monstre au(x) héro(s) l'ayant vaincu.
+     * @param killer
+     * Un des héro ayant participé a l'élimination.
+     */
+    public void getKilled(Hero killer) {
+        int xpGain = this.getXp();
+        System.out.println("Vous avez tué 1 " + this.name + ", vous gagnez " + xpGain);
+        killer.verifLevel(xpGain);
     }
 
 }
