@@ -1,12 +1,11 @@
-package Cards.Monster;
+package GameObjects.GameEntities;
 
-import Cards.Action;
-import Cards.Character;
-import Cards.Spell;
+import GameObjects.FightActions.Action;
+import GameObjects.GameElements.Spells.Spell;
 
 import java.util.Random;
 
-public class Monster extends Character {
+public class Monster extends Entity {
     protected int xp;
 
     public Monster(String itName, String itDescription, int itLife, int itMana, int itStrength, Action[] itActions, Spell[] itSpells, int theXp) {

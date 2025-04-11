@@ -1,4 +1,4 @@
-package Cards;
+package GameObjects.FightActions;
 
 public enum Action {
 	forfait, attaquer, defendre, recuperer, conjurer;

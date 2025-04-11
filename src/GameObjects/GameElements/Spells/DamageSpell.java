@@ -1,6 +1,8 @@
-package Cards;
+package GameObjects.GameElements.Spells;
 
-public class DamageSpell extends Spell{
+import GameObjects.GameEntities.Entity;
+
+public class DamageSpell extends Spell {
 	
 	private int damage;
 	
@@ -10,7 +12,7 @@ public class DamageSpell extends Spell{
 		// TODO Auto-generated constructor stub
 	}
 	
-	public String cast(Character target) {
+	public String cast(Entity target) {
 		return target.isTarget(this.damage);
 	}
 	

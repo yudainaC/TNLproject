@@ -1,11 +1,11 @@
-package Cards;
+package GameObjects;
 
 
-public class Card {
+public class Model {
 	protected String name;
 	protected String description;
 	
-	public Card(String itName, String itDescription) {
+	public Model(String itName, String itDescription) {
 		this.name = itName;
 		this.description = itDescription;
 	}

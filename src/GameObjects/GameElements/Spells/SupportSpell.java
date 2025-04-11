@@ -1,6 +1,8 @@
-package Cards;
+package GameObjects.GameElements.Spells;
 
-public class SupportSpell extends Spell{
+import GameObjects.GameEntities.Entity;
+
+public class SupportSpell extends Spell {
 	
 	private int healPoint;
 	
@@ -9,7 +11,7 @@ public class SupportSpell extends Spell{
 		this.healPoint = itHealPoint;
 	}
 	
-	public String cast(Character target) {
+	public String cast(Entity target) {
 		return target.isTarget(this.healPoint);
 	}
 }

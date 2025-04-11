@@ -1,6 +1,9 @@
-package Cards;
+package GameObjects.GameElements.Spells;
 
-public class Spell extends Card {
+import GameObjects.GameEntities.Entity;
+import GameObjects.Model;
+
+public class Spell extends Model {
 
 	protected int value;
 	
@@ -16,7 +19,7 @@ public class Spell extends Card {
 	
 	public int getValue() { return this.value; }
 	
-	public String cast(Character opponent) {
+	public String cast(Entity opponent) {
 		return "";
 	}
 	

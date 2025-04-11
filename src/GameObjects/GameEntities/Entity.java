@@ -1,24 +1,25 @@
-package Cards;
+package GameObjects.GameEntities;
+
+import GameObjects.*;
+import GameObjects.FightActions.Action;
+import GameObjects.GameElements.Spells.DamageSpell;
+import GameObjects.GameElements.Spells.Spell;
+import GameObjects.GameElements.Spells.SupportSpell;
 
 import java.util.Scanner;
 
-public class Character extends Card {
+public class Entity extends Model {
 	
-	private int maxLife;
-	private int life;
-	private int maxMana;
-	private int mana;
-	private boolean isReady;
-	private Action[] actions;
-	private Spell[] spells;
-	private int strength;
+	protected int maxLife;
+	protected int life;
+	protected int maxMana;
+	protected int mana;
+	protected boolean isReady;
+	protected Action[] actions;
+	protected Spell[] spells;
+	protected int strength;
 	
-	public Character(String itName, String itDescription) {
-		super(itName, itDescription);
-		// TODO Auto-generated constructor stub
-	}
-	
-	public Character(String itName, String itDescription, int itLife, int itMana, int itStrength, Action[] itActions, Spell[] itSpells) {
+	public Entity(String itName, String itDescription, int itLife, int itMana, int itStrength, Action[] itActions, Spell[] itSpells) {
 		super(itName, itDescription);
 		this.maxLife = itLife;
 		this.life = itLife;
@@ -40,7 +41,7 @@ public class Character extends Card {
 		this.life += thatMuch;
 	}
 	
-	public String isGoingToDo(Action action, Character opponent) {
+	public String isGoingToDo(Action action, Entity opponent) {
 		switch(action) {
 			case forfait:
 				this.life = 0;
@@ -60,7 +61,7 @@ public class Character extends Card {
 				int chosenOne = sc.nextInt();
 				if (chosenOne > -1 && chosenOne < this.spells.length+1 && this.mana >=  this.spells[chosenOne].getValue()) {
 					Object spell = this.spells[chosenOne];
-					System.out.println("Vous avez choisi : " + ((Card) spell).getName());
+					System.out.println("Vous avez choisi : " + ((Model) spell).getName());
 					this.mana -= ((Spell) spell).getValue();
 					if (spell instanceof DamageSpell) {
 						((DamageSpell) spell).cast(opponent);
