@@ -17,10 +17,13 @@ public class Jeu {
 		Scanner sc = new Scanner(System.in);
 		System.out.println(player1.getName() + ", que voulez-vous faire ?");
 		for (int i=0; i < player1.getActions().length; i++) {
-			System.out.println((i+1) + ": " + player1.getActions()[i].getAction());
+			System.out.println((i) + ": " + player1.getActions()[i].getAction());
 		}
 		int chosenOne = sc.nextInt();
-		Action action = player1.getActions()[chosenOne-1];
+		Action action = Action.recuperer;
+		if (chosenOne > -1 && chosenOne < player1.getActions().length) {
+			action = player1.getActions()[chosenOne];
+		}
 		System.out.println("Vous avez choisi : " + action.getAction());
 		return player1.isGoingToDo(action, player2);
 		

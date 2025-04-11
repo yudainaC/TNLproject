@@ -1,10 +1,12 @@
 package Cards;
 
 public enum Action {
-	attaquer, defendre, recuperer, conjurer;
+	forfait, attaquer, defendre, recuperer, conjurer;
 	
 	public String getAction() {
 		switch(this) {
+			case forfait :
+				return "Déclarer forfait";
 			case attaquer :
 				return "Attaquer";
 			case conjurer:
@@ -19,6 +21,8 @@ public enum Action {
 	
 	public String toString() {
 		switch(this) {
+			case forfait :
+				return " a déclarer forfait";
 			case attaquer :
 				return " a perdu 2 HP";
 			case conjurer :

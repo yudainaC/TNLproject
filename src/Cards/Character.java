@@ -42,7 +42,9 @@ public class Character extends Card {
 	
 	public String isGoingToDo(Action action, Character opponent) {
 		switch(action) {
-		
+			case forfait:
+				this.life = 0;
+				return this.name + Action.forfait;
 			case attaquer :
 				opponent.isTarget(this.strength);
 				return this.name + " attaque";
@@ -56,8 +58,8 @@ public class Character extends Card {
 				}
 				System.out.println((this.spells.length+1) + ": Retour");
 				int chosenOne = sc.nextInt();
-				if (chosenOne < this.spells.length+1 && this.mana >=  this.spells[chosenOne-1].getValue()) {
-					Object spell = this.spells[chosenOne-1];
+				if (chosenOne > -1 && chosenOne < this.spells.length+1 && this.mana >=  this.spells[chosenOne].getValue()) {
+					Object spell = this.spells[chosenOne];
 					System.out.println("Vous avez choisi : " + ((Card) spell).getName());
 					this.mana -= ((Spell) spell).getValue();
 					if (spell instanceof DamageSpell) {
