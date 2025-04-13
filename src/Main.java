@@ -6,6 +6,7 @@ import GameObjects.GameEntities.Monster;
 import GameObjects.GameElements.Spells.DamageSpell;
 import GameObjects.GameElements.Spells.Spell;
 import GameObjects.GameElements.Spells.SupportSpell;
+import GameObjects.GameEntities.Team;
 
 //***** La classe Main g�re le flux principal et ex�cute la m�thode main() qui lance l'application *****//
 public class Main {
@@ -65,5 +66,8 @@ public class Main {
 		System.out.println(secondFight.fullFight(blob, bobby));*/
 
 		System.exit(1);
+
+		//Test Equipe
+		Team E1 = new Team(1);
 	}
 }
