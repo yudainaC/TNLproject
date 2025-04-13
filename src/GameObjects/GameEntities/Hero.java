@@ -4,8 +4,6 @@ import Exceptions.NonValidLifeException;
 import Exceptions.NonValidManaException;
 import Exceptions.NonValidStrengthException;
 import GameObjects.FightActions.FightAction;
-import GameObjects.GameElements.Inventory;
-import GameObjects.GameElements.Items.Weapon;
 import GameObjects.GameElements.Spells.Spell;
 
 /**
@@ -28,7 +26,7 @@ public class Hero extends Entity {
      * La taille de la liste de sorts commence à 2. La liste est vide.
      * Voir le constructeur d'Entity pour le reste.
      */
-    public Hero(String itName, String itDescription) {
+    public Hero(String itName, String itDescription, int itSpeed) {
         super(itName, itDescription);
 
         FightAction[] theActions = new FightAction[5];
@@ -56,9 +54,9 @@ public class Hero extends Entity {
     }
 
     // Second Constructeur
-    public Hero(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells)
+    public Hero(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells, int itSpeed)
             throws NonValidLifeException, NonValidManaException, NonValidStrengthException {
-        super(itName, itDescription, itLife, itMana, itStrength, itSpells);
+        super(itName, itDescription, itLife, itMana, itStrength, itSpells, itSpeed);
         this.level = 0;
         this.exp = 0;
         this.inventory = new Inventory(this.strength*10);

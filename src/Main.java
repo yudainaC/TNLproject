@@ -36,12 +36,12 @@ public class Main {
 
 		// Création des Entités
 		// Blob
-		Monster blob = new Monster("blob","Petit monstre visqueux sans réel enveloppe charnel",4,5, 2, blobSpells, 5);
+		Monster blob = new Monster("blob","Petit monstre visqueux sans réel enveloppe charnel",4,5, 2, blobSpells, 5, 2);
 		/*System.out.println(blob);
 		System.out.println();*/
 
 		// Bobby
-		Hero bobby = new Hero("Bobby le premier", "Bobby est le premier personnage", 5, 11, 2, BobbySpells);
+		Hero bobby = new Hero("Bobby le premier", "Bobby est le premier personnage", 5, 11, 2, BobbySpells, 1);
 		System.out.println(bobby);
 		System.out.println(bobby.getInventory().addItem(shortSword));
 		System.out.println(bobby.equipWeapon(shortSword));
@@ -54,7 +54,7 @@ public class Main {
 		System.out.println();
 
 		// Conny
-		Hero conny = new Hero("Conny le premier", "Conny est l'antagoniste", 6, 16, 2, ConnySpells);
+		Hero conny = new Hero("Conny le premier", "Conny est l'antagoniste", 6, 16, 2, ConnySpells, 4);
 		/*System.out.println(conny);
 		System.out.println();
 

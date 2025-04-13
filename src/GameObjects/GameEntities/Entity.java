@@ -22,6 +22,7 @@ public class Entity extends Model {
 	protected boolean isReady;
 	protected FightAction[] actions;
 	protected Spell[] spells;
+	protected int speed;
 
 	/**
 	 * Constructeur
@@ -49,6 +50,7 @@ public class Entity extends Model {
 		this.actions = theActions;
 		this.spells = new Spell[1];
 		this.isReady = false;
+
 	}
 
 	/**
@@ -76,7 +78,7 @@ public class Entity extends Model {
 	 * @throws NonValidStrengthException
 	 * Si itStrength est inférieur a 1.
 	 */
-	public Entity(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells)
+	public Entity(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells, int itSpeed)
 			throws NonValidLifeException, NonValidManaException, NonValidStrengthException {
 
 		super(itName, itDescription);
@@ -100,6 +102,7 @@ public class Entity extends Model {
 		this.actions = theActions;
 		this.spells = itSpells;
 		this.isReady = false;
+		this.speed=itSpeed;
 	}
 
 	// Getters
@@ -108,6 +111,7 @@ public class Entity extends Model {
 	public int getStrength() { return this.strength; }
 	public FightAction[] getActions() { return this.actions; }
 	public Spell[] getSpells() { return this.spells; }
+	public int getSpeed(){return this.speed;}
 
 	/**
 	 * Méthode associant une Action à son effet, sur la base d'un 'selon' l'action.

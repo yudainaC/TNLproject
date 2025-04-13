@@ -13,6 +13,7 @@ import java.util.Random;
 public class Monster extends Entity {
     protected int xp;
 
+
     /**
      * Constructeur
      * Définit les valeurs par défaut des attribut :
@@ -20,10 +21,11 @@ public class Monster extends Entity {
      *
      * Voir le constructeur d'Entity pour le reste.
      */
-    public Monster(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells, int theXp)
+    public Monster(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells, int itXp, int itSpeed)
             throws NonValidLifeException, NonValidManaException, NonValidStrengthException {
-        super(itName, itDescription, itLife, itMana, itStrength, itSpells);
-        this.xp=theXp;
+        super(itName, itDescription, itLife, itMana, itStrength, itSpells,itSpeed);
+        this.xp=itXp;
+
 
     }
 
