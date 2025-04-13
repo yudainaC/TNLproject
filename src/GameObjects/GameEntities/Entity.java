@@ -235,9 +235,9 @@ public class Entity extends Model {
 	public String toString() {
 		System.out.println(this.name + " : " + this.life + "/" + this.maxLife + " PV");
 		System.out.println(this.mana + "/" + this.maxMana + " mana");
-		System.out.println("Actions :");
-		for (FightAction action : this.actions) {
-			System.out.println("   " + action.getAction());
+		System.out.println("Sorts appris :");
+		for (Spell spell : this.spells) {
+			System.out.println("   " + spell);
 		}
 		return this.description;
 	}

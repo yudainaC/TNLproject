@@ -29,9 +29,8 @@ public class SupportSpell extends Spell {
 
 	// Affichage
 	public String toString() {
-		String theCard = this.name + " : " + this.mana + " Mana";
-		System.out.println(theCard);
-		System.out.println("Se sort soigne " + this.healPoint + " PV.");
+		System.out.println(this.name + " : " + this.mana + " Mana");
+		System.out.println("   Ce sort soigne " + -1*this.healPoint + " PV.");
 		return this.description;
 	}
 }

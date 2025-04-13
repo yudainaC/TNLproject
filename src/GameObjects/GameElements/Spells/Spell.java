@@ -12,10 +12,10 @@ public class Spell extends Model {
 	protected int mana;
 
 	// Constructeur
-	public Spell(String itName, String itDescription, int itValue) throws NonValidManaException {
+	public Spell(String itName, String itDescription, int itManaValue) throws NonValidManaException {
 		super(itName, itDescription);
-		if (itValue < 0) throw new NonValidManaException();
-		this.mana = itValue;
+		if (itManaValue < 0) throw new NonValidManaException();
+		this.mana = itManaValue;
 	}
 
 	// Getter
@@ -23,8 +23,7 @@ public class Spell extends Model {
 
 	// Affichage
 	public String toString() {
-		String theCard = this.name + " : " + this.mana + " Mana";
-		System.out.println(theCard);
+		System.out.println(this.name + " : " + this.mana + " Mana");
 		return this.description;
 	}
 }

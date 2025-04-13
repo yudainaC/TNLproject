@@ -33,9 +33,8 @@ public class DamageSpell extends Spell {
 
 	// Affichage
 	public String toString() {
-		String theCard = this.name + " : " + this.mana + " Mana";
-		System.out.println(theCard);
-		System.out.println("Se sort inflige " + this.damage + " dégats.");
+		System.out.println(this.name + " : " + this.mana + " Mana");
+		System.out.println("   Ce sort inflige " + this.damage + " dégats.");
 		return this.description;
 	}
 

@@ -4,25 +4,28 @@ import Exceptions.NonValidLifeException;
 import Exceptions.NonValidManaException;
 import Exceptions.NonValidStrengthException;
 import GameObjects.FightActions.FightAction;
+import GameObjects.GameElements.Inventory;
+import GameObjects.GameElements.Items.Weapon;
 import GameObjects.GameElements.Spells.Spell;
 
 /**
- * Sous-classe de Entity, définie les héro jouables.
+ * Sous-classe de Entity, définie les héros jouables.
  */
 public class Hero extends Entity {
     private int level;
     private int exp;
     private int spellSlot;
-    private Object[] inventory;
+    private Weapon equippedWeapon;
+    private Inventory inventory;
 
     /**
      * Constructeur
-     * Définit les valeurs par défaut des attribut :
+     * Définit les valeurs par défaut des attributs :
      * level = 0
      * exp = 0
-     * la taille de l'inventaire est égale a la force du personnage multiplié par 10.
-     * l'inventaire est vide.
-     * la taille de la liste de sorts commence a 2. La liste est vide.
+     * la taille de l'inventaire est égale à la force du personnage multiplié par 10.
+     * L'inventaire est vide.
+     * La taille de la liste de sorts commence à 2. La liste est vide.
      * Voir le constructeur d'Entity pour le reste.
      */
     public Hero(String itName, String itDescription) {
@@ -45,26 +48,29 @@ public class Hero extends Entity {
         this.spellSlot = 2;
         this.spells = new Spell[this.spellSlot];
 
+        this.equippedWeapon = null;
+        this.inventory = new Inventory(this.strength*10);
+
         this.level = 0;
         this.exp = 0;
-        this.inventory = new Object[this.strength*10];
     }
 
+    // Second Constructeur
     public Hero(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells)
             throws NonValidLifeException, NonValidManaException, NonValidStrengthException {
         super(itName, itDescription, itLife, itMana, itStrength, itSpells);
         this.level = 0;
         this.exp = 0;
-        this.inventory = new Object[this.strength*10];
+        this.inventory = new Inventory(this.strength*10);
     }
 
     // Getters
     public int getLevel() { return this.level; }
     public int getExp() { return this.exp; }
-    public Object[] getInventory() { return this.inventory; }
+    public Inventory getInventory() { return this.inventory; }
 
     /**
-     * Permet au Hero de récupèrer les PV et le mana perdu.
+     * Permet au Hero de récupérer les PV et le mana perdu.
      */
     public void regenerate() {
         this.mana = this.maxMana;
@@ -72,8 +78,8 @@ public class Hero extends Entity {
     }
 
     /**
-     * Monte de niveau le Hero : augmente ses stats et son niveau, reduit l'exp et récupère les PV et le mana perdu.
-     * Augmente le nombre d'emplacement de sort de 1 tout les 3 niveaux.
+     * Monte de niveau le Hero : augmente ses stats et son niveau, réduit l'exp et récupère les PV et le mana perdu.
+     * Augmente le nombre d'emplacements de sort d'un tous les trois niveaux.
      * @return
      * Renvoie une simple phrase.
      */
@@ -82,22 +88,57 @@ public class Hero extends Entity {
         this.maxLife += 3;
         this.maxMana += 5;
         this.strength += 1;
+        this.inventory.upMaxWeight(10);
         this.exp -= 10;
         this.regenerate();
         if (level%3 == 0) {
             this.spellSlot += 1;
             Spell[] tamp = this.spells;
             this.spells = new Spell[this.spellSlot];
-            for (int i = 0; i < tamp.length; i++) {
-                this.spells[i] = tamp[i];
-            }
+            System.arraycopy(tamp, 0, this.spells, 0, tamp.length);
         }
         return this.name + " a atteint le niveau " + this.level + " !";
     }
 
+    /**
+     * Ajoute l'expérience gagnée et monte de niveau si possible
+     * @param expDrop
+     * Experience gagnée sur un monstre.
+     */
     public void verifLevel(int expDrop) {
         this.level += expDrop;
         if (this.exp > (10*this.level)) this.levelUp();
+    }
+
+    /**
+     * Déséquipe l'arme si la taille maximale de l'inventaire n'est pas dépassé en déséquipant l'arme.
+     * @return
+     * true si l'opération est réussi, false sinon.
+     */
+    public boolean desequipWeapon() {
+        if (this.equippedWeapon != null && this.inventory.addItem(equippedWeapon)) {
+            this.strength -= this.equippedWeapon.getBonusStr();
+            this.equippedWeapon = null;
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Equipe l'arme si elle est présente dans l'inventaire et si aucune arme n'est équipé
+     * ou que l'arme équipée est déséquipé avec succés.
+     * @return
+     * true si l'opération est réussi, false sinon.
+     */
+    public boolean equipWeapon(Weapon thisOne) {
+        if (this.inventory.checkInventory(thisOne)) {
+            this.desequipWeapon();
+            this.equippedWeapon = thisOne;
+            this.strength += thisOne.getBonusStr();
+            this.inventory.removeItem(thisOne);
+            return true;
+        }
+        return false;
     }
 
     // Affichage
@@ -105,11 +146,16 @@ public class Hero extends Entity {
         System.out.println(this.name + " : niveau " + this.level);
         System.out.println(this.life + "/" + this.maxLife + " PV");
         System.out.println(this.mana + "/" + this.maxMana + " mana");
-        System.out.println("force : " + this.strength);
-        System.out.println("Actions :");
-        for (FightAction action : this.actions) {
-            System.out.println("   " + action.getAction());
+        int bonus = 0;
+        if (!(this.equippedWeapon == null)) bonus = this.equippedWeapon.getBonusStr();
+        System.out.println("force : " + this.strength + '(' + (this.strength-bonus) + '+' + bonus + ')');
+        System.out.println("arme equipé : " + this.equippedWeapon);
+        System.out.println("Sorts appris :");
+        for (Spell spell : this.spells) {
+            System.out.println("   " + spell);
         }
+        System.out.println("Inventaire :");
+        System.out.println(this.inventory);
         return this.description;
     }
 }
