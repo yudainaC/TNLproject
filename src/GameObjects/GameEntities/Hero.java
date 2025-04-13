@@ -4,6 +4,8 @@ import Exceptions.NonValidLifeException;
 import Exceptions.NonValidManaException;
 import Exceptions.NonValidStrengthException;
 import GameObjects.FightActions.FightAction;
+import GameObjects.GameElements.Inventory;
+import GameObjects.GameElements.Items.Weapon;
 import GameObjects.GameElements.Spells.Spell;
 
 /**
