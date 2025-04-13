@@ -4,6 +4,7 @@ import GameFactory.ItemFactory;
 import GameFactory.MonsterFactory;
 import GameObjects.GameElements.Items.Item;
 import GameObjects.GameElements.Items.Weapon;
+import GameObjects.GameEntities.Group.HeroTeam;
 import GameObjects.GameEntities.Single.Hero;
 import GameObjects.GameEntities.Single.Monster;
 import GameObjects.GameEntities.Group.Group;
@@ -55,7 +56,12 @@ public class Main {
 		System.exit(1);*/
 
 		//Test Equipe
-		Group E1 = new Group(1);
+		HeroTeam E1 = new HeroTeam();
 		E1.addToTeam(bobby);
+		System.out.println(E1);
+		System.out.println(E1.addToTeam(conny));
+		System.out.println(E1);
+		System.out.println(E1.addToTeam(bobby));
+		System.out.println(E1);
 	}
 }

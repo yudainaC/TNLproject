@@ -11,8 +11,8 @@ public class HeroTeam extends Group {
         super();
     }
 
-    public boolean addToTeam(Hero h1) throws TeamIsFullException, HeroAlreadyExistException {
-        if (this.group.contains(h1)) throw new HeroAlreadyExistException();
+    public boolean addToTeam(Hero h1) throws TeamIsFullException {
+        if (this.group.contains(h1)) return false;
         if (this.group.size() == this.maxSize) throw new TeamIsFullException();
         this.group.add(h1);
         return true;
@@ -27,7 +27,7 @@ public class HeroTeam extends Group {
     @Override
     public String toString() {
         String entities = "";
-        for (Entity entity : this.group) entities += entity.getName() + ": " + ((Hero) entity).getLevel() + "\n";
+        for (Entity entity : this.group) entities += entity.getName() + ": Nv " + ((Hero) entity).getLevel() + "\n";
         return entities;
     }
 }
