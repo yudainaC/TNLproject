@@ -25,7 +25,7 @@ public class Hero extends Entity {
      * la taille de la liste de sorts commence a 2. La liste est vide.
      * Voir le constructeur d'Entity pour le reste.
      */
-    public Hero(String itName, String itDescription) {
+    public Hero(String itName, String itDescription, int itSpeed) {
         super(itName, itDescription);
 
         FightAction[] theActions = new FightAction[5];
@@ -50,12 +50,13 @@ public class Hero extends Entity {
         this.inventory = new Object[this.strength*10];
     }
 
-    public Hero(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells)
+    public Hero(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells, int itSpeed)
             throws NonValidLifeException, NonValidManaException, NonValidStrengthException {
-        super(itName, itDescription, itLife, itMana, itStrength, itSpells);
+        super(itName, itDescription, itLife, itMana, itStrength, itSpells,itSpeed);
         this.level = 0;
         this.exp = 0;
         this.inventory = new Object[this.strength*10];
+
     }
 
     // Getters

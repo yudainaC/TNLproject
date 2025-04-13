@@ -34,19 +34,37 @@ public class Fight {
 
 		if (fighter1 == fighter2) throw new YouAreTargetingYourselfDumbBoyException();
 
-		Scanner sc = new Scanner(System.in);
-		System.out.println(fighter1.getName() + ", que voulez-vous faire ?");
-		for (int i=0; i < fighter1.getActions().length; i++) {
-			System.out.println((i) + ": " + fighter1.getActions()[i].getAction());
-		}
-		int chosenOne = sc.nextInt();
+		if(fighter1.getSpeed() >= fighter2.getSpeed()) {
+			Scanner sc = new Scanner(System.in);
+			System.out.println(fighter1.getName() + ", que voulez-vous faire ?");
+			for (int i = 0; i < fighter1.getActions().length; i++) {
+				System.out.println((i) + ": " + fighter1.getActions()[i].getAction());
+			}
+			int chosenOne = sc.nextInt();
 
-		FightAction action = FightAction.recuperer;
-		if (chosenOne > -1 && chosenOne < fighter1.getActions().length) {
-			action = fighter1.getActions()[chosenOne];
+			FightAction action = FightAction.recuperer;
+			if (chosenOne > -1 && chosenOne < fighter1.getActions().length) {
+				action = fighter1.getActions()[chosenOne];
+			}
+			System.out.println("Vous avez choisi : " + action.getAction());
+			return fighter1.isGoingToDo(action, fighter2);
 		}
-		System.out.println("Vous avez choisi : " + action.getAction());
-		return fighter1.isGoingToDo(action, fighter2);
+		else{
+			Scanner sc = new Scanner(System.in);
+			System.out.println(fighter2.getName() + ", que voulez-vous faire ?");
+			for (int i = 0; i < fighter2.getActions().length; i++) {
+				System.out.println((i) + ": " + fighter2.getActions()[i].getAction());
+			}
+			int chosenOne = sc.nextInt();
+
+			FightAction action = FightAction.recuperer;
+			if (chosenOne > -1 && chosenOne < fighter2.getActions().length) {
+				action = fighter2.getActions()[chosenOne];
+			}
+			System.out.println("Vous avez choisi : " + action.getAction());
+			return fighter2.isGoingToDo(action, fighter1);
+		}
+
 	}
 
 	/**
