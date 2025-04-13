@@ -146,14 +146,23 @@ public class Hero extends Entity {
         System.out.println(this.name + " : niveau " + this.level);
         System.out.println(this.life + "/" + this.maxLife + " PV");
         System.out.println(this.mana + "/" + this.maxMana + " mana");
+
         int bonus = 0;
+        String weapon = "" + this.equippedWeapon;
         if (!(this.equippedWeapon == null)) bonus = this.equippedWeapon.getBonusStr();
+        else weapon = "aucune";
         System.out.println("force : " + this.strength + '(' + (this.strength-bonus) + '+' + bonus + ')');
-        System.out.println("arme equipé : " + this.equippedWeapon);
-        System.out.println("Sorts appris :");
-        for (Spell spell : this.spells) {
-            System.out.println("   " + spell);
+        System.out.println("arme equipé : " + weapon);
+
+        if (this.spells[0] != null) {
+            System.out.println("Sorts appris :");
+            for (Spell spell : this.spells) {
+                System.out.println("   " + spell);
+            }
+        } else {
+            System.out.println("Ne connais aucun sorts");
         }
+
         System.out.println("Inventaire :");
         System.out.println(this.inventory);
         return this.description;

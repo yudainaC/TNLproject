@@ -42,9 +42,9 @@ public class Monster extends Entity {
     }
 
     /**
-     * fonction attribuant l'xp lacher par le monstre au(x) héro(s) l'ayant vaincu.
+     * Fonction attribuant l'xp lacher par le monstre au(x) héro(s) l'ayant vaincu.
      * @param killer
-     * Un des héro ayant participé a l'élimination.
+     * Un des héros ayant participé à l'élimination.
      */
     public void getKilled(Hero killer) {
         int xpGain = this.getXp();

@@ -10,7 +10,7 @@ import GameObjects.GameElements.Spells.SupportSpell;
 import java.util.Scanner;
 
 /**
- * Le model plus spécifique aux entité. Super-Classe.
+ * Le model plus spécifique aux entités. Super-Classe.
  */
 public class Entity extends Model {
 	
@@ -150,8 +150,10 @@ public class Entity extends Model {
 				Scanner sc = new Scanner(System.in);
 				System.out.println("Votre mana : " + this.mana);
 				System.out.println("Quel sort voulez-vous lancer ?");
-				for (int i=0; i < this.spells.length; i++) {
-					System.out.println((i+1) + ": " + this.spells[i].getName() + ", " + this.spells[i].getMana() + " Mana");
+				if (this.spells[0] != null) {
+					for (int i = 0; i < this.spells.length; i++) {
+						System.out.println((i + 1) + ": " + this.spells[i].getName() + ", " + this.spells[i].getMana() + " Mana");
+					}
 				}
 				System.out.println((this.spells.length+1) + ": Retour");
 				int chosenOne = sc.nextInt();
