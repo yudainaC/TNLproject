@@ -11,6 +11,7 @@ import GameObjects.GameEntities.Monster;
 import GameObjects.GameElements.Spells.DamageSpell;
 import GameObjects.GameElements.Spells.Spell;
 import GameObjects.GameElements.Spells.SupportSpell;
+import GameObjects.GameEntities.Team;
 
 import java.util.HashMap;
 import java.util.List;
@@ -58,5 +59,8 @@ public class Main {
 		System.out.println(firstFight.fullFight(conny, bobby));
 
 		System.exit(1);
+
+		//Test Equipe
+		Team E1 = new Team(1);
 	}
 }
