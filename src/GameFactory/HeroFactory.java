@@ -16,8 +16,8 @@ public class HeroFactory {
         // Création des héros :
         HashMap<String, Hero> heros = new HashMap<>();
 
-        heros.put("Bobby", new Hero("Bobby le premier", "Bobby est le premier personnage", 2));
-        heros.put("Conny", new Hero("Conny le premier", "Conny est l'antagoniste", 4));
+        heros.put("Bobby", new Hero("Bobby le premier", "Bobby est le premier personnage"));
+        heros.put("Conny", new Hero("Conny le premier", "Conny est l'antagoniste"));
 
         return heros;
     }

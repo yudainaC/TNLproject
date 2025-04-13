@@ -5,6 +5,7 @@ import Exceptions.NonValidManaException;
 import Exceptions.NonValidStrengthException;
 import GameObjects.FightActions.FightAction;
 import GameObjects.GameElements.Inventory;
+import GameObjects.GameElements.Items.Bonus;
 import GameObjects.GameElements.Items.Weapon;
 import GameObjects.GameElements.Spells.Spell;
 
@@ -28,7 +29,7 @@ public class Hero extends Entity {
      * La taille de la liste de sorts commence à 2. La liste est vide.
      * Voir le constructeur d'Entity pour le reste.
      */
-    public Hero(String itName, String itDescription, int itSpeed) {
+    public Hero(String itName, String itDescription) {
         super(itName, itDescription);
 
         FightAction[] theActions = new FightAction[5];
@@ -44,6 +45,8 @@ public class Hero extends Entity {
         this.mana = this.maxMana;
         this.strength = 2;
         this.actions = theActions;
+        this.defense = 1;
+        this.speed = 1;
         this.isReady = false;
         this.spellSlot = 2;
         this.spells = new Spell[this.spellSlot];
@@ -56,9 +59,9 @@ public class Hero extends Entity {
     }
 
     // Second Constructeur
-    public Hero(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells, int itSpeed)
+    public Hero(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells, int itDefense, int itSpeed)
             throws NonValidLifeException, NonValidManaException, NonValidStrengthException {
-        super(itName, itDescription, itLife, itMana, itStrength, itSpells, itSpeed);
+        super(itName, itDescription, itLife, itMana, itStrength, itSpells, itDefense, itSpeed);
         this.level = 0;
         this.exp = 0;
         this.inventory = new Inventory(this.strength*10);
@@ -139,6 +142,32 @@ public class Hero extends Entity {
             return true;
         }
         return false;
+    }
+
+    public String applyEffect(Bonus bonus, int howMuch) {
+        switch (bonus) {
+            case life:
+                this.life += howMuch;
+                this.verifHPMana();
+                return howMuch + "PV récupéré";
+            case maxLife:
+                this.maxLife += howMuch;
+                return "PV max augmentés de " + howMuch;
+            case mana:
+                this.mana += howMuch;
+                this.verifHPMana();
+                return howMuch + "Mana récupéré";
+            case maxMana:
+                this.maxMana += howMuch;
+                return "Mana max augmentés de " + howMuch;
+            case strentgh:
+                this.strength += howMuch;
+                return "Force augmentée de " + howMuch;
+            case defense:
+            default:
+                this.defense += howMuch;
+                return "Defense augmentée de " + howMuch;
+        }
     }
 
     // Affichage

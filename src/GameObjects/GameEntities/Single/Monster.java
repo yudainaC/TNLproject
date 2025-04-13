@@ -8,7 +8,7 @@ import GameObjects.GameElements.Spells.Spell;
 import java.util.Random;
 
 /**
- * Sous-classe de Entity, définie les monstre croisé par les héros.
+ * Sous-classe de Entity, définie les monstres croisés par les héros.
  */
 public class Monster extends Entity {
     protected int xp;
@@ -16,21 +16,21 @@ public class Monster extends Entity {
 
     /**
      * Constructeur
-     * Définit les valeurs par défaut des attribut :
+     * Définit les valeurs par défaut des attributs :
      * xp = 0
      *
      * Voir le constructeur d'Entity pour le reste.
      */
-    public Monster(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells, int itXp, int itSpeed)
+    public Monster(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells, int itXp, int itDefense, int itSpeed)
             throws NonValidLifeException, NonValidManaException, NonValidStrengthException {
-        super(itName, itDescription, itLife, itMana, itStrength, itSpells,itSpeed);
+        super(itName, itDescription, itLife, itMana, itStrength, itSpells, itDefense, itSpeed);
         this.xp=itXp;
 
 
     }
 
     /**
-     * fonction qui permet de calculer aléatoirement l'xp obtenu en tuant un monstre.
+     * Fonction qui permet de calculer aléatoirement l'xp obtenu en tuant un monstre.
      * @return
      * Retourne l'xp que le monstre lache.
      */

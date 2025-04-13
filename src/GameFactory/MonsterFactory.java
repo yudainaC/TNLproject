@@ -19,7 +19,7 @@ public class MonsterFactory {
         HashMap<String, Monster> monsters = new HashMap<>();
 
         Spell[] blobSpells = new Spell[1];
-        monsters.put("Blob", new Monster("blob","Petit monstre visqueux sans réel enveloppe charnel",4,5, 2, blobSpells, 5, 2));
+        monsters.put("Blob", new Monster("blob","Petit monstre visqueux sans réel enveloppe charnel",4,5, 2, blobSpells, 5, 2, 1));
 
         return monsters;
     }

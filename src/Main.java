@@ -2,12 +2,12 @@ import Exceptions.*;
 import GameFactory.HeroFactory;
 import GameFactory.ItemFactory;
 import GameFactory.MonsterFactory;
+import GameFight.Fight;
 import GameObjects.GameElements.Items.Item;
 import GameObjects.GameElements.Items.Weapon;
 import GameObjects.GameEntities.Group.HeroTeam;
 import GameObjects.GameEntities.Single.Hero;
 import GameObjects.GameEntities.Single.Monster;
-import GameObjects.GameEntities.Group.Group;
 
 import java.util.HashMap;
 
@@ -50,10 +50,10 @@ public class Main {
 		System.out.println();
 
 		// Combats
-		/*Fight firstFight = new Fight();
+		Fight firstFight = new Fight();
 		System.out.println(firstFight.fullFight(conny, bobby));
 
-		System.exit(1);*/
+		System.exit(1);
 
 		//Test Equipe
 		HeroTeam E1 = new HeroTeam();
