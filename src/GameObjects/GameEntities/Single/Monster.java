@@ -1,4 +1,4 @@
-package GameObjects.GameEntities;
+package GameObjects.GameEntities.Single;
 
 import Exceptions.NonValidLifeException;
 import Exceptions.NonValidManaException;

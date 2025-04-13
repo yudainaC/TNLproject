@@ -1,16 +1,10 @@
 package GameFactory;
 
 import Exceptions.NonValidManaException;
-import Exceptions.NonValidValueException;
-import Exceptions.NonValidWeightException;
-import GameObjects.GameElements.Items.Item;
-import GameObjects.GameElements.Items.Weapon;
 import GameObjects.GameElements.Spells.Spell;
-import GameObjects.GameEntities.Hero;
+import GameObjects.GameEntities.Single.Hero;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class HeroFactory {
 

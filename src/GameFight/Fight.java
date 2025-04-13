@@ -1,6 +1,6 @@
 package GameFight;
 import Exceptions.YouAreTargetingYourselfDumbBoyException;
-import GameObjects.GameEntities.Entity;
+import GameObjects.GameEntities.Single.Entity;
 import GameObjects.FightActions.FightAction;
 import java.util.Scanner;
 

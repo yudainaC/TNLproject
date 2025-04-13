@@ -4,7 +4,7 @@ import Exceptions.NonValidLifeException;
 import Exceptions.NonValidManaException;
 import Exceptions.NonValidStrengthException;
 import GameObjects.GameElements.Spells.Spell;
-import GameObjects.GameEntities.Monster;
+import GameObjects.GameEntities.Single.Monster;
 
 import java.util.HashMap;
 

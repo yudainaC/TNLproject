@@ -1,7 +1,6 @@
 package GameObjects.GameElements.Spells;
 
 import Exceptions.NonValidManaException;
-import GameObjects.GameEntities.Entity;
 import GameObjects.Model;
 
 /**

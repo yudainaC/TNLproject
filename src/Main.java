@@ -2,25 +2,19 @@ import Exceptions.*;
 import GameFactory.HeroFactory;
 import GameFactory.ItemFactory;
 import GameFactory.MonsterFactory;
-import GameFactory.SpellFactory;
-import GameFight.Fight;
 import GameObjects.GameElements.Items.Item;
 import GameObjects.GameElements.Items.Weapon;
-import GameObjects.GameEntities.Hero;
-import GameObjects.GameEntities.Monster;
-import GameObjects.GameElements.Spells.DamageSpell;
-import GameObjects.GameElements.Spells.Spell;
-import GameObjects.GameElements.Spells.SupportSpell;
-import GameObjects.GameEntities.Team;
+import GameObjects.GameEntities.Single.Hero;
+import GameObjects.GameEntities.Single.Monster;
+import GameObjects.GameEntities.Group.Group;
 
 import java.util.HashMap;
-import java.util.List;
 
 //***** La classe Main g�re le flux principal et ex�cute la m�thode main() qui lance l'application *****//
 public class Main {
 	
 	//**** METHODES **//
-	public static void main(String[] args) throws NonValidLifeException, NonValidManaException, NonValidStrengthException, YouAreTargetingYourselfDumbBoyException, NonValidValueException, NonValidWeightException {
+	public static void main(String[] args) throws NonValidLifeException, NonValidManaException, NonValidStrengthException, YouAreTargetingYourselfDumbBoyException, NonValidValueException, NonValidWeightException, TeamIsFullException, HeroAlreadyExistException {
 
 		// Import des armes
 		HashMap<String, Item> items = ItemFactory.loadAllItems();
@@ -55,12 +49,13 @@ public class Main {
 		System.out.println();
 
 		// Combats
-		Fight firstFight = new Fight();
+		/*Fight firstFight = new Fight();
 		System.out.println(firstFight.fullFight(conny, bobby));
 
-		System.exit(1);
+		System.exit(1);*/
 
 		//Test Equipe
-		Team E1 = new Team(1);
+		Group E1 = new Group(1);
+		E1.addToTeam(bobby);
 	}
 }
