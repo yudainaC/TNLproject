@@ -33,16 +33,7 @@ public class Main {
 		HashMap<String, Hero> heros = HeroFactory.loadAllHero();
 		// Bobby
 		Hero bobby = heros.get("Bobby");
-		System.out.println(bobby);
-		System.out.println(bobby.getInventory().addItem(shortSword));
-		System.out.println(bobby.equipWeapon((Weapon) shortSword));
-		System.out.println(bobby);
-		System.out.println(bobby.getInventory().addItem(shortSword));
-		System.out.println(bobby.equipWeapon((Weapon) shortSword));
-		System.out.println(bobby);
-		System.out.println(bobby.getInventory().removeItem(shortSword));
-		System.out.println(bobby);
-		System.out.println();
+		bobby.getInventory().addItem(items.get("Potion de soin"));
 
 		// Conny
 		Hero conny = heros.get("Conny");;

@@ -4,7 +4,7 @@ package GameObjects.FightActions;
  * Les différentes actions réalisable pendant un combat
  */
 public enum FightAction {
-	forfait, attaquer, defendre, recuperer, conjurer;
+	forfait, attaquer, defendre, recuperer, conjurer, objets;
 
 	// Getter
 	public String getAction() {
@@ -13,6 +13,7 @@ public enum FightAction {
             case attaquer -> "Attaquer";
             case conjurer -> "Lancer un sort";
             case defendre -> "Se défendre";
+            case objets -> "Utiliser un objet";
             default -> "Récupérer";
         };
 	}
@@ -24,6 +25,7 @@ public enum FightAction {
             case attaquer -> " a perdu 2 HP";
             case conjurer -> " lance un sort";
             case defendre -> " se defend contre la prochaine attaque";
+            case objets -> " cherche un objet";
             default -> " essaie de se soigner";
         };
 	}

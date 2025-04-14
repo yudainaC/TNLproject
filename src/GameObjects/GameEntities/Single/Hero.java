@@ -3,11 +3,18 @@ package GameObjects.GameEntities.Single;
 import Exceptions.NonValidLifeException;
 import Exceptions.NonValidManaException;
 import Exceptions.NonValidStrengthException;
+import Exceptions.YouAreTargetingYourselfDumbBoyException;
 import GameObjects.FightActions.FightAction;
 import GameObjects.GameElements.Inventory;
 import GameObjects.GameElements.Items.Bonus;
+import GameObjects.GameElements.Items.Consumable;
+import GameObjects.GameElements.Items.Item;
 import GameObjects.GameElements.Items.Weapon;
+import GameObjects.GameElements.Spells.DamageSpell;
 import GameObjects.GameElements.Spells.Spell;
+import GameObjects.GameElements.Spells.SupportSpell;
+
+import java.util.Scanner;
 
 /**
  * Sous-classe de Entity, définie les héros jouables.
@@ -32,12 +39,13 @@ public class Hero extends Entity {
     public Hero(String itName, String itDescription) {
         super(itName, itDescription);
 
-        FightAction[] theActions = new FightAction[5];
+        FightAction[] theActions = new FightAction[6];
         theActions[0] = FightAction.forfait;
         theActions[1] = FightAction.attaquer;
         theActions[2] = FightAction.conjurer;
         theActions[3] = FightAction.defendre;
-        theActions[4] = FightAction.recuperer;
+        theActions[4] = FightAction.objets;
+        theActions[5] = FightAction.recuperer;
 
         this.maxLife = 5;
         this.maxMana = 10;
@@ -142,6 +150,54 @@ public class Hero extends Entity {
             return true;
         }
         return false;
+    }
+
+    public String useObject() {
+        Scanner sc = new Scanner(System.in);
+        int i = 0;
+        Consumable[] items = new Consumable[this.inventory.getInventory().size()];
+        System.out.println("Quel objet voulez-vous utiliser ?");
+        for (Item item : this.inventory.getInventory()) {
+            if (item instanceof Consumable){
+                items[i] = (Consumable) item;
+                System.out.println(i + ": " + item.getName());
+                i += 1;
+            }
+        }
+        System.out.println((i+1) + ": Retour");
+        int chosenOne = sc.nextInt();
+        if (chosenOne >= 0 && chosenOne <= i) {
+            Consumable item = items[chosenOne];
+            System.out.println("Vous avez choisi : " + item.getName());
+            this.inventory.removeItem(item);
+            item.use(this);
+            return this.name + FightAction.objets;
+        }
+        return "retour";
+    }
+
+    @Override
+    public String isGoingToDo(FightAction action, Entity opponent) throws YouAreTargetingYourselfDumbBoyException {
+        if (opponent == this) throw new YouAreTargetingYourselfDumbBoyException();
+
+        return switch (action) {
+            case forfait -> {
+                this.life = 0;
+                yield this.name + FightAction.forfait;
+            }
+            case attaquer -> {
+                opponent.isTarget(this.strength);
+                yield this.name + " attaque";
+            }
+            case conjurer -> this.spellAction(opponent);
+            case defendre -> {
+                this.isReady = true;
+                yield this.name + FightAction.defendre;
+            }
+            case objets -> this.useObject();
+            default -> this.recupAction();
+        };
+
     }
 
     public String applyEffect(Bonus bonus, int howMuch) {
