@@ -1,13 +1,12 @@
-import Exceptions.*;
-import GameFactory.HeroFactory;
-import GameFactory.ItemFactory;
-import GameFactory.MonsterFactory;
-import GameFight.Fight;
-import GameObjects.GameElements.Items.Item;
-import GameObjects.GameElements.Items.Weapon;
-import GameObjects.GameEntities.Group.HeroTeam;
-import GameObjects.GameEntities.Single.Hero;
-import GameObjects.GameEntities.Single.Monster;
+import exceptions.*;
+import gameFactory.HeroFactory;
+import gameFactory.ItemFactory;
+import gameFactory.MonsterFactory;
+import gameCore.GameFight.Fight;
+import gameCore.GameObjects.GameElements.Items.Item;
+import gameCore.GameObjects.GameEntities.Group.HeroTeam;
+import gameCore.GameObjects.GameEntities.Single.Hero;
+import gameCore.GameObjects.GameEntities.Single.Monster;
 
 import java.util.HashMap;
 
