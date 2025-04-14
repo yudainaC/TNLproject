@@ -1,7 +1,7 @@
 package GameObjects.GameElements.Skills;
 
 public enum Skills {
-    natation,
+    natation1,
     escalade,
     herboriste,
     docteur,
@@ -12,7 +12,14 @@ public enum Skills {
     cuisine,
     meditation,
     artisanat,
-    forceSurhumaine,
+    forceSurhumaine;
 
+
+
+
+    public String toString(){
+        return this.name();
+
+    }
 
 }

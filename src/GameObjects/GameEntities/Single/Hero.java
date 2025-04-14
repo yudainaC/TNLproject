@@ -10,11 +10,15 @@ import GameObjects.GameElements.Items.Bonus;
 import GameObjects.GameElements.Items.Consumable;
 import GameObjects.GameElements.Items.Item;
 import GameObjects.GameElements.Items.Weapon;
+import GameObjects.GameElements.Skills.SkillTree.Skill;
+import GameObjects.GameElements.Skills.Skills;
 import GameObjects.GameElements.Spells.DamageSpell;
 import GameObjects.GameElements.Spells.Spell;
 import GameObjects.GameElements.Spells.SupportSpell;
 
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Sous-classe de Entity, définie les héros jouables.
@@ -25,7 +29,7 @@ public class Hero extends Entity {
     private int spellSlot;
     private Weapon equippedWeapon;
     private Inventory inventory;
-
+    private Set<Skills> talent;
     /**
      * Constructeur
      * Définit les valeurs par défaut des attributs :
@@ -64,6 +68,8 @@ public class Hero extends Entity {
 
         this.level = 0;
         this.exp = 0;
+
+        this.talent=new HashSet<Skills>(4);
     }
 
     // Second Constructeur
@@ -225,6 +231,13 @@ public class Hero extends Entity {
                 return "Defense augmentée de " + howMuch;
         }
     }
+     public String getTalent(){
+        String res = "";
+         for(Skills Talent : talent ){
+             res+= talent;
+         }
+         return res;
+     }
 
     // Affichage
     public String toString() {
