@@ -1,4 +1,5 @@
 import exceptions.*;
+import gameCore.Player;
 import gameFactory.HeroFactory;
 import gameFactory.ItemFactory;
 import gameFactory.MonsterFactory;
@@ -40,18 +41,22 @@ public class Main {
 		System.out.println();
 
 		// Combats
-		Fight firstFight = new Fight();
+		/*Fight firstFight = new Fight();
 		System.out.println(firstFight.fullFight(conny, bobby));
 
-		System.exit(1);
+		System.exit(1);*/
 
 		//Test Equipe
-		HeroTeam E1 = new HeroTeam();
-		E1.addToTeam(bobby);
-		System.out.println(E1);
-		System.out.println(E1.addToTeam(conny));
-		System.out.println(E1);
-		System.out.println(E1.addToTeam(bobby));
-		System.out.println(E1);
+		Player player = new Player();
+		System.out.println(player.recruit(bobby));
+		System.out.println(player.recruit(conny));
+		System.out.println(player.recruit(bobby));
+		System.out.println(player.putInMyTeam(bobby));
+		System.out.println(player.putInMyTeam(bobby));
+		System.out.println(player.putInMyTeam(conny));
+		System.out.println(player.removeFromMyTeam(bobby));
+		System.out.println(player.putInMyTeam(bobby));
+		System.out.println(player.getTeam());
+		System.out.println(player.showFollowers());
 	}
 }

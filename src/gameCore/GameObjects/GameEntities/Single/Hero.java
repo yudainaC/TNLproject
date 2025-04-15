@@ -26,7 +26,7 @@ public class Hero extends Entity {
     private int spellSlot;
     private Weapon equippedWeapon;
     private Inventory inventory;
-    private Set<Skills> talent;
+    private Set<Skills> skills;
     /**
      * Constructeur
      * Définit les valeurs par défaut des attributs :
@@ -66,7 +66,7 @@ public class Hero extends Entity {
         this.level = 0;
         this.exp = 0;
 
-        this.talent=new HashSet<Skills>(4);
+        this.skills = new HashSet<Skills>(4);
     }
 
     // Second Constructeur
@@ -82,6 +82,9 @@ public class Hero extends Entity {
     public int getLevel() { return this.level; }
     public int getExp() { return this.exp; }
     public Inventory getInventory() { return this.inventory; }
+    public int getSpellSlot() { return spellSlot; }
+    public Weapon getEquippedWeapon() { return equippedWeapon; }
+    public Set<Skills> getSkills() { return this.skills; }
 
     /**
      * Permet au Hero de récupérer les PV et le mana perdu.
@@ -228,38 +231,39 @@ public class Hero extends Entity {
                 return "Defense augmentée de " + howMuch;
         }
     }
-     public String getTalent(){
+     public String printSkills(){
         String res = "";
-         for(Skills Talent : talent ){
-             res+= talent;
+         for(Skills Talent : skills){
+             res+= skills;
          }
          return res;
      }
 
     // Affichage
     public String toString() {
-        System.out.println(this.name + " : niveau " + this.level);
-        System.out.println(this.life + "/" + this.maxLife + " PV");
-        System.out.println(this.mana + "/" + this.maxMana + " mana");
+        String hero = this.name + " : niveau " + this.level + "\n" +
+                this.life + "/" + this.maxLife + " PV \n" +
+                this.mana + "/" + this.maxMana + " mana \n";
 
         int bonus = 0;
         String weapon = "" + this.equippedWeapon;
         if (!(this.equippedWeapon == null)) bonus = this.equippedWeapon.getBonusStr();
         else weapon = "aucune";
-        System.out.println("force : " + this.strength + '(' + (this.strength-bonus) + '+' + bonus + ')');
-        System.out.println("arme equipé : " + weapon);
+        hero += "force : " + this.strength + '(' + (this.strength-bonus) + '+' + bonus + ") \n" +
+                "arme equipé : " + weapon + '\n';
 
         if (this.spells[0] != null) {
-            System.out.println("Sorts appris :");
+            hero += "Sorts appris :\n";
             for (Spell spell : this.spells) {
-                System.out.println("   " + spell);
+                hero += "   " + spell + "\n";
             }
         } else {
-            System.out.println("Ne connais aucun sorts");
+            hero += "Ne connais aucun sorts\n";
         }
 
-        System.out.println("Inventaire :");
-        System.out.println(this.inventory);
-        return this.description;
+        hero += "Inventaire :\n" +
+                this.inventory + "\n" +
+                this.description + "\n";
+        return hero;
     }
 }

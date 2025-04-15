@@ -47,7 +47,7 @@ public class Inventory {
     @Override
     public String toString() {
         this.inventory.forEach( (item) -> {
-            System.out.println("   " + item + "\n");
+            System.out.println("   " + item + "; ");
         } );
         return "";
     }

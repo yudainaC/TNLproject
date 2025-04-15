@@ -25,16 +25,26 @@ public class Player {
     public Set<Hero> getFollowers() { return this.followers; }
 
     public Boolean putInMyTeam(Hero hero) throws TeamIsFullException {
-        if (followers.contains(hero)) {
-            this.followers.remove(hero);
-            this.team.addToTeam(hero);
-            return true;
-        }
-        return false;
+        return this.team.addToTeam(hero);
     }
 
     public Boolean removeFromMyTeam(Hero hero) {
         this.followers.add(hero);
         return this.team.removeToGroup(hero);
     }
+
+    public Boolean recruit(Hero hero) {
+        for (Skills skill : hero.getSkills()) {
+            if (!(this.playerSkills.contains(skill))) this.playerSkills.add(skill);
+        }
+        return this.followers.add(hero);
+    }
+
+    // Affichage
+    public String showFollowers() {
+        String heros = "Vos héros :\n";
+        for (Hero hero : followers) heros += hero + "\n";
+        return heros;
+    }
+
 }
