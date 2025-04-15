@@ -26,8 +26,8 @@ public class Main {
 		HashMap<String, Monster> monsters = MonsterFactory.loadAllMonster();
 
 		Monster blob = monsters.get("Blob");
-		System.out.println(blob);
-		System.out.println();
+		//System.out.println(blob);
+		//System.out.println();
 
 		// Import des Heros
 		HashMap<String, Hero> heros = HeroFactory.loadAllHero();
@@ -37,8 +37,8 @@ public class Main {
 
 		// Conny
 		Hero conny = heros.get("Conny");;
-		System.out.println(conny);
-		System.out.println();
+		//System.out.println(conny);
+		//System.out.println();
 
 		// Combats
 		/*Fight firstFight = new Fight();
@@ -48,15 +48,14 @@ public class Main {
 
 		//Test Equipe
 		Player player = new Player();
-		System.out.println(player.recruit(bobby));
-		System.out.println(player.recruit(conny));
-		System.out.println(player.recruit(bobby));
-		System.out.println(player.putInMyTeam(bobby));
-		System.out.println(player.putInMyTeam(bobby));
-		System.out.println(player.putInMyTeam(conny));
-		System.out.println(player.removeFromMyTeam(bobby));
-		System.out.println(player.putInMyTeam(bobby));
-		System.out.println(player.getTeam());
-		System.out.println(player.showFollowers());
+		player.recruit(bobby);
+		player.recruit(conny);
+		player.recruit(bobby);
+		player.putInMyTeam(bobby);
+		player.putInMyTeam(bobby);
+		player.putInMyTeam(conny);
+		player.removeFromMyTeam(bobby);
+		player.putInMyTeam(bobby);
+		System.out.println(player);
 	}
 }

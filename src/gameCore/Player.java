@@ -34,17 +34,21 @@ public class Player {
     }
 
     public Boolean recruit(Hero hero) {
-        for (Skills skill : hero.getSkills()) {
-            if (!(this.playerSkills.contains(skill))) this.playerSkills.add(skill);
-        }
+        this.playerSkills.addAll(hero.getSkills());
         return this.followers.add(hero);
     }
 
     // Affichage
     public String showFollowers() {
         String heros = "Vos héros :\n";
-        for (Hero hero : followers) heros += hero + "\n";
+        for (Hero hero : followers) heros += hero  + "\n<------->\n";
         return heros;
     }
 
+    @Override
+    public String toString() {
+        return "Membre de l'équipe :\n" + team + "\n" +
+                "Compétences de l'équipe :\n" + playerSkills + "\n\n" +
+                this.showFollowers();
+    }
 }

@@ -27,6 +27,7 @@ public class Hero extends Entity {
     private Weapon equippedWeapon;
     private Inventory inventory;
     private Set<Skills> skills;
+
     /**
      * Constructeur
      * Définit les valeurs par défaut des attributs :
@@ -37,7 +38,7 @@ public class Hero extends Entity {
      * La taille de la liste de sorts commence à 2. La liste est vide.
      * Voir le constructeur d'Entity pour le reste.
      */
-    public Hero(String itName, String itDescription) {
+    public Hero(String itName, String itDescription, Set<Skills> itSkills) {
         super(itName, itDescription);
 
         FightAction[] theActions = new FightAction[6];
@@ -66,7 +67,8 @@ public class Hero extends Entity {
         this.level = 0;
         this.exp = 0;
 
-        this.skills = new HashSet<Skills>(4);
+        this.skills = new HashSet<>(4);
+        this.skills.addAll(itSkills);
     }
 
     // Second Constructeur
@@ -261,9 +263,7 @@ public class Hero extends Entity {
             hero += "Ne connais aucun sorts\n";
         }
 
-        hero += "Inventaire :\n" +
-                this.inventory + "\n" +
-                this.description + "\n";
-        return hero;
+        hero += "Inventaire : " + this.inventory.getActualWeight() + '/' + this.inventory.getMaxWeight() + "\n";
+        return hero + this.description;
     }
 }

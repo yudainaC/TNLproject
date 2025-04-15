@@ -19,6 +19,8 @@ public class Inventory {
 
     // getter
     public List<Item> getInventory() { return this.inventory; }
+    public int getActualWeight() { return actualWeight; }
+    public int getMaxWeight() { return maxWeight; }
 
     public void upMaxWeight(int howMany) { this.maxWeight += howMany; }
 
