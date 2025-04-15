@@ -1,36 +1,35 @@
 import exceptions.*;
+import exceptions.NotABonusException;
 import gameCore.Player;
-import gameFactory.HeroFactory;
-import gameFactory.ItemFactory;
-import gameFactory.MonsterFactory;
-import gameCore.GameFight.Fight;
+import gameFactory.Factory;
 import gameCore.GameObjects.GameElements.Items.Item;
-import gameCore.GameObjects.GameEntities.Group.HeroTeam;
 import gameCore.GameObjects.GameEntities.Single.Hero;
 import gameCore.GameObjects.GameEntities.Single.Monster;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 //***** La classe Main g�re le flux principal et ex�cute la m�thode main() qui lance l'application *****//
 public class Main {
 	
 	//**** METHODES **//
-	public static void main(String[] args) throws NonValidLifeException, NonValidManaException, NonValidStrengthException, YouAreTargetingYourselfDumbBoyException, NonValidValueException, NonValidWeightException, TeamIsFullException, HeroAlreadyExistException {
+	public static void main(String[] args) throws NonValidLifeException, NonValidManaException, NonValidStrengthException, YouAreTargetingYourselfDumbBoyException, NonValidValueException, NonValidWeightException, TeamIsFullException, HeroAlreadyExistException, IOException, NotABonusException {
 
 		// Import des armes
-		HashMap<String, Item> items = ItemFactory.loadAllItems();
+		HashMap<String, Item> items = Factory.parseItem();
 		Item shortSword = items.get("Epée courte");
+		System.out.println(shortSword);
 
 		// Import des Entités
 		// Import des Monstres
-		HashMap<String, Monster> monsters = MonsterFactory.loadAllMonster();
+		HashMap<String, Monster> monsters = Factory.parseMonster();
 
-		Monster blob = monsters.get("Blob");
-		//System.out.println(blob);
+		Monster blob = monsters.get("blob");
+		System.out.println(blob);
 		//System.out.println();
 
 		// Import des Heros
-		HashMap<String, Hero> heros = HeroFactory.loadAllHero();
+		HashMap<String, Hero> heros = Factory.loadAllHero();
 		// Bobby
 		Hero bobby = heros.get("Bobby");
 		bobby.getInventory().addItem(items.get("Potion de soin"));

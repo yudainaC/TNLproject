@@ -4,7 +4,7 @@ import exceptions.NonValidManaException;
 import gameCore.GameObjects.GameEntities.Single.Entity;
 
 /**
- * Sorts spécialisé dans les dégats.
+ * Sorts spécialisés dans les dégats.
  */
 public class DamageSpell extends Spell {
 	
@@ -14,7 +14,6 @@ public class DamageSpell extends Spell {
 	public DamageSpell(String itName, String itDescription, int itValue, int itDamage) throws NonValidManaException {
 		super(itName, itDescription, itValue);
 		this.damage = itDamage;
-		// TODO Auto-generated constructor stub
 	}
 
 	// Getter
