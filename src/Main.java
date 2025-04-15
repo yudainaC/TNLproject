@@ -1,5 +1,6 @@
 import exceptions.*;
 import exceptions.NotABonusException;
+import gameCore.GameFight.Fight;
 import gameCore.Player;
 import gameFactory.Factory;
 import gameCore.GameObjects.GameElements.Items.Item;
@@ -13,11 +14,13 @@ import java.util.HashMap;
 public class Main {
 	
 	//**** METHODES **//
-	public static void main(String[] args) throws NonValidLifeException, NonValidManaException, NonValidStrengthException, YouAreTargetingYourselfDumbBoyException, NonValidValueException, NonValidWeightException, TeamIsFullException, HeroAlreadyExistException, IOException, NotABonusException {
+	public static void main(String[] args) throws NonValidLifeException, NonValidManaException, NonValidStrengthException,
+            YouAreTargetingYourselfDumbBoyException, NonValidValueException, NonValidWeightException, TeamIsFullException,
+            HeroAlreadyExistException, IOException, NotABonusException, NotASkillsException {
 
 
 
-		/*  //Import des armes
+		//Import des armes
 		HashMap<String, Item> items = Factory.parseItem();
 		Item shortSword = items.get("Epée courte");
 		System.out.println(shortSword);
@@ -31,18 +34,18 @@ public class Main {
 		//System.out.println();
 
 		// Import des Heros
-		HashMap<String, Hero> heros = Factory.loadAllHero();
+		HashMap<String, Hero> heros = Factory.parseHeroSimple();
 		// Bobby
-		Hero bobby = heros.get("Bobby");
+		Hero bobby = heros.get("Bobby le premier");
 		bobby.getInventory().addItem(items.get("Potion de soin"));
 
 		// Conny
-		Hero conny = heros.get("Conny");;
+		Hero conny = heros.get("Conny le premier");
 		//System.out.println(conny);
 		//System.out.println();
 
 		// Combats
-		/*Fight firstFight = new Fight();
+		Fight firstFight = new Fight();
 		System.out.println(firstFight.fullFight(conny, bobby));
 
 		System.exit(1);
@@ -58,7 +61,7 @@ public class Main {
 		player.removeFromMyTeam(bobby);
 		player.putInMyTeam(bobby);
 		System.out.println(player);
-		*/
+
 	}
 
 }

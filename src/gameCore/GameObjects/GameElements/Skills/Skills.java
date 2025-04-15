@@ -17,7 +17,9 @@ public enum Skills {
     forceSurhumaine;
 
 
-
+    public String toString() {
+        return this.name();
+    }
 
     public static Skills parseSkills(String bonus) throws NotASkillsException {
         return switch (bonus) {
@@ -27,7 +29,7 @@ public enum Skills {
             case "docteur" -> Skills.docteur;
             case "cavernologie" -> Skills.cavernologie;
             case "orientation" -> Skills.orientation;
-            case "DesarmementDePiege" -> Skills.DesarmementDePiege;
+            case "desarmementDePiege" -> Skills.DesarmementDePiege;
             case "peche" -> Skills.peche;
             case "cuisine" -> Skills.cuisine;
             case "meditation" -> Skills.meditation;
@@ -37,4 +39,5 @@ public enum Skills {
             default -> throw new NotASkillsException();
         };
     }
+
 }

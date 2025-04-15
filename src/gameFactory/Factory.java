@@ -103,36 +103,29 @@ public class Factory {
         return monsters;
 
     }
-    public static HashMap<String, Monster> loadAllMonster() throws NonValidManaException, NonValidLifeException, NonValidStrengthException, IOException {
 
-        // Création des sorts :
-        HashMap<String, Spell> spells = Factory.parseSpell();
+    public static HashMap<String, Hero> parseHeroSimple() throws IOException, NotASkillsException {
 
-        // Création des héros :
-        HashMap<String, Monster> monsters = new HashMap<>();
+        BufferedReader in = new BufferedReader(new FileReader("ressources/heros.csv"));
+        String line;
+        HashMap<String, Hero> heroes = new HashMap<>();
 
-        Spell[] blobSpells = new Spell[1];
-        monsters.put("Blob", new Monster("blob","Petit monstre visqueux sans réel enveloppe charnel",4,5, 2, blobSpells, 5, 2, 1));
+        while (true) {
 
-        return monsters;
-    }
+            line = in.readLine();
+            if (line == null) break;
+            String[] heroAttribute = line.split(",");
 
-    public static HashMap<String, Hero> loadAllHero() throws NonValidManaException, IOException {
+            String[] skillsKeys = heroAttribute[2].split(";");
+            Set<Skills> heroSkills = new HashSet<>();
+            for (String skillKey : skillsKeys) {
 
-        // Création des sorts :
-        HashMap<String, Spell> spells = Factory.parseSpell();
+                heroSkills.add(Skills.parseSkills(skillKey));
+            }
+            // TODO : Changer la gestion des spells dans Entity, Monster et Hero ?
 
-        // Création des héros :
-        HashMap<String, Hero> heros = new HashMap<>();
-
-        Set<Skills> bobbySkills = new HashSet<>();
-        bobbySkills.add(Skills.artisanat);
-        heros.put("Bobby", new Hero("Bobby le premier", "Bobby est le premier personnage", bobbySkills));
-        Set<Skills> connySkills = new HashSet<>();
-        connySkills.add(Skills.artisanat);
-        connySkills.add(Skills.cuisine);
-        heros.put("Conny", new Hero("Conny le premier", "Conny est l'antagoniste", connySkills));
-
-        return heros;
+            heroes.put(heroAttribute[0], new Hero(heroAttribute[0], heroAttribute[1], heroSkills));
+        }
+        return heroes;
     }
 }
