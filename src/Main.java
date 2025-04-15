@@ -15,7 +15,9 @@ public class Main {
 	//**** METHODES **//
 	public static void main(String[] args) throws NonValidLifeException, NonValidManaException, NonValidStrengthException, YouAreTargetingYourselfDumbBoyException, NonValidValueException, NonValidWeightException, TeamIsFullException, HeroAlreadyExistException, IOException, NotABonusException {
 
-		// Import des armes
+
+
+		/*  //Import des armes
 		HashMap<String, Item> items = Factory.parseItem();
 		Item shortSword = items.get("Epée courte");
 		System.out.println(shortSword);
@@ -43,7 +45,7 @@ public class Main {
 		/*Fight firstFight = new Fight();
 		System.out.println(firstFight.fullFight(conny, bobby));
 
-		System.exit(1);*/
+		System.exit(1);
 
 		//Test Equipe
 		Player player = new Player();
@@ -56,5 +58,7 @@ public class Main {
 		player.removeFromMyTeam(bobby);
 		player.putInMyTeam(bobby);
 		System.out.println(player);
+		*/
 	}
+
 }
