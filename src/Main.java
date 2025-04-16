@@ -1,6 +1,7 @@
 import exceptions.*;
 import exceptions.NotABonusException;
 import gameCore.GameFight.Fight;
+import gameCore.GameObjects.GameElements.Skills.Skills;
 import gameCore.Player;
 import gameFactory.Factory;
 import gameCore.GameObjects.GameElements.Items.Item;
@@ -17,6 +18,7 @@ public class Main {
 	public static void main(String[] args) throws NonValidLifeException, NonValidManaException, NonValidStrengthException,
             YouAreTargetingYourselfDumbBoyException, NonValidValueException, NonValidWeightException, TeamIsFullException,
             HeroAlreadyExistException, IOException, NotABonusException, NotASkillsException {
+
 
 
 
@@ -44,11 +46,11 @@ public class Main {
 		Hero conny = heros.get("Conny le premier");
 		//System.out.println(conny);
 		//System.out.println();
-
+		/*
 		// Combats
 		Fight firstFight = new Fight();
 		System.out.println(firstFight.fullFight(conny, bobby));
-
+		*/
 		System.exit(1);
 
 		//Test Equipe
@@ -62,6 +64,7 @@ public class Main {
 		player.removeFromMyTeam(bobby);
 		player.putInMyTeam(bobby);
 		System.out.println(player);
+
 
 	}
 
