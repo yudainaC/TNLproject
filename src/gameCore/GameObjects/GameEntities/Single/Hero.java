@@ -103,12 +103,12 @@ public class Hero extends Entity {
      * Renvoie une simple phrase.
      */
     public String levelUp() {
+        this.exp -= 10*this.level;
         this.level += 1;
         this.maxLife += 3;
         this.maxMana += 5;
         this.strength += 1;
         this.inventory.upMaxWeight(10);
-        this.exp -= 10;
         this.regenerate();
         if (level%3 == 0) {
             this.spellSlot += 1;
@@ -116,6 +116,7 @@ public class Hero extends Entity {
             this.spells = new Spell[this.spellSlot];
             System.arraycopy(tamp, 0, this.spells, 0, tamp.length);
         }
+        this.verifLevel(0);
         return this.name + " a atteint le niveau " + this.level + " !";
     }
 
@@ -257,15 +258,16 @@ public class Hero extends Entity {
         }
     }
 
+    // Affichage
+
     public String printSkills(){
-    String res = "";
-     for(Skills Talent : skills){
-         res+= skills;
-     }
-     return res;
+        String res = "";
+        for(Skills Talent : skills){
+            res+= skills;
+        }
+        return res;
     }
 
-    // Affichage
     public String toString() {
         String hero = this.name + " : niveau " + this.level + "\n" +
                 this.life + "/" + this.maxLife + " PV \n" +

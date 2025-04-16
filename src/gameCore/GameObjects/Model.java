@@ -1,7 +1,7 @@
 package gameCore.GameObjects;
 
 /**
- * Model pour toutes les Objets du jeu, entités et actions compris.
+ * Model pour tous les Objets du jeu, entités et actions compris.
  */
 public class Model {
 

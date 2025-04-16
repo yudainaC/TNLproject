@@ -17,10 +17,7 @@ public class Main {
 	//**** METHODES **//
 	public static void main(String[] args) throws NonValidLifeException, NonValidManaException, NonValidStrengthException,
             YouAreTargetingYourselfDumbBoyException, NonValidValueException, NonValidWeightException, TeamIsFullException,
-            HeroAlreadyExistException, IOException, NotABonusException, NotASkillsException {
-
-
-
+            IOException, NotABonusException, NotASkillsException {
 
 		//Import des armes
 		HashMap<String, Item> items = Factory.parseItem();
@@ -46,11 +43,11 @@ public class Main {
 		Hero conny = heros.get("Conny le premier");
 		//System.out.println(conny);
 		//System.out.println();
-		/*
+
 		// Combats
 		Fight firstFight = new Fight();
 		System.out.println(firstFight.fullFight(conny, bobby));
-		*/
+
 		System.exit(1);
 
 		//Test Equipe
