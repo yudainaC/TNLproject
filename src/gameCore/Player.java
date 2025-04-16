@@ -45,25 +45,30 @@ public class Player {
                 System.out.println("choisissez quel skill vous voulez supprimer (name skill)");
                 System.out.println(this.getPlayerSkills());
                 String choice = sc.nextLine();
-                Skills c = Skills.parseSkills(choice);
-                this.playerSkills.remove(c);
-                System.out.println(c + " supprimé !");
-                this.playerSkills.add(skills);
+                Skills suppr = Skills.parseSkills(choice);
+                this.echangeSkill(suppr,skills);
                 System.out.println(skills + " appris !");
                 return true;
             }
-            if(rep.equals("no")){
+            else if(rep.equals("no")){
                 System.out.println("skill non appris");
                 return false;
             }
-            System.out.println("valeur incorrect");
-            return false;
+            else {
+                System.out.println("valeur incorrect");
+                return false;
+            }
+
         }
 
         System.out.println(skills + " appris !");
         return this.playerSkills.add(skills);
     }
-    public boolean removeSkill(Skills skills){ return this.playerSkills.remove(skills);}
+    public boolean echangeSkill(Skills suppr,Skills skills) throws NotASkillsException {
+        this.playerSkills.remove(suppr);
+        System.out.println(suppr + " supprimé !");
+        return this.playerSkills.add(skills);
+    }
 
     public Boolean removeFromMyTeam(Hero hero) {
         this.followers.add(hero);
