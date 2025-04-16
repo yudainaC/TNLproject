@@ -64,6 +64,14 @@ public class Player {
         System.out.println(skills + " appris !");
         return this.playerSkills.add(skills);
     }
+
+    /**
+     * Methode utiliser uniquement dans addSkill, permet d'echanger un skill avec un autre
+     * @param suppr le,skill a supprimer
+     * @param skills le skill a ajouter
+     * @return vraie si les skill ont bien ete echangé
+     * @throws NotASkillsException
+     */
     public boolean echangeSkill(Skills suppr,Skills skills) throws NotASkillsException {
         this.playerSkills.remove(suppr);
         System.out.println(suppr + " supprimé !");
