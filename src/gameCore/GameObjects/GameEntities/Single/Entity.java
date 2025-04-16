@@ -1,7 +1,7 @@
 package gameCore.GameObjects.GameEntities.Single;
 
 import exceptions.*;
-import gameCore.GameObjects.FightActions.FightAction;
+import gameCore.GameFight.FightAction;
 import gameCore.GameObjects.GameElements.Spells.DamageSpell;
 import gameCore.GameObjects.GameElements.Spells.Spell;
 import gameCore.GameObjects.GameElements.Spells.SupportSpell;

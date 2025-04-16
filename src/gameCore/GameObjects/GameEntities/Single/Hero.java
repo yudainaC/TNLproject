@@ -4,7 +4,7 @@ import exceptions.NonValidLifeException;
 import exceptions.NonValidManaException;
 import exceptions.NonValidStrengthException;
 import exceptions.YouAreTargetingYourselfDumbBoyException;
-import gameCore.GameObjects.FightActions.FightAction;
+import gameCore.GameFight.FightAction;
 import gameCore.GameObjects.GameElements.Inventory;
 import gameCore.GameObjects.GameElements.Items.Bonus;
 import gameCore.GameObjects.GameElements.Items.Consumable;
@@ -13,9 +13,7 @@ import gameCore.GameObjects.GameElements.Items.Weapon;
 import gameCore.GameObjects.GameElements.Skills.Skills;
 import gameCore.GameObjects.GameElements.Spells.Spell;
 
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Sous-classe de Entity, définie les héros jouables.
@@ -26,6 +24,7 @@ public class Hero extends Entity {
     private int spellSlot;
     private Weapon equippedWeapon;
     private Inventory inventory;
+    private List<Object[]> bonuses;
     private Set<Skills> skills;
 
     /**
@@ -61,6 +60,7 @@ public class Hero extends Entity {
         this.spellSlot = 2;
         this.spells = new Spell[this.spellSlot];
 
+        this.bonuses = new ArrayList<>();
         this.equippedWeapon = null;
         this.inventory = new Inventory(this.strength*10);
 
@@ -208,38 +208,62 @@ public class Hero extends Entity {
 
     }
 
-    public String applyEffect(Bonus bonus, int howMuch) {
+    public String applyEffect(Bonus bonus, int howMuch, int tillWhen, boolean apply) {
+        Object[] theBonus = {bonus, howMuch, tillWhen};
         switch (bonus) {
             case life:
                 this.life += howMuch;
                 this.verifHPMana();
                 return howMuch + "PV récupéré";
             case maxLife:
+                if (apply) bonuses.add(theBonus);
                 this.maxLife += howMuch;
+                this.life += howMuch;
                 return "PV max augmentés de " + howMuch;
             case mana:
                 this.mana += howMuch;
                 this.verifHPMana();
                 return howMuch + "Mana récupéré";
             case maxMana:
+                if (apply) bonuses.add(theBonus);
                 this.maxMana += howMuch;
+                this.mana += howMuch;
                 return "Mana max augmentés de " + howMuch;
             case strentgh:
+                if (apply) bonuses.add(theBonus);
                 this.strength += howMuch;
                 return "Force augmentée de " + howMuch;
             case defense:
             default:
+                if (apply) bonuses.add(theBonus);
                 this.defense += howMuch;
                 return "Defense augmentée de " + howMuch;
         }
     }
-     public String printSkills(){
-        String res = "";
-         for(Skills Talent : skills){
-             res+= skills;
-         }
-         return res;
+
+    public void updateBonuses() {
+        for (int i = 0; i < this.bonuses.size(); i++) {
+            int duration = (int) this.bonuses.get(i)[2];
+            duration--;
+
+            this.bonuses.get(i)[2] = duration;
+            if (duration == 0) {
+                Bonus bonusType = (Bonus) this.bonuses.get(i)[0];
+                int bonus = (int) this.bonuses.get(i)[1];
+                this.applyEffect(bonusType, bonus*(-1), duration, false);
+                System.out.println(this.bonuses.get(i)[0]+" : dernier tour");
+                this.bonuses.remove(i);
+            } else System.out.println(this.bonuses.get(i)[0]+" : "+duration+" tours restant");
+        }
+    }
+
+    public String printSkills(){
+    String res = "";
+     for(Skills Talent : skills){
+         res+= skills;
      }
+     return res;
+    }
 
     // Affichage
     public String toString() {

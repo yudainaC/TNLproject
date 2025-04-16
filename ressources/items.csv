@@ -1,2 +1,3 @@
 Weapon,Epée courte,Une petite épée simple,2,5,1
-Consumable,Potion de soin,Potion redonnant une petite quantité de PV,1,2,life,3
+Consumable,Potion de soin,Potion redonnant une petite quantité de PV,1,2,life,3,0
+Consumable,Potion de force,Potion augmentant légérement la force,3,2,strength,1,3

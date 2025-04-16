@@ -40,7 +40,7 @@ public class Factory {
                     break;
                 case "Consumable":
                     items.put(itemAttribute[1], new Consumable(itemAttribute[1], itemAttribute[2], parseInt(itemAttribute[3]),
-                            parseInt(itemAttribute[4]), Bonus.parseBonus(itemAttribute[5]), parseInt(itemAttribute[6])));
+                            parseInt(itemAttribute[4]), Bonus.parseBonus(itemAttribute[5]), parseInt(itemAttribute[6]), parseInt(itemAttribute[7])));
                     break;
             }
         }

@@ -38,6 +38,7 @@ public class Main {
 		// Bobby
 		Hero bobby = heros.get("Bobby le premier");
 		bobby.getInventory().addItem(items.get("Potion de soin"));
+		bobby.getInventory().addItem(items.get("Potion de force"));
 
 		// Conny
 		Hero conny = heros.get("Conny le premier");

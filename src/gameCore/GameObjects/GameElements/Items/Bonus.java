@@ -12,7 +12,7 @@ public enum Bonus {
             case "maxLife" -> Bonus.maxLife;
             case "mana" -> Bonus.mana;
             case "maxMana" -> Bonus.maxMana;
-            case "strentgh" -> Bonus.strentgh;
+            case "strength" -> Bonus.strentgh;
             case "defense" -> Bonus.defense;
             default -> throw new NotABonusException();
         };

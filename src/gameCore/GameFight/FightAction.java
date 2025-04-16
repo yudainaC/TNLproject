@@ -1,4 +1,4 @@
-package gameCore.GameObjects.FightActions;
+package gameCore.GameFight;
 
 /**
  * Les différentes actions réalisable pendant un combat

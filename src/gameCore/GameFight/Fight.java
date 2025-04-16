@@ -1,7 +1,8 @@
 package gameCore.GameFight;
 import exceptions.YouAreTargetingYourselfDumbBoyException;
 import gameCore.GameObjects.GameEntities.Single.Entity;
-import gameCore.GameObjects.FightActions.FightAction;
+import gameCore.GameObjects.GameEntities.Single.Hero;
+
 import java.util.Scanner;
 
 /**
@@ -33,6 +34,8 @@ public class Fight {
 	public String fightTurn(Entity fighter1, Entity fighter2) throws YouAreTargetingYourselfDumbBoyException {
 
 		if (fighter1 == fighter2) throw new YouAreTargetingYourselfDumbBoyException();
+
+		if (fighter1 instanceof Hero) ((Hero) fighter1).updateBonuses();
 
 		Scanner sc = new Scanner(System.in);
 		System.out.println(fighter1.getName() + ", que voulez-vous faire ?");
