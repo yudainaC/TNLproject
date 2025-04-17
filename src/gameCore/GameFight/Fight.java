@@ -1,106 +1,128 @@
 package gameCore.GameFight;
+import exceptions.YouAreFightingYourselfDumbPlayerException;
 import exceptions.YouAreTargetingYourselfDumbBoyException;
+import gameCore.GameObjects.GameEntities.Group.Group;
+import gameCore.GameObjects.GameEntities.Group.HeroTeam;
 import gameCore.GameObjects.GameEntities.Single.Entity;
 import gameCore.GameObjects.GameEntities.Single.Hero;
 
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Represente un combat
  */
 public class Fight {
-	
+	private final HeroTeam heroes;
+	private final Group opponents;
+	private int opponentsAlive;
+	private int heroesAlive;
+	private final List<Entity> order;
+	private List<Entity> diedThisTurn;
 	private int turn;
 
 	// Constructeur
-	public Fight() {
+	public Fight(HeroTeam fightingHeroes, Group fightingOpponents) throws YouAreFightingYourselfDumbPlayerException {
+
+		this.heroes = fightingHeroes;
+		this.opponents = fightingOpponents;
+
+		if (heroes == opponents) throw new YouAreFightingYourselfDumbPlayerException();
+
+		this.heroesAlive = heroes.getGroup().size();
+		this.opponentsAlive = opponents.getGroup().size();
+
 		this.turn = 1;
+		this.order = new ArrayList<>();
+		order.addAll(this.heroes.getGroup());
+		order.addAll(this.opponents.getGroup());
+		order.sort((e1, e2) -> Integer.compare(e2.getSpeed(), e1.getSpeed()));
+		this.diedThisTurn = new ArrayList<>();
 	}
 
 	// Getters
 	public int getTurn() { return this.turn; }
+	public HeroTeam getHeroes() { return heroes; }
+	public Group getOpponents() { return opponents; }
+	public int getOpponentsAlive() { return opponentsAlive; }
+	public int getHeroesAlive() { return heroesAlive; }
 
 	/**
 	 * Un tour de jeu. Affiche le menu de selection d'actions dans la console.
-	 * @param fighter1
-	 * Le combattant dont c'est le tour
-	 * @param fighter2
-	 * Le combattant visé. (Pour l'instant les combat sont des 1v1)
-	 * @return
-	 * Renvoie l'appel de la methode "isGoingToDo" avec l'action choisi en paramêtre.
-	 * @throws YouAreTargetingYourselfDumbBoyException
-	 * Si les deux combattants sont la même Entité.
+	 *
+	 * @param fighter Le combattant dont c'est le tour
+	 *                Le combattant visé. (Pour l'instant les combat sont des 1v1)
+	 * @return Renvoie l'appel de la methode "isGoingToDo" avec l'action choisi en paramêtre.
+	 * @throws YouAreTargetingYourselfDumbBoyException Si les deux combattants sont la même Entité.
 	 */
-	public String fightTurn(Entity fighter1, Entity fighter2) throws YouAreTargetingYourselfDumbBoyException {
+	public String fightTurn(Entity fighter) throws YouAreTargetingYourselfDumbBoyException {
 
-		if (fighter1 == fighter2) throw new YouAreTargetingYourselfDumbBoyException();
+		if (fighter instanceof Hero) ((Hero) fighter).updateBonuses();
+		if (fighter.getLife() != 0) {
+			Scanner sc = new Scanner(System.in);
+			System.out.println(fighter.getName() + ", que voulez-vous faire ?");
+			for (int i = 0; i < fighter.getActions().length; i++) {
+				System.out.println((i) + ": " + fighter.getActions()[i].getAction());
+			}
+			int chosenOne = sc.nextInt();
 
-		if (fighter1 instanceof Hero) ((Hero) fighter1).updateBonuses();
-
-		Scanner sc = new Scanner(System.in);
-		System.out.println(fighter1.getName() + ", que voulez-vous faire ?");
-		for (int i = 0; i < fighter1.getActions().length; i++) {
-			System.out.println((i) + ": " + fighter1.getActions()[i].getAction());
+			FightAction action = FightAction.recuperer;
+			if (chosenOne > -1 && chosenOne < fighter.getActions().length) {
+				action = fighter.getActions()[chosenOne];
+			}
+			System.out.println("Vous avez choisi : " + action.getAction());
+			return fighter.isGoingToDo(action, this);
 		}
-		int chosenOne = sc.nextInt();
+		return "pass";
 
-		FightAction action = FightAction.recuperer;
-		if (chosenOne > -1 && chosenOne < fighter1.getActions().length) {
-			action = fighter1.getActions()[chosenOne];
+	}
+
+	public void hasDied(Entity entity) {
+		diedThisTurn.add(entity);
+	}
+
+	public void deleteDead() {
+		for (Entity entity : diedThisTurn) {
+			int index = 0;
+			for (int i = 0; i < order.size(); i++) if (this.order.get(i)==entity) index = i;
+			if (entity instanceof Hero) this.heroesAlive--;
+			else this.opponentsAlive--;
+			order.remove(index);
 		}
-		System.out.println("Vous avez choisi : " + action.getAction());
-		return fighter1.isGoingToDo(action, fighter2);
+		diedThisTurn = new ArrayList<>();
 	}
 
 	/**
 	 * Combat Complet, appel de FightTurn dans un while, le combat (boucle) s'arrète lorsqu'un joueur n'a plus de PV.
 	 * Affiche le nombre de tours et les PV actuels des combattants à chaque passage dans la boucle
-	 * @param fighter1
-	 * Joue lorsque le tour est pair.
-	 * @param fighter2
-	 * Joue lorsque le tour est impair.
 	 * @return
 	 * Renvoie une courte phrase déclarant le vainqueur.
 	 * @throws YouAreTargetingYourselfDumbBoyException
 	 * Si les deux combattants sont la même Entité.
 	 */
-	public String fullFight(Entity fighter1, Entity fighter2) throws YouAreTargetingYourselfDumbBoyException {
+	public String fullTeamFight() throws YouAreTargetingYourselfDumbBoyException {
 
-		if (fighter1 == fighter2) throw new YouAreTargetingYourselfDumbBoyException();
-		Entity[] order = new Entity[2];
-		order[0] = fighter1;
-		order[1] = fighter2;
-		if (fighter1.getSpeed() < fighter2.getSpeed()) {
-			order[0] = fighter2;
-			order[1] = fighter1;
-		}
-		System.out.println("tour : " + this.turn);
-		while (fighter1.getLife() > 0 && fighter2.getLife() > 0) {
-			String whichOne = "";
-			System.out.println(fighter1.getName() + " : " + fighter1.getLife() + " PV, " + fighter1.getMana() + " Mana");
-			System.out.println(fighter2.getName() + " : " + fighter2.getLife() + " PV, " + fighter2.getMana() + " Mana");
-			if (this.turn%2 == 0) {
-				whichOne = this.fightTurn(order[0], order[1]);
-			} else {
-				whichOne = this.fightTurn(order[1], order[0]);
+		while (true) {
+			System.out.println("Ordre : "+this.getOrder());
+			System.out.println("Tour actuel : " + this.turn);
+            for (Entity entity : this.order) {
+				while (true) if (!Objects.equals(this.fightTurn(entity), "retour")) break;
 			}
-			if (!whichOne.equals("retour")) {
-				this.turn += 1;
-				System.out.println("tour : " + this.turn);
-			}
+			this.turn++;
+			this.deleteDead();
+			if (this.opponentsAlive == 0 || this.heroesAlive == 0) break;
 		}
-		
-		String winner;
-		if (fighter1.getLife()>0) {
-			winner = fighter1.getName();
-			System.out.println(fighter1.getName() + " : " + fighter1.getLife() + " PV");
-			System.out.println(fighter2.getName() + " : 0 PV \n");
+
+		if (this.heroesAlive > 0) {
+			return "Victoire !";
 		} else {
-			winner = fighter2.getName();
-			System.out.println(fighter1.getName() + " : 0 PV");
-			System.out.println(fighter2.getName() + " : " + fighter2.getLife() + " PV \n");
+			return "Votre équipe a péri";
 		}
-		
-		return "Fin du jeu, " + winner + " a gagné !";
+	}
+
+	// Affichage
+	public List<String> getOrder() {
+		List<String> parseOrder = new ArrayList<>();
+		for (Entity entities : order) parseOrder.add(entities.getName());
+		return parseOrder;
 	}
 }

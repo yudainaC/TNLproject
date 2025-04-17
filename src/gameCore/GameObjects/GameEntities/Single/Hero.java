@@ -4,6 +4,7 @@ import exceptions.NonValidLifeException;
 import exceptions.NonValidManaException;
 import exceptions.NonValidStrengthException;
 import exceptions.YouAreTargetingYourselfDumbBoyException;
+import gameCore.GameFight.Fight;
 import gameCore.GameFight.FightAction;
 import gameCore.GameObjects.GameElements.Inventory;
 import gameCore.GameObjects.GameElements.Items.Bonus;
@@ -186,19 +187,25 @@ public class Hero extends Entity {
     }
 
     @Override
-    public String isGoingToDo(FightAction action, Entity opponent) throws YouAreTargetingYourselfDumbBoyException {
-        if (opponent == this) throw new YouAreTargetingYourselfDumbBoyException();
+    public String isGoingToDo(FightAction action, Fight fight) throws YouAreTargetingYourselfDumbBoyException {
 
         return switch (action) {
             case forfait -> {
                 this.life = 0;
+                fight.hasDied(this);
                 yield this.name + FightAction.forfait;
             }
             case attaquer -> {
-                opponent.isTarget(this.strength);
-                yield this.name + " attaque";
+                Entity opponent = whosTargeted(false, fight);
+                if (opponent == null) yield "retour";
+                boolean isAlive = opponent.isTarget(this.strength);
+                if (isAlive) yield this.name + " attaque";
+                else {
+                    fight.hasDied(opponent);
+                    yield this.name + " a tué " + opponent.getName();
+                }
             }
-            case conjurer -> this.spellAction(opponent);
+            case conjurer -> this.spellAction(fight);
             case defendre -> {
                 this.isReady = true;
                 yield this.name + FightAction.defendre;

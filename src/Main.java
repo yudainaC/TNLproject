@@ -45,10 +45,10 @@ public class Main {
 		//System.out.println();
 
 		// Combats
-		Fight firstFight = new Fight();
+		/*Fight firstFight = new Fight();
 		System.out.println(firstFight.fullFight(conny, bobby));
 
-		System.exit(1);
+		System.exit(1);*/
 
 		//Test Equipe
 		Player player = new Player();

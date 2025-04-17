@@ -1,6 +1,7 @@
 package gameCore.GameObjects.GameElements.Spells;
 
 import exceptions.NonValidManaException;
+import gameCore.GameObjects.GameEntities.Single.Entity;
 import gameCore.GameObjects.Model;
 
 /**
@@ -25,4 +26,6 @@ public class Spell extends Model {
 		System.out.println(this.name + " : " + this.mana + " Mana");
 		return this.description;
 	}
+
+	public boolean cast(Entity target) { return true;}
 }

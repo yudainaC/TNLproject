@@ -21,12 +21,12 @@ public class DamageSpell extends Spell {
 
 	/**
 	 * Permet de modifier les paramètre de la cible en passant par sa classe et non ses attributs.
-	 * @param target
-	 * La cible visé par le sort.
-	 * @return
-	 * Renvoie l'appel de la fonction "isTarget" sur la cible avec en paramêtre le montant de PV perdu.
+	 *
+	 * @param target La cible visé par le sort.
+	 * @return Renvoie l'appel de la fonction "isTarget" sur la cible avec en paramêtre le montant de PV perdu.
 	 */
-	public String cast(Entity target) {
+	@Override
+	public boolean cast(Entity target) {
 		return target.isTarget(this.damage);
 	}
 

@@ -1,12 +1,15 @@
 package gameCore.GameObjects.GameEntities.Single;
 
 import exceptions.*;
+import gameCore.GameFight.Fight;
 import gameCore.GameFight.FightAction;
 import gameCore.GameObjects.GameElements.Spells.DamageSpell;
 import gameCore.GameObjects.GameElements.Spells.Spell;
 import gameCore.GameObjects.GameElements.Spells.SupportSpell;
+import gameCore.GameObjects.GameEntities.Group.Group;
 import gameCore.GameObjects.Model;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -117,7 +120,7 @@ public class Entity extends Model {
 	public Spell[] getSpells() { return this.spells; }
 	public int getSpeed(){return this.speed;}
 
-	public String spellAction(Entity opponent) {
+	public String spellAction(Fight fight) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Votre mana : " + this.mana);
 		System.out.println("Quel sort voulez-vous lancer ?");
@@ -132,11 +135,15 @@ public class Entity extends Model {
 			Spell spell = this.spells[chosenOne-1];
 			System.out.println("Vous avez choisi : " + spell.getName());
 			this.mana -= spell.getMana();
+			Entity target;
 			if (spell instanceof DamageSpell) {
-				((DamageSpell) spell).cast(opponent);
-			} else if (spell instanceof SupportSpell) {
-				((SupportSpell) spell).cast(this);
+				target = whosTargeted(false, fight);
+			} else {
+				target = whosTargeted(true, fight);
 			}
+			boolean isAlive = true;
+			if (target != null) isAlive = spell.cast(target);
+			if (!isAlive) fight.hasDied(target);
 			return this.name + FightAction.conjurer;
 		}
 		return "retour";
@@ -163,6 +170,31 @@ public class Entity extends Model {
 		return what;
 	}
 
+	public Entity whosTargeted(Boolean allies, Fight fight) {
+
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Qui voulez-vous viser ?");
+		ArrayList<Entity> groupTarget = fight.getOpponents().getGroup();
+		if (allies) {
+			groupTarget = fight.getHeroes().getGroup();
+			for (int i = 0; i < groupTarget.size(); i++) if (groupTarget.get(i) == this) groupTarget.remove(i);
+		}
+
+		for (int i = 0; i < groupTarget.size(); i++) {
+			Entity target = groupTarget.get(i);
+			System.out.println((i + 1) + ": " + target.name + ", " + target.life + "/" + target.maxLife + " PV restant");
+		}
+		System.out.println((groupTarget.size()+1) + ": Retour");
+
+		int chosenOne = sc.nextInt();
+
+		if (chosenOne > 0 && chosenOne < groupTarget.size()+1 && groupTarget.get(chosenOne-1).life > 0) {
+			Entity target = groupTarget.get(chosenOne-1);
+			System.out.println("Vous avez ciblé : " + target.name);
+			return target;
+		}
+		return null;
+	}
 	/**
 	 * Méthode associant une Action à son effet, sur la base d'un 'selon' l'action.
 	 * L'action 'déclarer forfait' fait perdre le combat,
@@ -174,39 +206,37 @@ public class Entity extends Model {
 	 * L'action 'récupérer' et l'action par défaut et régénère un pv et deux manas.
 	 * @param action
 	 * L'action choisie.
-	 * @param opponent
-	 * Le joueur ciblé. Doit être différent du joueur faisant l'action.
+	 * @param fight
+	 * Le combat actuel. Permet de récupérer la liste des adversaires/alliés.
 	 * @return
 	 * Renvoie une petite phrase résumant l'action choisie.
 	 * @throws YouAreTargetingYourselfDumbBoyException
 	 * Si la cible est l'entité faisant l'action.
 	 */
-	public String isGoingToDo(FightAction action, Entity opponent)
+	public String isGoingToDo(FightAction action, Fight fight)
 			throws YouAreTargetingYourselfDumbBoyException {
 
-		if (opponent == this) throw new YouAreTargetingYourselfDumbBoyException();
+		Entity opponent;
 
-		switch(action) {
-
-			case forfait:
-				this.life = 0;
-				return this.name + FightAction.forfait;
-
-			case attaquer :
-				opponent.isTarget(this.strength);
-				return this.name + " attaque";
-				
-			case conjurer :
-				return this.spellAction(opponent);
-
-			case defendre :
-				this.isReady = true;
-				return this.name + FightAction.defendre;
-				
-			case recuperer :
-			default :
-				return this.recupAction();
-		}
+        switch (action) {
+            case forfait -> {
+                this.life = 0;
+                return this.name + FightAction.forfait;
+            }
+            case attaquer -> {
+                return this.name + " attaque";
+            }
+            case conjurer -> {
+                return this.spellAction(fight);
+            }
+            case defendre -> {
+                this.isReady = true;
+                return this.name + FightAction.defendre;
+            }
+            default -> {
+                return this.recupAction();
+            }
+        }
 	}
 
 	/**
@@ -217,9 +247,10 @@ public class Entity extends Model {
 	 * @return
 	 * Renvoie un bref résumé de la modification.
 	 */
-	public String isTarget(int howMuch) {
+	public boolean isTarget(int howMuch) {
 
 		String result = this.name;
+		boolean isAlive = true;
 
 		if (howMuch > 0) {
 			result += " prend" + howMuch + " dégats.";
@@ -235,8 +266,13 @@ public class Entity extends Model {
 			result = "Fonction a terminer";
 		}
 		this.life -= howMuch;
+		if (this.life <= 0) {
+			result = this.name + " est mort";
+			isAlive = false;
+		}
 		this.verifHPMana();
-		return result;
+		System.out.println(result);
+		return isAlive;
 	}
 
 	/**
