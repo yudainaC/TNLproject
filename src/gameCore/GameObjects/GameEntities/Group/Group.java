@@ -5,6 +5,9 @@ import gameCore.GameObjects.GameEntities.Single.Entity;
 
 import java.util.*;
 
+/**
+ * Super classe des différents groupes d'entité.
+ */
 public class Group {
     protected ArrayList<Entity> group;
     protected int maxSize;

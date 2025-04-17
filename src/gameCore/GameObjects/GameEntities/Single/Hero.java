@@ -147,7 +147,7 @@ public class Hero extends Entity {
 
     /**
      * Equipe l'arme si elle est présente dans l'inventaire et si aucune arme n'est équipé
-     * ou que l'arme équipée est déséquipé avec succés.
+     * ou que l'arme équipée est déséquipé avec succé.
      * @return
      * true si l'opération est réussi, false sinon.
      */
@@ -162,6 +162,11 @@ public class Hero extends Entity {
         return false;
     }
 
+    /**
+     * Réalise l'action 'objet'. Affiche la liste des consommables dans la console et permet d'en choisir un.
+     * @return
+     * Le nom de l'objet consommé ou retour si aucun n'est choisi.
+     */
     public String useObject() {
         Scanner sc = new Scanner(System.in);
         int i = 0;
@@ -186,8 +191,11 @@ public class Hero extends Entity {
         return "retour";
     }
 
+    /**
+     * Voir méthode dans Entity.
+     */
     @Override
-    public String isGoingToDo(FightAction action, Fight fight) throws YouAreTargetingYourselfDumbBoyException {
+    public String isGoingToDo(FightAction action, Fight fight) {
 
         return switch (action) {
             case forfait -> {
@@ -213,9 +221,21 @@ public class Hero extends Entity {
             case objets -> this.useObject();
             default -> this.recupAction();
         };
-
     }
 
+    /**
+     * Applique ou enlève un bonus au personnage.
+     * @param bonus
+     * Le type de bonus appliqué.
+     * @param howMuch
+     * Le montant du bonus
+     * @param tillWhen
+     * La durée du bonus
+     * @param apply
+     * Vrai si le bonus doit être appliqué, faux s'il doit être enlevé.
+     * @return
+     * Un petit résumé.
+     */
     public String applyEffect(Bonus bonus, int howMuch, int tillWhen, boolean apply) {
         Object[] theBonus = {bonus, howMuch, tillWhen};
         switch (bonus) {
@@ -249,6 +269,9 @@ public class Hero extends Entity {
         }
     }
 
+    /**
+     * Met à jour la durée des bonus appliqué sur le héros.
+     */
     public void updateBonuses() {
         for (int i = 0; i < this.bonuses.size(); i++) {
             int duration = (int) this.bonuses.get(i)[2];
@@ -266,7 +289,6 @@ public class Hero extends Entity {
     }
 
     // Affichage
-
     public String printSkills(){
         String res = "";
         for(Skills Talent : skills){

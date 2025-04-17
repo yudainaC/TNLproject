@@ -5,6 +5,10 @@ import gameCore.GameObjects.GameElements.Items.Item;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * L'inventaire des héro
+ * TODO Modifié pour qu'il sois propre au player ?
+ */
 public class Inventory {
     private List<Item> inventory;
     private int actualWeight;
@@ -17,15 +21,34 @@ public class Inventory {
         this.maxWeight = itMaxWeight;
     }
 
-    // getter
+    // getters
     public List<Item> getInventory() { return this.inventory; }
     public int getActualWeight() { return actualWeight; }
     public int getMaxWeight() { return maxWeight; }
 
+    /**
+     * Augmente la taille maximum de l'inventaire.
+     * @param howMany
+     * La taille de l'augmentation.
+     */
     public void upMaxWeight(int howMany) { this.maxWeight += howMany; }
 
+    /**
+     * Vérifie si un Item, donné, est présent dans l'inventaire.
+     * @param thisOne
+     * L'item.
+     * @return
+     * Vrai s'il est présent, faux sinon.
+     */
     public boolean checkInventory(Item thisOne) { return (this.inventory.contains(thisOne)); }
 
+    /**
+     * Essaie d'enlèver un Item donné de l'inventaire.
+     * @param thisOne
+     * L'item.
+     * @return
+     * Vrai s'il a pu être enlevé.
+     */
     public boolean removeItem(Item thisOne) {
         boolean isIn = this.checkInventory(thisOne);
         if (isIn) {
@@ -35,6 +58,13 @@ public class Inventory {
         return isIn;
     }
 
+    /**
+     * Essaie d'ajouter un Item donné à l'inventaire.
+     * @param thisOne
+     * L'item.
+     * @return
+     * Vrai s'il a été ajouté, faux sinon.
+     */
     public boolean addItem(Item thisOne) {
         boolean isAdded = false;
         if (thisOne.getWeight()+this.actualWeight < this.maxWeight) {

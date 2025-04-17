@@ -54,6 +54,10 @@ public class Monster extends Entity {
         killer.verifLevel(xpGain);
     }
 
+    /**
+     * Voir méthode dans Entité. La différence avec celle de 'Entity' est le choix des cibles.
+     */
+    @Override
     public String spellAction(Fight fight) {
         Scanner sc = new Scanner(System.in);
         System.out.println("Votre mana : " + this.mana);
@@ -83,6 +87,7 @@ public class Monster extends Entity {
         return "retour";
     }
 
+    // Affichage
     public String isGoingToDo(FightAction action, Fight fight) {
 
         switch (action) {

@@ -18,8 +18,24 @@ import java.util.Set;
 
 import static java.lang.Integer.parseInt;
 
+/**
+ * Méthodes permettant de récupérer les différents objets créés.
+ */
 public class Factory {
 
+    /**
+     * Crée la liste des Item.
+     * @return
+     * La liste des Item.
+     * @throws IOException
+     * Si le csv est obsolète ?
+     * @throws NonValidValueException
+     * Voir Item.
+     * @throws NonValidWeightException
+     * Voir Item.
+     * @throws NotABonusException
+     * Si le bonus du consommable est mal écrit.
+     */
     public static HashMap<String, Item> parseItem()
             throws IOException, NonValidValueException, NonValidWeightException, NotABonusException {
 
@@ -48,6 +64,15 @@ public class Factory {
         return items;
     }
 
+    /**
+     * Crée la liste des Spell.
+     * @return
+     * La liste des Spell.
+     * @throws IOException
+     * Si le csv est obsolète ?
+     * @throws NonValidManaException
+     * Voir Spell.
+     */
     public static HashMap<String, Spell> parseSpell() throws IOException, NonValidManaException {
 
         BufferedReader in = new BufferedReader(new FileReader("ressources/spells.csv"));
@@ -75,6 +100,19 @@ public class Factory {
         return spells;
     }
 
+    /**
+     * Crée la liste des Monster.
+     * @return
+     * La liste des Monster.
+     * @throws IOException
+     * Si le csv est obsolète ?
+     * @throws NonValidManaException
+     * Voir Monster.
+     * @throws NonValidLifeException
+     * Voir Monster.
+     * @throws NonValidStrengthException
+     * Voir Monster.
+     */
     public static HashMap<String, Monster> parseMonster() throws IOException, NonValidManaException, NonValidLifeException, NonValidStrengthException {
 
         BufferedReader in = new BufferedReader(new FileReader("ressources/monsters.csv"));
@@ -99,11 +137,18 @@ public class Factory {
             monsters.put(monsterAttribute[0], new Monster(monsterAttribute[0], monsterAttribute[1], parseInt(monsterAttribute[2]),
                     parseInt(monsterAttribute[3]), parseInt(monsterAttribute[4]), monsterSpells, parseInt(monsterAttribute[6]), parseInt(monsterAttribute[7]), parseInt(monsterAttribute[8])));
         }
-
         return monsters;
-
     }
 
+    /**
+     * Crée la liste des Hero.
+     * @return
+     * La liste des Hero.
+     * @throws IOException
+     * Si le csv est obsolète ?
+     * @throws NotASkillsException
+     * Voir Hero.
+     */
     public static HashMap<String, Hero> parseHeroSimple() throws IOException, NotASkillsException {
 
         BufferedReader in = new BufferedReader(new FileReader("ressources/heros.csv"));

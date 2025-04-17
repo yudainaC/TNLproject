@@ -48,11 +48,10 @@ public class Fight {
 
 	/**
 	 * Un tour de jeu. Affiche le menu de selection d'actions dans la console.
-	 *
 	 * @param fighter Le combattant dont c'est le tour
-	 *                Le combattant visé. (Pour l'instant les combat sont des 1v1)
 	 * @return Renvoie l'appel de la methode "isGoingToDo" avec l'action choisi en paramêtre.
-	 * @throws YouAreTargetingYourselfDumbBoyException Si les deux combattants sont la même Entité.
+	 * @throws YouAreTargetingYourselfDumbBoyException
+	 * Si le combattant ciblé est le même que le combattant dont c'est le tour
 	 */
 	public String fightTurn(Entity fighter) throws YouAreTargetingYourselfDumbBoyException {
 
@@ -73,13 +72,20 @@ public class Fight {
 			return fighter.isGoingToDo(action, this);
 		}
 		return "pass";
-
 	}
 
+	/**
+	 * Ajoute l'entité à la liste des entités mortes ce tour-ci.
+	 * @param entity
+	 * L'entité morte.
+	 */
 	public void hasDied(Entity entity) {
 		diedThisTurn.add(entity);
 	}
 
+	/**
+	 * Enlève les entités mortes du combat.
+	 */
 	public void deleteDead() {
 		for (Entity entity : diedThisTurn) {
 			int index = 0;
@@ -92,12 +98,11 @@ public class Fight {
 	}
 
 	/**
-	 * Combat Complet, appel de FightTurn dans un while, le combat (boucle) s'arrète lorsqu'un joueur n'a plus de PV.
-	 * Affiche le nombre de tours et les PV actuels des combattants à chaque passage dans la boucle
+	 * Combat Complet, appel de FightTurn dans un while,
+	 * le combat (boucle) s'arrète lorsqu'une équipe n'a plus de membre.
+	 * Affiche le nombre de tours à chaque passage dans la boucle
 	 * @return
 	 * Renvoie une courte phrase déclarant le vainqueur.
-	 * @throws YouAreTargetingYourselfDumbBoyException
-	 * Si les deux combattants sont la même Entité.
 	 */
 	public String fullTeamFight() throws YouAreTargetingYourselfDumbBoyException {
 

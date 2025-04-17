@@ -10,11 +10,15 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
+/**
+ * La classe du joueur.
+ */
 public class Player {
     private final HeroTeam team;
     private final Set<Skills> playerSkills;
     private final Set<Hero> followers;
 
+    // Constructeur
     public Player() {
         this.team = new HeroTeam();
         this.playerSkills = new HashSet<>();
@@ -26,14 +30,12 @@ public class Player {
     public Set<Skills> getPlayerSkills() { return this.playerSkills; }
     public Set<Hero> getFollowers() { return this.followers; }
 
-    public Boolean putInMyTeam(Hero hero) throws TeamIsFullException {
-        return this.team.addToTeam(hero);
-    }
-
     /**
-     *  Methode qui permet d'ajouter un skill à ceux du heros
+     * Methode qui permet d'ajouter une compétence à celles du héros.
      * @param skills
-     * @return vraie si le skill est ajouté, Faux sinon
+     * La compétence.
+     * @return
+     * Vrai si le skill est ajouté, faux sinon.
      */
     public boolean addSkill(Skills skills) throws NotASkillsException {
 
@@ -66,23 +68,52 @@ public class Player {
     }
 
     /**
-     * Methode utiliser uniquement dans addSkill, permet d'echanger un skill avec un autre
-     * @param suppr le,skill a supprimer
-     * @param skills le skill a ajouter
-     * @return vraie si les skill ont bien ete echangé
-     * @throws NotASkillsException
+     * Methode utilisé uniquement dans addSkill, permet d'échanger une compétence avec une autre.
+     * @param remove
+     * La compétence qu'il faut enlever.
+     * @param skills
+     * La compétence qu'il faut ajouter.
+     * @return
+     * vraie si les compétences ont bien été échangées.
      */
-    public boolean echangeSkill(Skills suppr,Skills skills) throws NotASkillsException {
-        this.playerSkills.remove(suppr);
-        System.out.println(suppr + " supprimé !");
+    public boolean echangeSkill(Skills remove, Skills skills) {
+        this.playerSkills.remove(remove);
+        System.out.println(remove + " supprimé !");
         return this.playerSkills.add(skills);
     }
 
+    /**
+     * Essaie d'ajouter un héros à son équipe.
+     * @param hero
+     * Le héros.
+     * @return
+     * Vrai s'il a été ajouté, faux sinon.
+     * @throws TeamIsFullException
+     * Si l'équipe est pleine.
+     */
+    public Boolean putInMyTeam(Hero hero) throws TeamIsFullException {
+        return this.team.addToTeam(hero);
+    }
+
+    /**
+     * Essaie d'enlever un héros donné de l'équipe.
+     * @param hero
+     * Le héros
+     * @return
+     * Vrai s'il a été enlevé, faux sinon.
+     */
     public Boolean removeFromMyTeam(Hero hero) {
         this.followers.add(hero);
         return this.team.removeToGroup(hero);
     }
 
+    /**
+     * Essaie de recruter un héros donné de l'équipe.
+     * @param hero
+     * Le héros
+     * @return
+     * Vrai s'il a été recruté, faux sinon.
+     */
     public Boolean recruit(Hero hero) {
         this.playerSkills.addAll(hero.getSkills());
         return this.followers.add(hero);
@@ -94,7 +125,6 @@ public class Player {
         for (Hero hero : followers) heros += hero  + "\n<------->\n";
         return heros;
     }
-
 
     @Override
     public String toString() {

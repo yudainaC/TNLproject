@@ -120,6 +120,13 @@ public class Entity extends Model {
 	public Spell[] getSpells() { return this.spells; }
 	public int getSpeed(){return this.speed;}
 
+	/**
+	 * Affiche la liste des sorts, et permet d'en lancé un si la cible est correcte et si le mana est suffisant.
+	 * @param fight
+	 * Le combat actuel.
+	 * @return
+	 * Le nom du sort choisi ou retour.
+	 */
 	public String spellAction(Fight fight) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Votre mana : " + this.mana);
@@ -149,6 +156,11 @@ public class Entity extends Model {
 		return "retour";
 	}
 
+	/**
+	 * Fait l'action 'récupérer' : récupère deux manas et 1 PV.
+	 * @return
+	 * Un petit résumé.
+	 */
 	public String recupAction() {
 		System.out.println(FightAction.recuperer);
 		String what = this.name;
@@ -158,18 +170,33 @@ public class Entity extends Model {
 		} else {
 			what += " a déjà tout ses PV et";
 		}
-		if (this.mana < this.maxMana-1) {
-			this.mana += 2;
-			what = this.name + " a récupérer 2 mana";
-		} else if (this.mana < this.maxMana) {
-			this.mana += 1;
-			what = this.name + " a récupérer 1 mana";
+		if (this.mana < this.maxMana) {
+			int manaDiff = this.maxMana - this.mana;
+			if (manaDiff <= 2) {
+				this.mana += manaDiff;
+				what = this.name + " a récupérer " + manaDiff + " mana";
+			}
+			else {
+				what = this.name + " a récupérer 2 mana";
+				this.mana += 2;
+			}
 		} else {
 			what += " a déjà tout son mana";
 		}
 		return what;
 	}
 
+	/**
+	 * Permet de choisir une cible. Affiche toutes les Entités de l'équipe adverse en cas d'action négatives,
+	 * et les membres de l'équipe (this non compris) alliée en cas d'action positive. Renvoie null si la cible
+	 * est déjà à terre ou incorrecte.
+	 * @param allies
+	 * Un booléen, vrai s'il faut viser un allié, faux sinon.
+	 * @param fight
+	 * Le combat actuel.
+	 * @return
+	 * La cible.
+	 */
 	public Entity whosTargeted(Boolean allies, Fight fight) {
 
 		Scanner sc = new Scanner(System.in);
@@ -177,7 +204,9 @@ public class Entity extends Model {
 		ArrayList<Entity> groupTarget = fight.getOpponents().getGroup();
 		if (allies) {
 			groupTarget = fight.getHeroes().getGroup();
-			for (int i = 0; i < groupTarget.size(); i++) if (groupTarget.get(i) == this) groupTarget.remove(i);
+			int index = 0;
+			for (int i = 0; i < groupTarget.size(); i++) if (groupTarget.get(i) == this) index = i;
+			groupTarget.remove(index);
 		}
 
 		for (int i = 0; i < groupTarget.size(); i++) {

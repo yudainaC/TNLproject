@@ -4,25 +4,33 @@ import exceptions.TeamIsFullException;
 import gameCore.GameObjects.GameEntities.Single.Entity;
 import gameCore.GameObjects.GameEntities.Single.Hero;
 
+/**
+ * Groupe de héros. Sous classe de Groupe.
+ */
 public class HeroTeam extends Group {
 
+    // Constructeur
     public HeroTeam() {
         super();
     }
 
-    public boolean addToTeam(Hero h1) throws TeamIsFullException {
-        if (this.group.contains(h1)) return false;
+    /**
+     * Essaie d'ajouter un héros donné à l'équipe.
+     * @param hero
+     * Le héros.
+     * @return
+     * Vrai s'il a pu être ajouté, faux sinon.
+     * @throws TeamIsFullException
+     * Si l'équipe est pleine.
+     */
+    public boolean addToTeam(Hero hero) throws TeamIsFullException {
+        if (this.group.contains(hero)) return false;
         if (this.group.size() == this.maxSize) throw new TeamIsFullException();
-        this.group.add(h1);
+        this.group.add(hero);
         return true;
     }
 
-    public boolean removeToGroup(Hero h2) {
-        return super.removeToGroup(h2);
-    }
-
     // Affichage
-
     @Override
     public String toString() {
         String entities = "";
