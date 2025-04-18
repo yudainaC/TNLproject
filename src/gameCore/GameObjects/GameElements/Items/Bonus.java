@@ -7,7 +7,7 @@ import exceptions.NotABonusException;
  */
 public enum Bonus {
 
-    life, maxLife, mana, maxMana, strentgh, defense, vitesse;
+    life, maxLife, mana, maxMana, strentgh, defense, speed;
 
     // Affichage
     public static Bonus parseBonus(String bonus) throws NotABonusException {
@@ -18,7 +18,7 @@ public enum Bonus {
             case "maxMana" -> Bonus.maxMana;
             case "strength" -> Bonus.strentgh;
             case "defense" -> Bonus.defense;
-            case "vitesse" -> Bonus.vitesse;
+            case "vitesse" -> Bonus.speed;
             default -> throw new NotABonusException();
         };
     }

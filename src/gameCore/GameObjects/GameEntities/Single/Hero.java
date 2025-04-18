@@ -65,7 +65,7 @@ public class Hero extends Entity {
         this.equippedWeapon = null;
         this.inventory = new Inventory(this.strength*10);
 
-        this.level = 0;
+        this.level = 1;
         this.exp = 0;
 
         this.skills = new HashSet<>(4);
@@ -76,7 +76,7 @@ public class Hero extends Entity {
     public Hero(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells, int itDefense, int itSpeed)
             throws NonValidLifeException, NonValidManaException, NonValidStrengthException {
         super(itName, itDescription, itLife, itMana, itStrength, itSpells, itDefense, itSpeed);
-        this.level = 0;
+        this.level = 1;
         this.exp = 0;
         this.inventory = new Inventory(this.strength*10);
     }
@@ -127,7 +127,7 @@ public class Hero extends Entity {
      * Experience gagnée sur un monstre.
      */
     public void verifLevel(int expDrop) {
-        this.level += expDrop;
+        this.exp += expDrop;
         if (this.exp > (10*this.level)) this.levelUp();
     }
 
@@ -261,6 +261,10 @@ public class Hero extends Entity {
                 if (apply) bonuses.add(theBonus);
                 this.strength += howMuch;
                 return "Force augmentée de " + howMuch;
+            case speed:
+                if (apply) bonuses.add(theBonus);
+                this.speed += howMuch;
+                return "Vitesse augmentée de " + howMuch;
             case defense:
             default:
                 if (apply) bonuses.add(theBonus);

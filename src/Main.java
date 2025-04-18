@@ -1,6 +1,7 @@
 import exceptions.*;
 import exceptions.NotABonusException;
 import gameCore.GameFight.Fight;
+import gameCore.GameObjects.GameElements.Items.Weapon;
 import gameCore.GameObjects.GameElements.Skills.Skills;
 import gameCore.Player;
 import gameFactory.Factory;
@@ -21,7 +22,7 @@ public class Main {
 
 		//Import des armes
 		HashMap<String, Item> items = Factory.parseItem();
-		Item shortSword = items.get("Epée courte");
+		Weapon shortSword = (Weapon) items.get("Epée courte");
 		System.out.println(shortSword);
 
 		// Import des Entités
@@ -36,8 +37,10 @@ public class Main {
 		HashMap<String, Hero> heros = Factory.parseHeroSimple();
 		// Bobby
 		Hero bobby = heros.get("Bobby le premier");
+		bobby.getInventory().addItem(shortSword);
 		bobby.getInventory().addItem(items.get("Potion de soin"));
 		bobby.getInventory().addItem(items.get("Potion de force"));
+		bobby.equipWeapon(shortSword);
 
 		// Conny
 		Hero conny = heros.get("Conny le premier");
@@ -60,7 +63,7 @@ public class Main {
 		player.putInMyTeam(conny);
 		player.removeFromMyTeam(bobby);
 		player.putInMyTeam(bobby);
-		System.out.println(player);
+		System.out.println(bobby);
 
 
 	}

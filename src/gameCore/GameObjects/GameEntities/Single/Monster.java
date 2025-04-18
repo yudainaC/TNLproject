@@ -8,6 +8,7 @@ import gameCore.GameFight.FightAction;
 import gameCore.GameObjects.GameElements.Spells.DamageSpell;
 import gameCore.GameObjects.GameElements.Spells.Spell;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -50,7 +51,7 @@ public class Monster extends Entity {
      */
     public void getKilled(Hero killer) {
         int xpGain = this.getXp();
-        System.out.println("Vous avez tué 1 " + this.name + ", vous gagnez " + xpGain);
+        System.out.println("Vous avez tué 1 " + this.name + ", " + killer.getName() + " a gagné " + xpGain + " XP");
         killer.verifLevel(xpGain);
     }
 
@@ -75,9 +76,9 @@ public class Monster extends Entity {
             this.mana -= spell.getMana();
             Entity target;
             if (spell instanceof DamageSpell) {
-                target = whosTargeted(true, fight);
-            } else { //if (spell instanceof SupportSpell) {
                 target = whosTargeted(false, fight);
+            } else { //if (spell instanceof SupportSpell) {
+                target = whosTargeted(true, fight);
             }
             boolean isAlive = true;
             if (target != null) isAlive = spell.cast(target);
@@ -85,6 +86,45 @@ public class Monster extends Entity {
             return this.name + FightAction.conjurer;
         }
         return "retour";
+    }
+
+    /**
+     * Permet de choisir une cible. Affiche toutes les Entités de l'équipe adverse en cas d'action négatives,
+     * et les membres de l'équipe (this non compris) alliée en cas d'action positive. Renvoie null si la cible
+     * est déjà à terre ou incorrecte.
+     * @param allies
+     * Un booléen, vrai s'il faut viser un allié, faux sinon.
+     * @param fight
+     * Le combat actuel.
+     * @return
+     * La cible.
+     */
+    public Entity whosTargeted(Boolean allies, Fight fight) {
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Qui voulez-vous viser ?");
+        ArrayList<Entity> groupTarget = fight.getHeroes().getGroup();
+        if (allies) {
+            groupTarget = fight.getOpponents().getGroup();
+            int index = 0;
+            for (int i = 0; i < groupTarget.size(); i++) if (groupTarget.get(i) == this) index = i;
+            groupTarget.remove(index);
+        }
+
+        for (int i = 0; i < groupTarget.size(); i++) {
+            Entity target = groupTarget.get(i);
+            System.out.println((i + 1) + ": " + target.getName() + ", " + target.life + "/" + target.maxLife + " PV restant");
+        }
+        System.out.println((groupTarget.size()+1) + ": Retour");
+
+        int chosenOne = sc.nextInt();
+
+        if (chosenOne > 0 && chosenOne < groupTarget.size()+1 && groupTarget.get(chosenOne-1).life > 0) {
+            Entity target = groupTarget.get(chosenOne-1);
+            System.out.println("Vous avez ciblé : " + target.getName());
+            return target;
+        }
+        return null;
     }
 
     // Affichage
@@ -97,7 +137,7 @@ public class Monster extends Entity {
                 return this.name + FightAction.forfait;
             }
             case attaquer -> {
-                Entity opponent = whosTargeted(true, fight);
+                Entity opponent = whosTargeted(false, fight);
                 if (opponent == null) return "retour";
                 boolean isAlive = opponent.isTarget(this.strength);
                 if (isAlive) return this.name + " attaque";

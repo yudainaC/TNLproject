@@ -224,6 +224,7 @@ public class Entity extends Model {
 		}
 		return null;
 	}
+
 	/**
 	 * Méthode associant une Action à son effet, sur la base d'un 'selon' l'action.
 	 * L'action 'déclarer forfait' fait perdre le combat,

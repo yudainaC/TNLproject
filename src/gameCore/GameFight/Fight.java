@@ -5,6 +5,7 @@ import gameCore.GameObjects.GameEntities.Group.Group;
 import gameCore.GameObjects.GameEntities.Group.HeroTeam;
 import gameCore.GameObjects.GameEntities.Single.Entity;
 import gameCore.GameObjects.GameEntities.Single.Hero;
+import gameCore.GameObjects.GameEntities.Single.Monster;
 
 import java.util.*;
 
@@ -80,6 +81,8 @@ public class Fight {
 	 * L'entité morte.
 	 */
 	public void hasDied(Entity entity) {
+		if (entity instanceof Hero) this.heroesAlive--;
+		else this.opponentsAlive--;
 		diedThisTurn.add(entity);
 	}
 
@@ -90,8 +93,6 @@ public class Fight {
 		for (Entity entity : diedThisTurn) {
 			int index = 0;
 			for (int i = 0; i < order.size(); i++) if (this.order.get(i)==entity) index = i;
-			if (entity instanceof Hero) this.heroesAlive--;
-			else this.opponentsAlive--;
 			order.remove(index);
 		}
 		diedThisTurn = new ArrayList<>();
@@ -110,7 +111,11 @@ public class Fight {
 			System.out.println("Ordre : "+this.getOrder());
 			System.out.println("Tour actuel : " + this.turn);
             for (Entity entity : this.order) {
-				while (true) if (!Objects.equals(this.fightTurn(entity), "retour")) break;
+				System.out.println(opponentsAlive);
+				System.out.println(heroesAlive);
+				if (this.opponentsAlive != 0 && this.heroesAlive != 0) {
+					while (true) if (!Objects.equals(this.fightTurn(entity), "retour")) break;
+				}
 			}
 			this.turn++;
 			this.deleteDead();
@@ -118,6 +123,11 @@ public class Fight {
 		}
 
 		if (this.heroesAlive > 0) {
+			for (Entity monster : this.opponents.getGroup()) {
+				for (Entity hero : this.heroes.getGroup()) {
+					((Monster) monster).getKilled((Hero) hero);
+				}
+			}
 			return "Victoire !";
 		} else {
 			return "Votre équipe a péri";
