@@ -1,5 +1,6 @@
 import exceptions.*;
 import gameCore.GameFight.Fight;
+import gameCore.GameObjects.GameElements.Items.Weapon;
 import gameCore.GameObjects.GameElements.Skills.Skills;
 import gameCore.GameObjects.GameEntities.Group.Group;
 import gameCore.GameObjects.GameEntities.Single.Entity;
@@ -12,16 +13,14 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class Test {
-    public static void main(String[] args) throws NotASkillsException, NonValidLifeException, NonValidManaException, NonValidStrengthException, IOException, TeamIsFullException, YouAreFightingYourselfDumbPlayerException, YouAreTargetingYourselfDumbBoyException {
+    public static void main(String[] args) throws NotASkillsException, NonValidLifeException, NonValidManaException, NonValidStrengthException, IOException, TeamIsFullException, YouAreFightingYourselfDumbPlayerException, YouAreTargetingYourselfDumbBoyException, NonValidValueException, NonValidWeightException, NotABonusException {
 
-        Player player = new Player();
-
-        /*player.addSkill(Skills.natation);
-        player.addSkill(Skills.artisanat);
-        player.addSkill(Skills.cavernologie);
-        player.addSkill(Skills.forceSurhumaine);
-        player.addSkill(Skills.herboriste);
-        System.out.println(player.getPlayerSkills());*/
+        /* Player.addSkill(Skills.natation);
+        Player.addSkill(Skills.artisanat);
+        Player.addSkill(Skills.cavernologie);
+        Player.addSkill(Skills.forceSurhumaine);
+        Player.addSkill(Skills.herboriste);
+        System.out.println(Player.getPlayerSkills()); */
 
         Monster blob = Factory.parseMonster().get("blob");
         Monster mage = Factory.parseMonster().get("sorcier");
@@ -35,22 +34,23 @@ public class Test {
         monsters.addToTeam(mage);
         monsters.addToTeam(blob);
         Group monsters1 = new Group();
-        monsters.addToTeam(mage1);
-        monsters.addToTeam(blob1);
+        monsters1.addToTeam(mage1);
+        monsters1.addToTeam(blob1);
 
-        player.recruit(bobby);
-        player.recruit(conny);
-        player.putInMyTeam(bobby);
-        player.putInMyTeam(conny);
+        Weapon sword = (Weapon) Factory.parseItem().get("Epée courte");
+        Player.recruit(bobby);
+        Player.recruit(conny);
+        Player.putInMyTeam(bobby);
+        Player.putInMyTeam(conny);
 
-        Fight firstFight = new Fight(player.getTeam(), monsters);
+        Player.getInventory().addItem(Factory.parseItem().get("Potion de force"));
+        Player.getInventory().addItem(Factory.parseItem().get("Potion de soin"));
+        Player.getInventory().addItem(sword);
+        bobby.equipWeapon(sword);
+
+        Fight firstFight = new Fight(Player.getTeam(), monsters);
         System.out.println(firstFight.fullTeamFight());
-        for (Entity hero : player.getTeam().getGroup()) {
-            System.out.println(((Hero) hero).getLevel());
-        }
-        Fight secondFight = new Fight(player.getTeam(), monsters1);
-        System.out.println(secondFight.fullTeamFight());
-        for (Entity hero : player.getTeam().getGroup()) {
+        for (Entity hero : Player.getTeam().getGroup()) {
             System.out.println(((Hero) hero).getLevel());
         }
     }

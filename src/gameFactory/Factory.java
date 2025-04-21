@@ -21,7 +21,7 @@ import static java.lang.Integer.parseInt;
 /**
  * Méthodes permettant de récupérer les différents objets créés.
  */
-public class Factory {
+public abstract class Factory {
 
     /**
      * Crée la liste des Item.

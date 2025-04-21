@@ -2,6 +2,7 @@ package gameCore;
 
 import exceptions.NotASkillsException;
 import exceptions.TeamIsFullException;
+import gameCore.GameObjects.GameElements.Inventory;
 import gameCore.GameObjects.GameElements.Skills.Skills;
 import gameCore.GameObjects.GameEntities.Group.HeroTeam;
 import gameCore.GameObjects.GameEntities.Single.Hero;
@@ -13,22 +14,19 @@ import java.util.Set;
 /**
  * La classe du joueur.
  */
-public class Player {
-    private final HeroTeam team;
-    private final Set<Skills> playerSkills;
-    private final Set<Hero> followers;
+public abstract class Player {
+    private static final HeroTeam team = new HeroTeam();
+    private static final Set<Skills> playerSkills = new HashSet<>();
+    private static final Set<Hero> followers = new HashSet<>();
+    private static final Inventory inventory = new Inventory(0);
 
     // Constructeur
-    public Player() {
-        this.team = new HeroTeam();
-        this.playerSkills = new HashSet<>();
-        this.followers = new HashSet<>();
-    }
 
     // Getters
-    public HeroTeam getTeam() { return this.team; }
-    public Set<Skills> getPlayerSkills() { return this.playerSkills; }
-    public Set<Hero> getFollowers() { return this.followers; }
+    public static HeroTeam getTeam() { return team; }
+    public static Set<Skills> getPlayerSkills() { return playerSkills; }
+    public static Set<Hero> getFollowers() { return followers; }
+    public static Inventory getInventory() { return inventory; }
 
     /**
      * Methode qui permet d'ajouter une compétence à celles du héros.
@@ -37,18 +35,18 @@ public class Player {
      * @return
      * Vrai si le skill est ajouté, faux sinon.
      */
-    public boolean addSkill(Skills skills) throws NotASkillsException {
+    public static boolean addSkill(Skills skills) throws NotASkillsException {
 
-        if (this.playerSkills.size() == 4) {
+        if (playerSkills.size() == 4) {
             System.out.println("vous avez trop de skill equipé, voulez vous en enlever un (yes,no)");
             Scanner sc = new Scanner(System.in);
             String rep = sc.nextLine();
             if (rep.equals("yes")) {
                 System.out.println("choisissez quel skill vous voulez supprimer (name skill)");
-                System.out.println(this.getPlayerSkills());
+                System.out.println(playerSkills);
                 String choice = sc.nextLine();
                 Skills suppr = Skills.parseSkills(choice);
-                this.echangeSkill(suppr,skills);
+                echangeSkill(suppr,skills);
                 System.out.println(skills + " appris !");
                 return true;
             }
@@ -64,7 +62,7 @@ public class Player {
         }
 
         System.out.println(skills + " appris !");
-        return this.playerSkills.add(skills);
+        return playerSkills.add(skills);
     }
 
     /**
@@ -76,10 +74,10 @@ public class Player {
      * @return
      * vraie si les compétences ont bien été échangées.
      */
-    public boolean echangeSkill(Skills remove, Skills skills) {
-        this.playerSkills.remove(remove);
+    public static boolean echangeSkill(Skills remove, Skills skills) {
+        playerSkills.remove(remove);
         System.out.println(remove + " supprimé !");
-        return this.playerSkills.add(skills);
+        return playerSkills.add(skills);
     }
 
     /**
@@ -91,8 +89,8 @@ public class Player {
      * @throws TeamIsFullException
      * Si l'équipe est pleine.
      */
-    public Boolean putInMyTeam(Hero hero) throws TeamIsFullException {
-        return this.team.addToTeam(hero);
+    public static Boolean putInMyTeam(Hero hero) throws TeamIsFullException {
+        return team.addToTeam(hero);
     }
 
     /**
@@ -102,9 +100,9 @@ public class Player {
      * @return
      * Vrai s'il a été enlevé, faux sinon.
      */
-    public Boolean removeFromMyTeam(Hero hero) {
-        this.followers.add(hero);
-        return this.team.removeToGroup(hero);
+    public static Boolean removeFromMyTeam(Hero hero) {
+        followers.add(hero);
+        return team.removeToGroup(hero);
     }
 
     /**
@@ -114,9 +112,10 @@ public class Player {
      * @return
      * Vrai s'il a été recruté, faux sinon.
      */
-    public Boolean recruit(Hero hero) {
-        this.playerSkills.addAll(hero.getSkills());
-        return this.followers.add(hero);
+    public static Boolean recruit(Hero hero) {
+        playerSkills.addAll(hero.getSkills());
+        inventory.upMaxWeight(hero.getStrength()*10);
+        return followers.add(hero);
     }
 
     // Affichage

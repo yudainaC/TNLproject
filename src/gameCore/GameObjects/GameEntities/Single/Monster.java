@@ -18,7 +18,6 @@ import java.util.Scanner;
 public class Monster extends Entity {
     protected int xp;
 
-
     /**
      * Constructeur
      * Définit les valeurs par défaut des attributs :

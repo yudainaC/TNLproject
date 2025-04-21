@@ -57,7 +57,7 @@ public class Fight {
 	public String fightTurn(Entity fighter) throws YouAreTargetingYourselfDumbBoyException {
 
 		if (fighter instanceof Hero) ((Hero) fighter).updateBonuses();
-		if (fighter.getLife() != 0) {
+		if (fighter.getLife() > 0) {
 			Scanner sc = new Scanner(System.in);
 			System.out.println(fighter.getName() + ", que voulez-vous faire ?");
 			for (int i = 0; i < fighter.getActions().length; i++) {

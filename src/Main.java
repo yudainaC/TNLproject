@@ -37,9 +37,9 @@ public class Main {
 		HashMap<String, Hero> heros = Factory.parseHeroSimple();
 		// Bobby
 		Hero bobby = heros.get("Bobby le premier");
-		bobby.getInventory().addItem(shortSword);
-		bobby.getInventory().addItem(items.get("Potion de soin"));
-		bobby.getInventory().addItem(items.get("Potion de force"));
+		Player.getInventory().addItem(shortSword);
+		Player.getInventory().addItem(items.get("Potion de soin"));
+		Player.getInventory().addItem(items.get("Potion de force"));
 		bobby.equipWeapon(shortSword);
 
 		// Conny
@@ -52,18 +52,6 @@ public class Main {
 		System.out.println(firstFight.fullFight(conny, bobby));
 
 		System.exit(1);*/
-
-		//Test Equipe
-		Player player = new Player();
-		player.recruit(bobby);
-		player.recruit(conny);
-		player.recruit(bobby);
-		player.putInMyTeam(bobby);
-		player.putInMyTeam(bobby);
-		player.putInMyTeam(conny);
-		player.removeFromMyTeam(bobby);
-		player.putInMyTeam(bobby);
-		System.out.println(bobby);
 
 
 	}

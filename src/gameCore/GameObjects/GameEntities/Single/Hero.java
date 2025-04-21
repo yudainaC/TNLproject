@@ -13,6 +13,7 @@ import gameCore.GameObjects.GameElements.Items.Item;
 import gameCore.GameObjects.GameElements.Items.Weapon;
 import gameCore.GameObjects.GameElements.Skills.Skills;
 import gameCore.GameObjects.GameElements.Spells.Spell;
+import gameCore.Player;
 
 import java.util.*;
 
@@ -24,7 +25,6 @@ public class Hero extends Entity {
     private int exp;
     private int spellSlot;
     private Weapon equippedWeapon;
-    private Inventory inventory;
     private List<Object[]> bonuses;
     private Set<Skills> skills;
 
@@ -63,7 +63,6 @@ public class Hero extends Entity {
 
         this.bonuses = new ArrayList<>();
         this.equippedWeapon = null;
-        this.inventory = new Inventory(this.strength*10);
 
         this.level = 1;
         this.exp = 0;
@@ -78,13 +77,11 @@ public class Hero extends Entity {
         super(itName, itDescription, itLife, itMana, itStrength, itSpells, itDefense, itSpeed);
         this.level = 1;
         this.exp = 0;
-        this.inventory = new Inventory(this.strength*10);
     }
 
     // Getters
     public int getLevel() { return this.level; }
     public int getExp() { return this.exp; }
-    public Inventory getInventory() { return this.inventory; }
     public int getSpellSlot() { return spellSlot; }
     public Weapon getEquippedWeapon() { return equippedWeapon; }
     public Set<Skills> getSkills() { return this.skills; }
@@ -109,7 +106,7 @@ public class Hero extends Entity {
         this.maxLife += 3;
         this.maxMana += 5;
         this.strength += 1;
-        this.inventory.upMaxWeight(10);
+        Player.getInventory().upMaxWeight(10);
         this.regenerate();
         if (level%3 == 0) {
             this.spellSlot += 1;
@@ -137,7 +134,7 @@ public class Hero extends Entity {
      * true si l'opération est réussi, false sinon.
      */
     public boolean desequipWeapon() {
-        if (this.equippedWeapon != null && this.inventory.addItem(equippedWeapon)) {
+        if (this.equippedWeapon != null && Player.getInventory().addItem(equippedWeapon)) {
             this.strength -= this.equippedWeapon.getBonusStr();
             this.equippedWeapon = null;
             return true;
@@ -152,11 +149,11 @@ public class Hero extends Entity {
      * true si l'opération est réussi, false sinon.
      */
     public boolean equipWeapon(Weapon thisOne) {
-        if (this.inventory.checkInventory(thisOne)) {
+        if (Player.getInventory().checkInventory(thisOne)) {
             this.desequipWeapon();
             this.equippedWeapon = thisOne;
             this.strength += thisOne.getBonusStr();
-            this.inventory.removeItem(thisOne);
+            Player.getInventory().removeItem(thisOne);
             return true;
         }
         return false;
@@ -170,9 +167,9 @@ public class Hero extends Entity {
     public String useObject() {
         Scanner sc = new Scanner(System.in);
         int i = 0;
-        Consumable[] items = new Consumable[this.inventory.getInventory().size()];
+        Consumable[] items = new Consumable[Player.getInventory().getInventory().size()];
         System.out.println("Quel objet voulez-vous utiliser ?");
-        for (Item item : this.inventory.getInventory()) {
+        for (Item item : Player.getInventory().getInventory()) {
             if (item instanceof Consumable){
                 items[i] = (Consumable) item;
                 System.out.println(i + ": " + item.getName());
@@ -184,7 +181,7 @@ public class Hero extends Entity {
         if (chosenOne >= 0 && chosenOne <= i) {
             Consumable item = items[chosenOne];
             System.out.println("Vous avez choisi : " + item.getName());
-            this.inventory.removeItem(item);
+            Player.getInventory().removeItem(item);
             item.use(this);
             return this.name + FightAction.objets;
         }
@@ -275,6 +272,7 @@ public class Hero extends Entity {
 
     /**
      * Met à jour la durée des bonus appliqué sur le héros.
+     * TODO Modifié pour ne plus avoir de remove dans la boucle (PB d'indices)
      */
     public void updateBonuses() {
         for (int i = 0; i < this.bonuses.size(); i++) {
@@ -322,7 +320,6 @@ public class Hero extends Entity {
             hero += "Ne connais aucun sorts\n";
         }
 
-        hero += "Inventaire : " + this.inventory.getActualWeight() + '/' + this.inventory.getMaxWeight() + "\n";
         return hero + this.description;
     }
 }
