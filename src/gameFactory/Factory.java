@@ -113,7 +113,7 @@ public abstract class Factory {
      * @throws NonValidStrengthException
      * Voir Monster.
      */
-    public static HashMap<String, Monster> parseMonster() throws IOException, NonValidManaException, NonValidLifeException, NonValidStrengthException {
+    public static HashMap<String, Monster> parseMonster() throws IOException, NonValidManaException, NonValidLifeException, NonValidStrengthException, NotAnItemException {
 
         BufferedReader in = new BufferedReader(new FileReader("ressources/monsters.csv"));
         String line;
@@ -134,8 +134,17 @@ public abstract class Factory {
             }
             // TODO : Changer la gestion des spells dans Entity, Monster et Hero ?
 
+            String[] itemsKeys = monsterAttribute[9].split(";");
+            Item[] monsterLoot = new Item[itemsKeys.length];
+            i = 0;
+            for (String itemKey : itemsKeys) {
+                try { monsterLoot[i] = Factory.parseItem().get(itemKey); }
+                catch (NonValidValueException | NonValidWeightException | NotABonusException e) {throw new NotAnItemException(); }
+                i++;
+            }
+
             monsters.put(monsterAttribute[0], new Monster(monsterAttribute[0], monsterAttribute[1], parseInt(monsterAttribute[2]),
-                    parseInt(monsterAttribute[3]), parseInt(monsterAttribute[4]), monsterSpells, parseInt(monsterAttribute[6]), parseInt(monsterAttribute[7]), parseInt(monsterAttribute[8])));
+                    parseInt(monsterAttribute[3]), parseInt(monsterAttribute[4]), monsterSpells, parseInt(monsterAttribute[6]), parseInt(monsterAttribute[7]), parseInt(monsterAttribute[8]), monsterLoot));
         }
         return monsters;
     }
@@ -151,7 +160,7 @@ public abstract class Factory {
      */
     public static HashMap<String, Hero> parseHeroSimple() throws IOException, NotASkillsException {
 
-        BufferedReader in = new BufferedReader(new FileReader("ressources/heros.csv"));
+        BufferedReader in = new BufferedReader(new FileReader("ressources/heroes.csv"));
         String line;
         HashMap<String, Hero> heroes = new HashMap<>();
 

@@ -8,9 +8,9 @@ import gameCore.GameObjects.GameEntities.Single.Hero;
  * Sous classe d'Item, définie les Item pouvant être consommé.
  */
 public class Consumable extends Item {
-    private int bonus;
-    private Bonus bonusType;
-    private int duration;
+    private final int bonus;
+    private final Bonus bonusType;
+    private final int duration;
 
     /**
      * Constructeur

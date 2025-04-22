@@ -1,19 +1,19 @@
 package gameCore.GameFight;
 
 /**
- * Les différentes actions réalisable pendant un combat
+ * Les différentes actions réalisables pendant un combat
  */
 public enum FightAction {
-	forfait, attaquer, defendre, recuperer, conjurer, objets;
+    forfeit, attack, defend, recover, conjure, use;
 
 	// Getter
 	public String getAction() {
         return switch (this) {
-            case forfait -> "Déclarer forfait";
-            case attaquer -> "Attaquer";
-            case conjurer -> "Lancer un sort";
-            case defendre -> "Se défendre";
-            case objets -> "Utiliser un objet";
+            case forfeit -> "Déclarer forfait";
+            case attack -> "Attaquer";
+            case conjure -> "Lancer un sort";
+            case defend -> "Se défendre";
+            case use -> "Utiliser un objet";
             default -> "Récupérer";
         };
 	}
@@ -21,11 +21,11 @@ public enum FightAction {
 	// Affichage
 	public String toString() {
         return switch (this) {
-            case forfait -> " a déclarer forfait";
-            case attaquer -> " a perdu 2 HP";
-            case conjurer -> " lance un sort";
-            case defendre -> " se defend contre la prochaine attaque";
-            case objets -> " cherche un objet";
+            case forfeit -> " a déclarer forfait";
+            case attack -> " a perdu 2 HP";
+            case conjure -> " lance un sort";
+            case defend -> " se defend contre la prochaine attaque";
+            case use -> " cherche un objet";
             default -> " essaie de se soigner";
         };
 	}

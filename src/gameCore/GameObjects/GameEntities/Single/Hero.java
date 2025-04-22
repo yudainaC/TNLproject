@@ -3,10 +3,8 @@ package gameCore.GameObjects.GameEntities.Single;
 import exceptions.NonValidLifeException;
 import exceptions.NonValidManaException;
 import exceptions.NonValidStrengthException;
-import exceptions.YouAreTargetingYourselfDumbBoyException;
 import gameCore.GameFight.Fight;
 import gameCore.GameFight.FightAction;
-import gameCore.GameObjects.GameElements.Inventory;
 import gameCore.GameObjects.GameElements.Items.Bonus;
 import gameCore.GameObjects.GameElements.Items.Consumable;
 import gameCore.GameObjects.GameElements.Items.Item;
@@ -42,12 +40,12 @@ public class Hero extends Entity {
         super(itName, itDescription);
 
         FightAction[] theActions = new FightAction[6];
-        theActions[0] = FightAction.forfait;
-        theActions[1] = FightAction.attaquer;
-        theActions[2] = FightAction.conjurer;
-        theActions[3] = FightAction.defendre;
-        theActions[4] = FightAction.objets;
-        theActions[5] = FightAction.recuperer;
+        theActions[0] = FightAction.forfeit;
+        theActions[1] = FightAction.attack;
+        theActions[2] = FightAction.conjure;
+        theActions[3] = FightAction.defend;
+        theActions[4] = FightAction.use;
+        theActions[5] = FightAction.recover;
 
         this.maxLife = 5;
         this.maxMana = 10;
@@ -95,7 +93,7 @@ public class Hero extends Entity {
     }
 
     /**
-     * Monte de niveau le Hero : augmente ses stats et son niveau, réduit l'exp et récupère les PV et le mana perdu.
+     * Monte de niveau le Hero : augmente ses stats et son niveau, réduit l'expérience et récupère les PV et le mana perdu.
      * Augmente le nombre d'emplacements de sort d'un tous les trois niveaux.
      * @return
      * Renvoie une simple phrase.
@@ -114,7 +112,7 @@ public class Hero extends Entity {
             this.spells = new Spell[this.spellSlot];
             System.arraycopy(tamp, 0, this.spells, 0, tamp.length);
         }
-        this.verifLevel(0);
+        this.verifyLevel(0);
         return this.name + " a atteint le niveau " + this.level + " !";
     }
 
@@ -123,7 +121,7 @@ public class Hero extends Entity {
      * @param expDrop
      * Experience gagnée sur un monstre.
      */
-    public void verifLevel(int expDrop) {
+    public void verifyLevel(int expDrop) {
         this.exp += expDrop;
         if (this.exp > (10*this.level)) this.levelUp();
     }
@@ -133,7 +131,7 @@ public class Hero extends Entity {
      * @return
      * true si l'opération est réussi, false sinon.
      */
-    public boolean desequipWeapon() {
+    public boolean unEquipWeapon() {
         if (this.equippedWeapon != null && Player.getInventory().addItem(equippedWeapon)) {
             this.strength -= this.equippedWeapon.getBonusStr();
             this.equippedWeapon = null;
@@ -143,14 +141,14 @@ public class Hero extends Entity {
     }
 
     /**
-     * Equipe l'arme si elle est présente dans l'inventaire et si aucune arme n'est équipé
-     * ou que l'arme équipée est déséquipé avec succé.
+     * Équipe l'arme si elle est présente dans l'inventaire et si aucune arme n'est équipé
+     * ou que l'arme équipée est déséquipé avec succès.
      * @return
      * true si l'opération est réussi, false sinon.
      */
     public boolean equipWeapon(Weapon thisOne) {
         if (Player.getInventory().checkInventory(thisOne)) {
-            this.desequipWeapon();
+            this.unEquipWeapon();
             this.equippedWeapon = thisOne;
             this.strength += thisOne.getBonusStr();
             Player.getInventory().removeItem(thisOne);
@@ -183,7 +181,7 @@ public class Hero extends Entity {
             System.out.println("Vous avez choisi : " + item.getName());
             Player.getInventory().removeItem(item);
             item.use(this);
-            return this.name + FightAction.objets;
+            return this.name + FightAction.use;
         }
         return "retour";
     }
@@ -195,13 +193,13 @@ public class Hero extends Entity {
     public String isGoingToDo(FightAction action, Fight fight) {
 
         return switch (action) {
-            case forfait -> {
+            case forfeit -> {
                 this.life = 0;
                 fight.hasDied(this);
-                yield this.name + FightAction.forfait;
+                yield this.name + FightAction.forfeit;
             }
-            case attaquer -> {
-                Entity opponent = whosTargeted(false, fight);
+            case attack -> {
+                Entity opponent = whoIsTargeted(false, fight);
                 if (opponent == null) yield "retour";
                 boolean isAlive = opponent.isTarget(this.strength);
                 if (isAlive) yield this.name + " attaque";
@@ -210,13 +208,13 @@ public class Hero extends Entity {
                     yield this.name + " a tué " + opponent.getName();
                 }
             }
-            case conjurer -> this.spellAction(fight);
-            case defendre -> {
+            case conjure -> this.spellAction(fight);
+            case defend -> {
                 this.isReady = true;
-                yield this.name + FightAction.defendre;
+                yield this.name + FightAction.defend;
             }
-            case objets -> this.useObject();
-            default -> this.recupAction();
+            case use -> this.useObject();
+            default -> this.recoveryAction();
         };
     }
 
@@ -238,7 +236,7 @@ public class Hero extends Entity {
         switch (bonus) {
             case life:
                 this.life += howMuch;
-                this.verifHPMana();
+                this.verifyHPMana();
                 return howMuch + "PV récupéré";
             case maxLife:
                 if (apply) bonuses.add(theBonus);
@@ -247,14 +245,14 @@ public class Hero extends Entity {
                 return "PV max augmentés de " + howMuch;
             case mana:
                 this.mana += howMuch;
-                this.verifHPMana();
+                this.verifyHPMana();
                 return howMuch + "Mana récupéré";
             case maxMana:
                 if (apply) bonuses.add(theBonus);
                 this.maxMana += howMuch;
                 this.mana += howMuch;
                 return "Mana max augmentés de " + howMuch;
-            case strentgh:
+            case strength:
                 if (apply) bonuses.add(theBonus);
                 this.strength += howMuch;
                 return "Force augmentée de " + howMuch;
@@ -309,7 +307,7 @@ public class Hero extends Entity {
         if (!(this.equippedWeapon == null)) bonus = this.equippedWeapon.getBonusStr();
         else weapon = "aucune";
         hero += "force : " + this.strength + '(' + (this.strength-bonus) + '+' + bonus + ") \n" +
-                "arme equipé : " + weapon + '\n';
+                "arme équipé : " + weapon + '\n';
 
         if (this.spells[0] != null) {
             hero += "Sorts appris :\n";

@@ -25,6 +25,7 @@ public class Group {
      * Constructeur
      * permet de créer une équipe d'Entité de taille max choisi.
      * @param theMax
+     * La taille du groupe.
      */
     public Group(int theMax){
         this.maxSize = theMax;
@@ -37,7 +38,7 @@ public class Group {
 
     /**
      * Méthode
-     * permet d'ajouter un membre à une equipe de hero
+     * permet d'ajouter un membre à une équipe de hero
      * @param h1 (le hero qu'on veut ajouter)
      * @return vraie si le hero a bien été ajouté, faux si ce n'est pas le cas
      * @throws TeamIsFullException si le groupe est plein.
@@ -49,8 +50,9 @@ public class Group {
 
     /**
      * Méthode
-     * permet de retirer un membre à une equipe de hero
+     * permet de retirer un membre à une équipe de hero
      * @param h2
+     * Le héros à retirer.
      * @return vraie si le hero a bien été retire, faux si ce n'est pas le cas
      */
     public boolean removeToGroup(Entity h2) {

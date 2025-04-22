@@ -1,6 +1,7 @@
 package gameCore.GameObjects.GameElements;
 
 import gameCore.GameObjects.GameElements.Items.Item;
+import gameCore.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,10 +68,16 @@ public class Inventory {
      */
     public boolean addItem(Item thisOne) {
         boolean isAdded = false;
-        if (thisOne.getWeight()+this.actualWeight < this.maxWeight) {
-            this.inventory.add(thisOne);
-            this.actualWeight += thisOne.getWeight();
-            isAdded = true;
+        while (!isAdded) {
+            if (thisOne.getWeight()+this.actualWeight < this.maxWeight) {
+                this.inventory.add(thisOne);
+                this.actualWeight += thisOne.getWeight();
+                isAdded = true;
+            } else {
+                System.out.println("vous n'avez plus de place pour ajouter : ");
+                System.out.println(thisOne);
+                if (!Player.sellItem()) break;
+            }
         }
         return isAdded;
     }
@@ -81,6 +88,6 @@ public class Inventory {
         this.inventory.forEach( (item) -> {
             System.out.println("   " + item + "; ");
         } );
-        return "";
+        return this.actualWeight + "/" + this.maxWeight;
     }
 }

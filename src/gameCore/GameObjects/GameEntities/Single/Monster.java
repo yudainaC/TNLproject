@@ -5,10 +5,12 @@ import exceptions.NonValidManaException;
 import exceptions.NonValidStrengthException;
 import gameCore.GameFight.Fight;
 import gameCore.GameFight.FightAction;
+import gameCore.GameObjects.GameElements.Items.Item;
 import gameCore.GameObjects.GameElements.Spells.DamageSpell;
 import gameCore.GameObjects.GameElements.Spells.Spell;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -17,24 +19,32 @@ import java.util.Scanner;
  */
 public class Monster extends Entity {
     protected int xp;
+    protected Item[] loot;
 
     /**
      * Constructeur
      * Définit les valeurs par défaut des attributs :
      * xp = 0
-     *
      * Voir le constructeur d'Entity pour le reste.
      */
-    public Monster(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells, int itXp, int itDefense, int itSpeed)
+    public Monster(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells,
+                   int itXp, int itDefense, int itSpeed, Item[] itLoot)
             throws NonValidLifeException, NonValidManaException, NonValidStrengthException {
+
         super(itName, itDescription, itLife, itMana, itStrength, itSpells, itDefense, itSpeed);
-        this.xp=itXp;
+
+        this.xp = itXp;
+        this.loot = itLoot;
+    }
+
+    public List<Item> getLoot() {
+        return List.of(this.loot);
     }
 
     /**
-     * Fonction qui permet de calculer aléatoirement l'xp obtenu en tuant un monstre.
+     * Fonction qui permet de calculer aléatoirement l'expérience obtenue en tuant un monstre.
      * @return
-     * Retourne l'xp que le monstre lache.
+     * Retourne l'expérience que le monstre lâche.
      */
     public int getXp(){
         Random bonusXp = new Random();
@@ -44,14 +54,14 @@ public class Monster extends Entity {
     }
 
     /**
-     * Fonction attribuant l'xp lacher par le monstre au(x) héro(s) l'ayant vaincu.
+     * Fonction attribuant l'expérience lâchée par le monstre au(x) héro(s) l'ayant vaincu.
      * @param killer
      * Un des héros ayant participé à l'élimination.
      */
     public void getKilled(Hero killer) {
         int xpGain = this.getXp();
         System.out.println("Vous avez tué 1 " + this.name + ", " + killer.getName() + " a gagné " + xpGain + " XP");
-        killer.verifLevel(xpGain);
+        killer.verifyLevel(xpGain);
     }
 
     /**
@@ -75,14 +85,14 @@ public class Monster extends Entity {
             this.mana -= spell.getMana();
             Entity target;
             if (spell instanceof DamageSpell) {
-                target = whosTargeted(false, fight);
+                target = whoIsTargeted(false, fight);
             } else { //if (spell instanceof SupportSpell) {
-                target = whosTargeted(true, fight);
+                target = whoIsTargeted(true, fight);
             }
             boolean isAlive = true;
             if (target != null) isAlive = spell.cast(target);
             if (!isAlive) fight.hasDied(target);
-            return this.name + FightAction.conjurer;
+            return this.name + FightAction.conjure;
         }
         return "retour";
     }
@@ -98,7 +108,7 @@ public class Monster extends Entity {
      * @return
      * La cible.
      */
-    public Entity whosTargeted(Boolean allies, Fight fight) {
+    public Entity whoIsTargeted(Boolean allies, Fight fight) {
 
         Scanner sc = new Scanner(System.in);
         System.out.println("Qui voulez-vous viser ?");
@@ -130,13 +140,13 @@ public class Monster extends Entity {
     public String isGoingToDo(FightAction action, Fight fight) {
 
         switch (action) {
-            case forfait -> {
+            case forfeit -> {
                 this.life = 0;
                 fight.hasDied(this);
-                return this.name + FightAction.forfait;
+                return this.name + FightAction.forfeit;
             }
-            case attaquer -> {
-                Entity opponent = whosTargeted(false, fight);
+            case attack -> {
+                Entity opponent = whoIsTargeted(false, fight);
                 if (opponent == null) return "retour";
                 boolean isAlive = opponent.isTarget(this.strength);
                 if (isAlive) return this.name + " attaque";
@@ -145,15 +155,15 @@ public class Monster extends Entity {
                     return this.name + " a tué " + opponent.getName();
                 }
             }
-            case conjurer -> {
+            case conjure -> {
                 return this.spellAction(fight);
             }
-            case defendre -> {
+            case defend -> {
                 this.isReady = true;
-                return this.name + FightAction.defendre;
+                return this.name + FightAction.defend;
             }
             default -> {
-                return this.recupAction();
+                return this.recoveryAction();
             }
         }
     }

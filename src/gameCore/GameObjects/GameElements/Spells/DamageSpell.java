@@ -4,7 +4,7 @@ import exceptions.NonValidManaException;
 import gameCore.GameObjects.GameEntities.Single.Entity;
 
 /**
- * Sorts spécialisés dans les dégats.
+ * Sorts spécialisés dans les dégâts.
  */
 public class DamageSpell extends Spell {
 	
@@ -23,7 +23,7 @@ public class DamageSpell extends Spell {
 	 * Permet de modifier les paramètre de la cible en passant par sa classe et non ses attributs.
 	 *
 	 * @param target La cible visé par le sort.
-	 * @return Renvoie l'appel de la fonction "isTarget" sur la cible avec en paramêtre le montant de PV perdu.
+	 * @return Renvoie l'appel de la fonction "isTarget" sur la cible avec en paramètre le montant de PV perdu.
 	 */
 	@Override
 	public boolean cast(Entity target) {
@@ -33,7 +33,7 @@ public class DamageSpell extends Spell {
 	// Affichage
 	public String toString() {
 		System.out.println(this.name + " : " + this.mana + " Mana");
-		System.out.println("   Ce sort inflige " + this.damage + " dégats.");
+		System.out.println("   Ce sort inflige " + this.damage + " dégâts.");
 		return this.description;
 	}
 

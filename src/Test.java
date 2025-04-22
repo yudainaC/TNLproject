@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class Test {
-    public static void main(String[] args) throws NotASkillsException, NonValidLifeException, NonValidManaException, NonValidStrengthException, IOException, TeamIsFullException, YouAreFightingYourselfDumbPlayerException, YouAreTargetingYourselfDumbBoyException, NonValidValueException, NonValidWeightException, NotABonusException {
+    public static void main(String[] args) throws NotASkillsException, NonValidLifeException, NonValidManaException, NonValidStrengthException, IOException, TeamIsFullException, YouAreFightingYourselfDumbPlayerException, YouAreTargetingYourselfDumbBoyException, NonValidValueException, NonValidWeightException, NotABonusException, NotAnItemException {
 
         /* Player.addSkill(Skills.natation);
         Player.addSkill(Skills.artisanat);
@@ -49,9 +49,12 @@ public class Test {
         bobby.equipWeapon(sword);
 
         Fight firstFight = new Fight(Player.getTeam(), monsters);
-        System.out.println(firstFight.fullTeamFight());
+        firstFight.fullTeamFight();
+        /*Fight secondFight = new Fight(Player.getTeam(), monsters1);
+        System.out.println(secondFight.fullTeamFight());
         for (Entity hero : Player.getTeam().getGroup()) {
             System.out.println(((Hero) hero).getLevel());
-        }
+        }*/
+
     }
 }

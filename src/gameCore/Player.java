@@ -2,7 +2,10 @@ package gameCore;
 
 import exceptions.NotASkillsException;
 import exceptions.TeamIsFullException;
+import gameCore.GameFight.FightAction;
 import gameCore.GameObjects.GameElements.Inventory;
+import gameCore.GameObjects.GameElements.Items.Consumable;
+import gameCore.GameObjects.GameElements.Items.Item;
 import gameCore.GameObjects.GameElements.Skills.Skills;
 import gameCore.GameObjects.GameEntities.Group.HeroTeam;
 import gameCore.GameObjects.GameEntities.Single.Hero;
@@ -19,6 +22,7 @@ public abstract class Player {
     private static final Set<Skills> playerSkills = new HashSet<>();
     private static final Set<Hero> followers = new HashSet<>();
     private static final Inventory inventory = new Inventory(0);
+    private static int coins = 0;
 
     // Constructeur
 
@@ -27,6 +31,28 @@ public abstract class Player {
     public static Set<Skills> getPlayerSkills() { return playerSkills; }
     public static Set<Hero> getFollowers() { return followers; }
     public static Inventory getInventory() { return inventory; }
+    public static int getCoins() { return coins; }
+
+    public static Boolean sellItem() {
+        Scanner sc = new Scanner(System.in);
+        int i = 0;
+        System.out.println("Quel objet voulez-vous vendre ?");
+        for (Item item : inventory.getInventory()) {
+            System.out.println(i + ": " + item);
+            i += 1;
+        }
+        System.out.println((i+1) + ": Annuler");
+        int chosenOne = sc.nextInt();
+        if (chosenOne >= 0 && chosenOne <= i) {
+            Item item = inventory.getInventory().get(chosenOne);
+            inventory.removeItem(item);
+            coins += item.getValue();
+            System.out.println(item.getName() + " a été vendu pour " + item.getValue() + " pièces.");
+            return true;
+        }
+        System.out.println("Vous n'avez rien vendu.");
+        return false;
+    }
 
     /**
      * Methode qui permet d'ajouter une compétence à celles du héros.
@@ -117,6 +143,7 @@ public abstract class Player {
         inventory.upMaxWeight(hero.getStrength()*10);
         return followers.add(hero);
     }
+
 
     // Affichage
     public String showFollowers() {

@@ -1,16 +1,18 @@
 package gameCore.GameFight;
 import exceptions.YouAreFightingYourselfDumbPlayerException;
 import exceptions.YouAreTargetingYourselfDumbBoyException;
+import gameCore.GameObjects.GameElements.Items.Item;
 import gameCore.GameObjects.GameEntities.Group.Group;
 import gameCore.GameObjects.GameEntities.Group.HeroTeam;
 import gameCore.GameObjects.GameEntities.Single.Entity;
 import gameCore.GameObjects.GameEntities.Single.Hero;
 import gameCore.GameObjects.GameEntities.Single.Monster;
+import gameCore.Player;
 
 import java.util.*;
 
 /**
- * Represente un combat
+ * Représente un combat
  */
 public class Fight {
 	private final HeroTeam heroes;
@@ -50,7 +52,7 @@ public class Fight {
 	/**
 	 * Un tour de jeu. Affiche le menu de selection d'actions dans la console.
 	 * @param fighter Le combattant dont c'est le tour
-	 * @return Renvoie l'appel de la methode "isGoingToDo" avec l'action choisi en paramêtre.
+	 * @return Renvoie l'appel de la methode "isGoingToDo" avec l'action choisi en paramètre.
 	 * @throws YouAreTargetingYourselfDumbBoyException
 	 * Si le combattant ciblé est le même que le combattant dont c'est le tour
 	 */
@@ -65,7 +67,7 @@ public class Fight {
 			}
 			int chosenOne = sc.nextInt();
 
-			FightAction action = FightAction.recuperer;
+			FightAction action = FightAction.recover;
 			if (chosenOne > -1 && chosenOne < fighter.getActions().length) {
 				action = fighter.getActions()[chosenOne];
 			}
@@ -100,38 +102,49 @@ public class Fight {
 
 	/**
 	 * Combat Complet, appel de FightTurn dans un while,
-	 * le combat (boucle) s'arrète lorsqu'une équipe n'a plus de membre.
+	 * le combat (boucle) s'arrête lorsqu'une équipe n'a plus de membre.
 	 * Affiche le nombre de tours à chaque passage dans la boucle
-	 * @return
-	 * Renvoie une courte phrase déclarant le vainqueur.
 	 */
-	public String fullTeamFight() throws YouAreTargetingYourselfDumbBoyException {
+	public void fullTeamFight() throws YouAreTargetingYourselfDumbBoyException {
 
-		while (true) {
+		while (this.opponentsAlive != 0 && this.heroesAlive != 0) {
 			System.out.println("Ordre : "+this.getOrder());
 			System.out.println("Tour actuel : " + this.turn);
             for (Entity entity : this.order) {
-				System.out.println(opponentsAlive);
-				System.out.println(heroesAlive);
 				if (this.opponentsAlive != 0 && this.heroesAlive != 0) {
 					while (true) if (!Objects.equals(this.fightTurn(entity), "retour")) break;
 				}
 			}
 			this.turn++;
 			this.deleteDead();
-			if (this.opponentsAlive == 0 || this.heroesAlive == 0) break;
 		}
 
 		if (this.heroesAlive > 0) {
-			for (Entity monster : this.opponents.getGroup()) {
-				for (Entity hero : this.heroes.getGroup()) {
-					((Monster) monster).getKilled((Hero) hero);
-				}
-			}
-			return "Victoire !";
+			this.victory();
 		} else {
-			return "Votre équipe a péri";
+			System.out.println("Votre équipe a péri");
 		}
+	}
+
+	public void looting() {
+		List<Item> loots = new ArrayList<>();
+		for (Entity monster : this.opponents.getGroup()) loots.addAll(((Monster) monster).getLoot());
+		System.out.println("Liste des objets obtenus : " + loots);
+		for (Item item : loots) Player.getInventory().addItem(item);
+	}
+
+	public void victory() {
+		System.out.println("Victoire !");
+		System.out.println();
+		System.out.println("Calcule de l'expérience :");
+		for (Entity monster : this.opponents.getGroup()) {
+			for (Entity hero : this.heroes.getGroup()) {
+				((Monster) monster).getKilled((Hero) hero);
+			}
+		}
+		System.out.println();
+		System.out.println("Loot obtenu :");
+		this.looting();
 	}
 
 	// Affichage

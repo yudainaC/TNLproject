@@ -15,11 +15,11 @@ public class Item extends Model {
      * @param itValue
      * Valeur de l'item en pieces.
      * @param itWeight
-     * Poid de l'item.
+     * Poids de l'item.
      * @throws NonValidValueException
-     * Si la valeur de l'item est inferieur a 0.
+     * Si la valeur de l'item est inférieur à 0.
      * @throws NonValidWeightException
-     * Si le poid de l'item est inferieur a 0.
+     * Si le poids de l'item est inférieur à 0.
      */
     public Item(String itName, String itDescription, int itValue, int itWeight)
             throws NonValidValueException, NonValidWeightException {

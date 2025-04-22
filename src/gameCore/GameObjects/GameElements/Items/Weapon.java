@@ -26,6 +26,6 @@ public class Weapon extends Item {
         return this.name + " : +" + this.bonusStr + " de force, " +
                 this.value + " Pieces" + ", " +
                 this.weight + " Kg" + "\n" +
-                "   " + this.description;
+                this.description;
     }
 }

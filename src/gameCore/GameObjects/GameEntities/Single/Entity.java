@@ -5,8 +5,6 @@ import gameCore.GameFight.Fight;
 import gameCore.GameFight.FightAction;
 import gameCore.GameObjects.GameElements.Spells.DamageSpell;
 import gameCore.GameObjects.GameElements.Spells.Spell;
-import gameCore.GameObjects.GameElements.Spells.SupportSpell;
-import gameCore.GameObjects.GameEntities.Group.Group;
 import gameCore.GameObjects.Model;
 
 import java.util.ArrayList;
@@ -34,18 +32,18 @@ public class Entity extends Model {
 	 * Génère la liste des actions et met l'attribut isReady à faux.
 	 * Les PV max de l'entité sont initiés à 5, on part du principe qu'elle est créé avec ses PV au maximum.
 	 * Le Mana max de l'entité est initié à 10, on part du principe qu'elle est créé avec son Mana au maximum.
-	 * La force de l'entité est initié à 2, elle influe sur ses dégats et la taille de son inventaire.
+	 * La force de l'entité est initié à 2, elle influe sur ses dégâts et la taille de son inventaire.
 	 * La taille de départ de la liste de ses sorts est 1.
 	*/
 	public Entity(String itName, String itDescription) {
 		super(itName, itDescription);
 
 		FightAction[] theActions = new FightAction[5];
-		theActions[0] = FightAction.forfait;
-		theActions[1] = FightAction.attaquer;
-		theActions[2] = FightAction.conjurer;
-		theActions[3] = FightAction.defendre;
-		theActions[4] = FightAction.recuperer;
+		theActions[0] = FightAction.forfeit;
+		theActions[1] = FightAction.attack;
+		theActions[2] = FightAction.conjure;
+		theActions[3] = FightAction.defend;
+		theActions[4] = FightAction.recover;
 
 		this.maxLife = 5;
 		this.maxMana = 10;
@@ -67,11 +65,11 @@ public class Entity extends Model {
 	 * Ne peut pas être initié à moins de 1.
 	 * De type entier.
 	 * @param itMana
-	 * Le Mana max de l'entité, on part du principe qu'elle est créé avec sont Mana au maximum.
+	 * Le Mana max de l'entité, on part du principe qu'elle est créé avec son Mana au maximum.
 	 * Ne peut pas être initié à moins de 0.
 	 * De type entier.
 	 * @param itStrength
-	 * La force de l'entité, elle influe sur ses dégats et la taille de son inventaire.
+	 * La force de l'entité, elle influe sur ses dégâts et la taille de son inventaire.
 	 * Ne peut pas être initié à moins de 1.
 	 * De type entier.
 	 * @param itSpells
@@ -94,11 +92,11 @@ public class Entity extends Model {
 		if (itStrength < 1) throw new NonValidStrengthException();
 
 		FightAction[] theActions = new FightAction[5];
-		theActions[0] = FightAction.forfait;
-		theActions[1] = FightAction.attaquer;
-		theActions[2] = FightAction.conjurer;
-		theActions[3] = FightAction.defendre;
-		theActions[4] = FightAction.recuperer;
+		theActions[0] = FightAction.forfeit;
+		theActions[1] = FightAction.attack;
+		theActions[2] = FightAction.conjure;
+		theActions[3] = FightAction.defend;
+		theActions[4] = FightAction.recover;
 
 		this.maxLife = itLife;
 		this.life = itLife;
@@ -144,14 +142,14 @@ public class Entity extends Model {
 			this.mana -= spell.getMana();
 			Entity target;
 			if (spell instanceof DamageSpell) {
-				target = whosTargeted(false, fight);
+				target = whoIsTargeted(false, fight);
 			} else {
-				target = whosTargeted(true, fight);
+				target = whoIsTargeted(true, fight);
 			}
 			boolean isAlive = true;
 			if (target != null) isAlive = spell.cast(target);
 			if (!isAlive) fight.hasDied(target);
-			return this.name + FightAction.conjurer;
+			return this.name + FightAction.conjure;
 		}
 		return "retour";
 	}
@@ -161,8 +159,8 @@ public class Entity extends Model {
 	 * @return
 	 * Un petit résumé.
 	 */
-	public String recupAction() {
-		System.out.println(FightAction.recuperer);
+	public String recoveryAction() {
+		System.out.println(FightAction.recover);
 		String what = this.name;
 		if (this.life < this.maxLife) {
 			this.life += 1;
@@ -197,7 +195,7 @@ public class Entity extends Model {
 	 * @return
 	 * La cible.
 	 */
-	public Entity whosTargeted(Boolean allies, Fight fight) {
+	public Entity whoIsTargeted(Boolean allies, Fight fight) {
 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Qui voulez-vous viser ?");
@@ -228,11 +226,11 @@ public class Entity extends Model {
 	/**
 	 * Méthode associant une Action à son effet, sur la base d'un 'selon' l'action.
 	 * L'action 'déclarer forfait' fait perdre le combat,
-	 * L'action 'attaquer' inflige à l'adversaire un nombre de dégat éguale à la force de l'attaquant.
+	 * L'action 'attaquer' inflige à l'adversaire un nombre de dégâts égale à la force de l'attaquant.
 	 * L'action 'conjurer' ouvre le menu des sorts, affichant la liste des sorts,
 	 * qui peuvent être lancé en échange d'une quantité de mana. Si aucun sort ou que le mot retour est choisi,
 	 * rouvre le menu des actions.
-	 * L'action 'se défendre' bloque deux dégats de la prochaine attaque reçue.
+	 * L'action 'se défendre' bloque deux dégâts de la prochaine attaque reçue.
 	 * L'action 'récupérer' et l'action par défaut et régénère un pv et deux manas.
 	 * @param action
 	 * L'action choisie.
@@ -249,22 +247,22 @@ public class Entity extends Model {
 		Entity opponent;
 
         switch (action) {
-            case forfait -> {
+            case forfeit -> {
                 this.life = 0;
-                return this.name + FightAction.forfait;
+                return this.name + FightAction.forfeit;
             }
-            case attaquer -> {
+            case attack -> {
                 return this.name + " attaque";
             }
-            case conjurer -> {
+            case conjure -> {
                 return this.spellAction(fight);
             }
-            case defendre -> {
+            case defend -> {
                 this.isReady = true;
-                return this.name + FightAction.defendre;
+                return this.name + FightAction.defend;
             }
             default -> {
-                return this.recupAction();
+                return this.recoveryAction();
             }
         }
 	}
@@ -283,12 +281,12 @@ public class Entity extends Model {
 		boolean isAlive = true;
 
 		if (howMuch > 0) {
-			result += " prend" + howMuch + " dégats.";
+			result += " prend " + howMuch + " dégâts.";
 			if (this.isReady) {
 				this.isReady = false; 
 				howMuch -= this.defense;
 				if (howMuch < 0) howMuch = 0;
-				result = this.name + " se protégeait, il a pris " + (howMuch - this.defense) + " dégats";
+				result = this.name + " se protégeait, il a pris " + (howMuch - this.defense) + " dégâts";
 			}
 		} else if (howMuch < 0) {
 			result += " se soigne de " + howMuch + " PV";
@@ -300,7 +298,7 @@ public class Entity extends Model {
 			result = this.name + " est mort";
 			isAlive = false;
 		}
-		this.verifHPMana();
+		this.verifyHPMana();
 		System.out.println(result);
 		return isAlive;
 	}
@@ -308,7 +306,7 @@ public class Entity extends Model {
 	/**
 	 * Remet les pv à leur maximum s'ils l'ont dépassé après l'appel de 'isTarget'.
 	 */
-	public void verifHPMana() {
+	public void verifyHPMana() {
 		if (this.life > this.maxLife) this.life = this.maxLife;
 		if (this.mana > this.maxMana) this.mana = this.maxMana;
 	}
