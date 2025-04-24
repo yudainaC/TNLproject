@@ -1,5 +1,7 @@
 package gameCore.GameFight;
 
+import java.util.Random;
+
 /**
  * Les différentes actions réalisables pendant un combat
  */
@@ -17,6 +19,12 @@ public enum FightAction {
             default -> "Récupérer";
         };
 	}
+
+    public static FightAction getRandAction(int n) {
+        Random generator = new Random();
+        FightAction[] monsterActions = {attack, defend, conjure, recover};
+        return monsterActions[generator.nextInt(0, n+1)];
+    }
 
 	// Affichage
 	public String toString() {

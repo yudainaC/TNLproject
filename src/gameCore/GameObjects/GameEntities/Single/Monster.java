@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
+
 /**
  * Sous-classe de Entity, définie les monstres croisés par les héros.
  */
@@ -69,19 +70,11 @@ public class Monster extends Entity {
      */
     @Override
     public String spellAction(Fight fight) {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Votre mana : " + this.mana);
-        System.out.println("Quel sort voulez-vous lancer ?");
-        if (this.spells[0] != null) {
-            for (int i = 0; i < this.spells.length; i++) {
-                System.out.println((i + 1) + ": " + this.spells[i].getName() + ", " + this.spells[i].getMana() + " Mana");
-            }
-        }
-        System.out.println((this.spells.length+1) + ": Retour");
-        int chosenOne = sc.nextInt();
-        if (chosenOne > 0 && chosenOne < this.spells.length+1 && this.mana >= this.spells[chosenOne-1].getMana()) {
-            Spell spell = this.spells[chosenOne-1];
-            System.out.println("Vous avez choisi : " + spell.getName());
+
+        Random generator = new Random();
+        int chosenOne = generator.nextInt(spells.length);
+        if (this.mana >= this.spells[chosenOne].getMana()) {
+            Spell spell = this.spells[chosenOne];
             this.mana -= spell.getMana();
             Entity target;
             if (spell instanceof DamageSpell) {
@@ -110,8 +103,6 @@ public class Monster extends Entity {
      */
     public Entity whoIsTargeted(Boolean allies, Fight fight) {
 
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Qui voulez-vous viser ?");
         ArrayList<Entity> groupTarget = fight.getHeroes().getGroup();
         if (allies) {
             groupTarget = fight.getOpponents().getGroup();
@@ -120,36 +111,30 @@ public class Monster extends Entity {
             groupTarget.remove(index);
         }
 
-        for (int i = 0; i < groupTarget.size(); i++) {
-            Entity target = groupTarget.get(i);
-            System.out.println((i + 1) + ": " + target.getName() + ", " + target.life + "/" + target.maxLife + " PV restant");
-        }
-        System.out.println((groupTarget.size()+1) + ": Retour");
+        Random generator = new Random();
+        int chosenOne = generator.nextInt(groupTarget.size());
 
-        int chosenOne = sc.nextInt();
-
-        if (chosenOne > 0 && chosenOne < groupTarget.size()+1 && groupTarget.get(chosenOne-1).life > 0) {
-            Entity target = groupTarget.get(chosenOne-1);
+        if (groupTarget.get(chosenOne).life > 0) {
+            Entity target = groupTarget.get(chosenOne);
             System.out.println("Vous avez ciblé : " + target.getName());
             return target;
         }
         return null;
     }
 
-    // Affichage
-    public String isGoingToDo(FightAction action, Fight fight) {
+    public String isGoingToDo(Fight fight) {
+
+        int n = 3;
+        if (this.life == this.maxLife && this.mana == this.maxMana) n = 2;
+        FightAction action = FightAction.getRandAction(n);
+        while (action == FightAction.conjure && this.spells[0] == null) action = FightAction.getRandAction(n);
 
         switch (action) {
-            case forfeit -> {
-                this.life = 0;
-                fight.hasDied(this);
-                return this.name + FightAction.forfeit;
-            }
             case attack -> {
                 Entity opponent = whoIsTargeted(false, fight);
                 if (opponent == null) return "retour";
                 boolean isAlive = opponent.isTarget(this.strength);
-                if (isAlive) return this.name + " attaque";
+                if (isAlive) return this.name + " attaque" + opponent.getName();
                 else {
                     fight.hasDied(opponent);
                     return this.name + " a tué " + opponent.getName();
@@ -167,5 +152,6 @@ public class Monster extends Entity {
             }
         }
     }
+    // Affichage
 
 }

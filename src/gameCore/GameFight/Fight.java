@@ -42,12 +42,12 @@ public class Fight {
 		this.diedThisTurn = new ArrayList<>();
 	}
 
-	// Getters
+	/* Getters
 	public int getTurn() { return this.turn; }
+	public int getOpponentsAlive() { return opponentsAlive; }
+	public int getHeroesAlive() { return heroesAlive; } */
 	public HeroTeam getHeroes() { return heroes; }
 	public Group getOpponents() { return opponents; }
-	public int getOpponentsAlive() { return opponentsAlive; }
-	public int getHeroesAlive() { return heroesAlive; }
 
 	/**
 	 * Un tour de jeu. Affiche le menu de selection d'actions dans la console.
@@ -58,21 +58,29 @@ public class Fight {
 	 */
 	public String fightTurn(Entity fighter) throws YouAreTargetingYourselfDumbBoyException {
 
-		if (fighter instanceof Hero) ((Hero) fighter).updateBonuses();
 		if (fighter.getLife() > 0) {
-			Scanner sc = new Scanner(System.in);
-			System.out.println(fighter.getName() + ", que voulez-vous faire ?");
-			for (int i = 0; i < fighter.getActions().length; i++) {
-				System.out.println((i) + ": " + fighter.getActions()[i].getAction());
-			}
-			int chosenOne = sc.nextInt();
+			if (fighter instanceof Hero) {
+				((Hero) fighter).updateBonuses();
+				Scanner sc = new Scanner(System.in);
+				System.out.println(fighter.getName() + ", que voulez-vous faire ?");
+				for (Entity entity : order)
+					System.out.println(entity.getName() + " : " + entity.getLife() + "/" + entity.getMaxLife());
+				for (int i = 0; i < fighter.getActions().length; i++) {
+					System.out.println((i) + ": " + fighter.getActions()[i].getAction());
+				}
+				int chosenOne = sc.nextInt();
 
-			FightAction action = FightAction.recover;
-			if (chosenOne > -1 && chosenOne < fighter.getActions().length) {
-				action = fighter.getActions()[chosenOne];
+				FightAction action = FightAction.recover;
+				if (chosenOne > -1 && chosenOne < fighter.getActions().length) {
+					action = fighter.getActions()[chosenOne];
+				}
+				System.out.println("Vous avez choisi : " + action.getAction());
+				return fighter.isGoingToDo(action, this);
+			} else {
+				String whatHeDo = ((Monster) fighter).isGoingToDo(this);
+				System.out.println(whatHeDo);
+				return whatHeDo;
 			}
-			System.out.println("Vous avez choisi : " + action.getAction());
-			return fighter.isGoingToDo(action, this);
 		}
 		return "pass";
 	}
@@ -104,6 +112,7 @@ public class Fight {
 	 * Combat Complet, appel de FightTurn dans un while,
 	 * le combat (boucle) s'arrête lorsqu'une équipe n'a plus de membre.
 	 * Affiche le nombre de tours à chaque passage dans la boucle
+	 * TODO : clear bonus dans hero
 	 */
 	public void fullTeamFight() throws YouAreTargetingYourselfDumbBoyException {
 

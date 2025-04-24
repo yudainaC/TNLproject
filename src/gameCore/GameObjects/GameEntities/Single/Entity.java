@@ -118,6 +118,10 @@ public class Entity extends Model {
 	public Spell[] getSpells() { return this.spells; }
 	public int getSpeed(){return this.speed;}
 
+	public int getMaxLife() {
+		return maxLife;
+	}
+
 	/**
 	 * Affiche la liste des sorts, et permet d'en lancé un si la cible est correcte et si le mana est suffisant.
 	 * @param fight

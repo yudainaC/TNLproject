@@ -39,7 +39,7 @@ public abstract class Factory {
     public static HashMap<String, Item> parseItem()
             throws IOException, NonValidValueException, NonValidWeightException, NotABonusException {
 
-        BufferedReader in = new BufferedReader(new FileReader("ressources/items.csv"));
+        BufferedReader in = new BufferedReader(new FileReader("resources/items.csv"));
         String line;
         HashMap<String, Item> items = new HashMap<>();
 
@@ -75,7 +75,7 @@ public abstract class Factory {
      */
     public static HashMap<String, Spell> parseSpell() throws IOException, NonValidManaException {
 
-        BufferedReader in = new BufferedReader(new FileReader("ressources/spells.csv"));
+        BufferedReader in = new BufferedReader(new FileReader("resources/spells.csv"));
         String line;
         HashMap<String, Spell> spells = new HashMap<>();
 
@@ -115,7 +115,7 @@ public abstract class Factory {
      */
     public static HashMap<String, Monster> parseMonster() throws IOException, NonValidManaException, NonValidLifeException, NonValidStrengthException, NotAnItemException {
 
-        BufferedReader in = new BufferedReader(new FileReader("ressources/monsters.csv"));
+        BufferedReader in = new BufferedReader(new FileReader("resources/monsters.csv"));
         String line;
         HashMap<String, Monster> monsters = new HashMap<>();
 
@@ -160,7 +160,7 @@ public abstract class Factory {
      */
     public static HashMap<String, Hero> parseHeroSimple() throws IOException, NotASkillsException {
 
-        BufferedReader in = new BufferedReader(new FileReader("ressources/heroes.csv"));
+        BufferedReader in = new BufferedReader(new FileReader("resources/heroes.csv"));
         String line;
         HashMap<String, Hero> heroes = new HashMap<>();
 
