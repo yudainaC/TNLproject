@@ -1,13 +1,11 @@
 package gameCore.GameFight;
-import exceptions.YouAreFightingYourselfDumbPlayerException;
 import exceptions.YouAreTargetingYourselfDumbBoyException;
-import gameCore.GameObjects.GameElements.Items.Item;
 import gameCore.GameObjects.GameEntities.Group.Group;
 import gameCore.GameObjects.GameEntities.Group.HeroTeam;
+import gameCore.GameObjects.GameEntities.Group.MobGroup;
 import gameCore.GameObjects.GameEntities.Single.Entity;
 import gameCore.GameObjects.GameEntities.Single.Hero;
 import gameCore.GameObjects.GameEntities.Single.Monster;
-import gameCore.Player;
 
 import java.util.*;
 
@@ -16,7 +14,7 @@ import java.util.*;
  */
 public class Fight {
 	private final HeroTeam heroes;
-	private final Group opponents;
+	private final MobGroup opponents;
 	private int opponentsAlive;
 	private int heroesAlive;
 	private final List<Entity> order;
@@ -24,12 +22,10 @@ public class Fight {
 	private int turn;
 
 	// Constructeur
-	public Fight(HeroTeam fightingHeroes, Group fightingOpponents) throws YouAreFightingYourselfDumbPlayerException {
+	public Fight(HeroTeam fightingHeroes, MobGroup fightingOpponents) {
 
 		this.heroes = fightingHeroes;
 		this.opponents = fightingOpponents;
-
-		if (heroes == opponents) throw new YouAreFightingYourselfDumbPlayerException();
 
 		this.heroesAlive = heroes.getGroup().size();
 		this.opponentsAlive = opponents.getGroup().size();
@@ -135,13 +131,6 @@ public class Fight {
 		}
 	}
 
-	public void looting() {
-		List<Item> loots = new ArrayList<>();
-		for (Entity monster : this.opponents.getGroup()) loots.addAll(((Monster) monster).getLoot());
-		System.out.println("Liste des objets obtenus : " + loots);
-		for (Item item : loots) Player.getInventory().addItem(item);
-	}
-
 	public void victory() {
 		System.out.println("Victoire !");
 		System.out.println();
@@ -154,7 +143,7 @@ public class Fight {
 		}
 		System.out.println();
 		System.out.println("Loot obtenu :");
-		this.looting();
+		this.opponents.looting();
 	}
 
 	// Affichage

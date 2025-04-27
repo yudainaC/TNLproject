@@ -3,6 +3,7 @@ import gameCore.GameFight.Fight;
 import gameCore.GameObjects.GameElements.Items.Weapon;
 import gameCore.GameObjects.GameElements.Skills.Skills;
 import gameCore.GameObjects.GameEntities.Group.Group;
+import gameCore.GameObjects.GameEntities.Group.MobGroup;
 import gameCore.GameObjects.GameEntities.Single.Entity;
 import gameCore.GameObjects.GameEntities.Single.Hero;
 import gameCore.GameObjects.GameEntities.Single.Monster;
@@ -10,6 +11,7 @@ import gameCore.Player;
 import gameFactory.Factory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Test {
@@ -31,12 +33,10 @@ public class Test {
         Hero bobby = Factory.parseHeroSimple().get("Bobby le premier");
         Hero conny = Factory.parseHeroSimple().get("Conny le premier");
 
-        Group monsters = new Group();
-        monsters.addToTeam(mage);
-        monsters.addToTeam(blob);
-        Group monsters1 = new Group();
-        monsters1.addToTeam(mage1);
-        monsters1.addToTeam(blob1);
+        Monster[] monsters = new Monster[]{mage, blob};
+        MobGroup mobGroup1 = new MobGroup(monsters);
+        monsters = new Monster[]{mage1, blob1};
+        MobGroup mobGroup2 = new MobGroup(monsters);
 
         Weapon sword = (Weapon) Factory.parseItem().get("Epée courte");
         Player.recruit(bobby);
@@ -49,7 +49,7 @@ public class Test {
         Player.getInventory().addItem(sword);
         bobby.equipWeapon(sword);
 
-        Fight firstFight = new Fight(Player.getTeam(), monsters);
+        Fight firstFight = new Fight(Player.getTeam(), mobGroup1);
         firstFight.fullTeamFight();
         /*Fight secondFight = new Fight(Player.getTeam(), monsters1);
         System.out.println(secondFight.fullTeamFight());

@@ -4,6 +4,8 @@ import exceptions.TeamIsFullException;
 import gameCore.GameObjects.GameEntities.Single.Entity;
 import gameCore.GameObjects.GameEntities.Single.Hero;
 
+import java.util.List;
+
 /**
  * Groupe de héros. Sous classe de Groupe.
  */

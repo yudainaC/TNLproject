@@ -204,7 +204,7 @@ public class Entity extends Model {
 
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Qui voulez-vous viser ?");
-		ArrayList<Entity> groupTarget = fight.getOpponents().getGroup();
+		List<Entity> groupTarget = fight.getOpponents().getGroup();
 		if (allies) {
 			groupTarget = fight.getHeroes().getGroup();
 			int index = 0;

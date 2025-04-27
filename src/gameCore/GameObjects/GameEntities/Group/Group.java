@@ -2,6 +2,7 @@ package gameCore.GameObjects.GameEntities.Group;
 
 import exceptions.TeamIsFullException;
 import gameCore.GameObjects.GameEntities.Single.Entity;
+import gameCore.GameObjects.GameEntities.Single.Monster;
 
 import java.util.*;
 
@@ -21,20 +22,9 @@ public class Group {
         group = new ArrayList<>();
     }
 
-    /**
-     * Constructeur
-     * permet de créer une équipe d'Entité de taille max choisi.
-     * @param theMax
-     * La taille du groupe.
-     */
-    public Group(int theMax){
-        this.maxSize = theMax;
-        group = new ArrayList<>();
-    }
-
     // Getters
-    public ArrayList<Entity> getGroup() { return group; }
     public int getMaxSize() { return maxSize; }
+    public List<Entity> getGroup() { return group; }
 
     /**
      * Méthode

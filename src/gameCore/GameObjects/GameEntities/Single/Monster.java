@@ -105,7 +105,7 @@ public class Monster extends Entity {
      */
     public Entity whoIsTargeted(Boolean allies, Fight fight) {
 
-        ArrayList<Entity> groupTarget = fight.getHeroes().getGroup();
+        List<Entity> groupTarget = fight.getHeroes().getGroup();
         if (allies) {
             groupTarget = fight.getOpponents().getGroup();
             int index = 0;
