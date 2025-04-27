@@ -12,7 +12,6 @@ import gameCore.GameObjects.GameElements.Spells.Spell;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 
 /**
@@ -28,7 +27,7 @@ public class Monster extends Entity {
      * xp = 0
      * Voir le constructeur d'Entity pour le reste.
      */
-    public Monster(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells,
+    public Monster(String itName, String itDescription, int itLife, int itMana, int itStrength, List<Spell> itSpells,
                    int itXp, int itDefense, int itSpeed, Item[] itLoot)
             throws NonValidLifeException, NonValidManaException, NonValidStrengthException {
 
@@ -71,21 +70,24 @@ public class Monster extends Entity {
     @Override
     public String spellAction(Fight fight) {
 
-        Random generator = new Random();
-        int chosenOne = generator.nextInt(spells.length);
-        if (this.mana >= this.spells[chosenOne].getMana()) {
-            Spell spell = this.spells[chosenOne];
-            this.mana -= spell.getMana();
-            Entity target;
-            if (spell instanceof DamageSpell) {
-                target = whoIsTargeted(false, fight);
-            } else { //if (spell instanceof SupportSpell) {
-                target = whoIsTargeted(true, fight);
+        if (!(this.spells == null)) {
+            Random generator = new Random();
+            int chosenOne = generator.nextInt(spells.size());
+            System.out.println(chosenOne);
+            if (this.mana >= this.spells.get(chosenOne).getMana()) {
+                Spell spell = this.spells.get(chosenOne);
+                this.mana -= spell.getMana();
+                Entity target;
+                if (spell instanceof DamageSpell) {
+                    target = whoIsTargeted(false, fight);
+                } else { //if (spell instanceof SupportSpell) {
+                    target = whoIsTargeted(true, fight);
+                }
+                boolean isAlive = true;
+                if (target != null) isAlive = spell.cast(target);
+                if (!isAlive) fight.hasDied(target);
+                return this.name + FightAction.conjure;
             }
-            boolean isAlive = true;
-            if (target != null) isAlive = spell.cast(target);
-            if (!isAlive) fight.hasDied(target);
-            return this.name + FightAction.conjure;
         }
         return "retour";
     }
@@ -127,7 +129,7 @@ public class Monster extends Entity {
         int n = 3;
         if (this.life == this.maxLife && this.mana == this.maxMana) n = 2;
         FightAction action = FightAction.getRandAction(n);
-        while (action == FightAction.conjure && this.spells[0] == null) action = FightAction.getRandAction(n);
+        while (action == FightAction.conjure && this.spells == null) action = FightAction.getRandAction(n);
 
         switch (action) {
             case attack -> {

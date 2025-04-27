@@ -8,6 +8,7 @@ import gameCore.GameObjects.GameElements.Spells.Spell;
 import gameCore.GameObjects.Model;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -24,7 +25,7 @@ public class Entity extends Model {
 	protected int defense;
 	protected boolean isReady;
 	protected FightAction[] actions;
-	protected Spell[] spells;
+	protected List<Spell> spells;
 
 
 	/**
@@ -53,7 +54,7 @@ public class Entity extends Model {
 		this.speed = 1;
 		this.defense = 1;
 		this.actions = theActions;
-		this.spells = new Spell[1];
+		this.spells = new ArrayList<>();
 		this.isReady = false;
 	}
 
@@ -82,7 +83,7 @@ public class Entity extends Model {
 	 * @throws NonValidStrengthException
 	 * Si itStrength est inférieur a 1.
 	 */
-	public Entity(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells, int itDefense, int itSpeed)
+	public Entity(String itName, String itDescription, int itLife, int itMana, int itStrength, List<Spell> itSpells, int itDefense, int itSpeed)
 			throws NonValidLifeException, NonValidManaException, NonValidStrengthException {
 
 		super(itName, itDescription);
@@ -115,7 +116,7 @@ public class Entity extends Model {
 	public int getMana() { return this.mana; }
 	public int getStrength() { return this.strength; }
 	public FightAction[] getActions() { return this.actions; }
-	public Spell[] getSpells() { return this.spells; }
+	public List<Spell> getSpells() { return this.spells; }
 	public int getSpeed(){return this.speed;}
 
 	public int getMaxLife() {
@@ -133,15 +134,15 @@ public class Entity extends Model {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Votre mana : " + this.mana);
 		System.out.println("Quel sort voulez-vous lancer ?");
-		if (this.spells[0] != null) {
-			for (int i = 0; i < this.spells.length; i++) {
-				System.out.println((i + 1) + ": " + this.spells[i].getName() + ", " + this.spells[i].getMana() + " Mana");
+		if (!this.spells.isEmpty()) {
+			for (int i = 0; i < this.spells.size(); i++) {
+				System.out.println((i + 1) + ": " + this.spells.get(i).getName() + ", " + this.spells.get(i).getMana() + " Mana");
 			}
 		}
-		System.out.println((this.spells.length+1) + ": Retour");
+		System.out.println((this.spells.size()+1) + ": Retour");
 		int chosenOne = sc.nextInt();
-		if (chosenOne > 0 && chosenOne < this.spells.length+1 && this.mana >= this.spells[chosenOne-1].getMana()) {
-			Spell spell = this.spells[chosenOne-1];
+		if (chosenOne > 0 && chosenOne < this.spells.size()+1 && this.mana >= this.spells.get(chosenOne-1).getMana()) {
+			Spell spell = this.spells.get(chosenOne-1);
 			System.out.println("Vous avez choisi : " + spell.getName());
 			this.mana -= spell.getMana();
 			Entity target;

@@ -24,6 +24,7 @@ public class Test {
 
         Monster blob = Factory.parseMonster().get("blob");
         Monster mage = Factory.parseMonster().get("sorcier");
+        System.out.println(mage.getSpells());
         Monster blob1 = Factory.parseMonster().get("blob");
         Monster mage1 = Factory.parseMonster().get("sorcier");
 

@@ -1,8 +1,5 @@
 package gameCore.GameObjects.GameEntities.Single;
 
-import exceptions.NonValidLifeException;
-import exceptions.NonValidManaException;
-import exceptions.NonValidStrengthException;
 import gameCore.GameFight.Fight;
 import gameCore.GameFight.FightAction;
 import gameCore.GameObjects.GameElements.Items.Bonus;
@@ -24,7 +21,7 @@ public class Hero extends Entity {
     private int spellSlot;
     private Weapon equippedWeapon;
     private List<Object[]> bonuses;
-    private Set<Skills> skills;
+    private final Set<Skills> skills;
 
     /**
      * Constructeur
@@ -57,7 +54,7 @@ public class Hero extends Entity {
         this.speed = 1;
         this.isReady = false;
         this.spellSlot = 2;
-        this.spells = new Spell[this.spellSlot];
+        this.spells = new ArrayList<>();
 
         this.bonuses = new ArrayList<>();
         this.equippedWeapon = null;
@@ -67,14 +64,6 @@ public class Hero extends Entity {
 
         this.skills = new HashSet<>(4);
         this.skills.addAll(itSkills);
-    }
-
-    // Second Constructeur
-    public Hero(String itName, String itDescription, int itLife, int itMana, int itStrength, Spell[] itSpells, int itDefense, int itSpeed)
-            throws NonValidLifeException, NonValidManaException, NonValidStrengthException {
-        super(itName, itDescription, itLife, itMana, itStrength, itSpells, itDefense, itSpeed);
-        this.level = 1;
-        this.exp = 0;
     }
 
     // Getters
@@ -95,10 +84,8 @@ public class Hero extends Entity {
     /**
      * Monte de niveau le Hero : augmente ses stats et son niveau, réduit l'expérience et récupère les PV et le mana perdu.
      * Augmente le nombre d'emplacements de sort d'un tous les trois niveaux.
-     * @return
-     * Renvoie une simple phrase.
      */
-    public String levelUp() {
+    public void levelUp() {
         this.exp -= 10*this.level;
         this.level += 1;
         this.maxLife += 3;
@@ -108,12 +95,9 @@ public class Hero extends Entity {
         this.regenerate();
         if (level%3 == 0) {
             this.spellSlot += 1;
-            Spell[] tamp = this.spells;
-            this.spells = new Spell[this.spellSlot];
-            System.arraycopy(tamp, 0, this.spells, 0, tamp.length);
         }
         this.verifyLevel(0);
-        return this.name + " a atteint le niveau " + this.level + " !";
+        System.out.println(this.name + " a atteint le niveau " + this.level + " !");
     }
 
     /**
@@ -268,11 +252,15 @@ public class Hero extends Entity {
         }
     }
 
+    public void clearBonus() {
+        this.bonuses = new ArrayList<>();
+    }
+
     /**
      * Met à jour la durée des bonus appliqué sur le héros.
-     * TODO Modifié pour ne plus avoir de remove dans la boucle (PB d'indices)
      */
     public void updateBonuses() {
+        List<Integer> index = new ArrayList<>();
         for (int i = 0; i < this.bonuses.size(); i++) {
             int duration = (int) this.bonuses.get(i)[2];
             duration--;
@@ -283,41 +271,43 @@ public class Hero extends Entity {
                 int bonus = (int) this.bonuses.get(i)[1];
                 this.applyEffect(bonusType, bonus*(-1), duration, false);
                 System.out.println(this.bonuses.get(i)[0]+" : dernier tour");
-                this.bonuses.remove(i);
+                index.addFirst(i);
             } else System.out.println(this.bonuses.get(i)[0]+" : "+duration+" tours restant");
+        }
+        for (int i : index) {
+            this.bonuses.remove(i);
         }
     }
 
     // Affichage
     public String printSkills(){
-        String res = "";
-        for(Skills Talent : skills){
-            res+= skills;
+        StringBuilder res = new StringBuilder();
+        for(Skills talent : skills){
+            res.append(talent);
         }
-        return res;
+        return res.toString();
     }
 
     public String toString() {
-        String hero = this.name + " : niveau " + this.level + "\n" +
+        StringBuilder hero = new StringBuilder(this.name + " : niveau " + this.level + "\n" +
                 this.life + "/" + this.maxLife + " PV \n" +
-                this.mana + "/" + this.maxMana + " mana \n";
+                this.mana + "/" + this.maxMana + " mana \n");
 
         int bonus = 0;
         String weapon = "" + this.equippedWeapon;
         if (!(this.equippedWeapon == null)) bonus = this.equippedWeapon.getBonusStr();
         else weapon = "aucune";
-        hero += "force : " + this.strength + '(' + (this.strength-bonus) + '+' + bonus + ") \n" +
-                "arme équipé : " + weapon + '\n';
+        hero.append("force : ").append(this.strength).append('(').append(this.strength - bonus).append('+').append(bonus).append(") \n").append("arme équipé : ").append(weapon).append('\n');
 
-        if (this.spells[0] != null) {
-            hero += "Sorts appris :\n";
+        if (!this.spells.isEmpty()) {
+            hero.append("Sorts appris :\n");
             for (Spell spell : this.spells) {
-                hero += "   " + spell + "\n";
+                hero.append("   ").append(spell).append("\n");
             }
         } else {
-            hero += "Ne connais aucun sorts\n";
+            hero.append("Ne connais aucun sorts\n");
         }
-
+        hero.append(this.printSkills());
         return hero + this.description;
     }
 }

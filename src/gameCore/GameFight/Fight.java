@@ -112,7 +112,6 @@ public class Fight {
 	 * Combat Complet, appel de FightTurn dans un while,
 	 * le combat (boucle) s'arrête lorsqu'une équipe n'a plus de membre.
 	 * Affiche le nombre de tours à chaque passage dans la boucle
-	 * TODO : clear bonus dans hero
 	 */
 	public void fullTeamFight() throws YouAreTargetingYourselfDumbBoyException {
 
@@ -121,6 +120,7 @@ public class Fight {
 			System.out.println("Tour actuel : " + this.turn);
             for (Entity entity : this.order) {
 				if (this.opponentsAlive != 0 && this.heroesAlive != 0) {
+					System.out.println(entity.getName());
 					while (true) if (!Objects.equals(this.fightTurn(entity), "retour")) break;
 				}
 			}
@@ -149,6 +149,7 @@ public class Fight {
 		for (Entity monster : this.opponents.getGroup()) {
 			for (Entity hero : this.heroes.getGroup()) {
 				((Monster) monster).getKilled((Hero) hero);
+				((Hero) hero).clearBonus();
 			}
 		}
 		System.out.println();

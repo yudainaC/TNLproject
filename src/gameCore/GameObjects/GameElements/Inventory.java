@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * L'inventaire des héro
- * TODO Modifié pour qu'il sois propre au player ?
+ * L'inventaire du joueur
  */
 public class Inventory {
     private List<Item> inventory;

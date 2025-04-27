@@ -12,9 +12,7 @@ import gameCore.GameObjects.GameEntities.Single.Monster;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static java.lang.Integer.parseInt;
 
@@ -126,17 +124,17 @@ public abstract class Factory {
             String[] monsterAttribute = line.split(",");
 
             String[] spellsKeys = monsterAttribute[5].split(";");
-            Spell[] monsterSpells = new Spell[spellsKeys.length];
-            int i = 0;
-            for (String spellKey : spellsKeys) {
-                monsterSpells[i] = Factory.parseSpell().get(spellKey);
-                i++;
+            List<Spell> monsterSpells = new ArrayList<>();
+            if (Objects.equals(spellsKeys[0], "null")) monsterSpells = null;
+            else {
+                for (String spellKey : spellsKeys) {
+                    monsterSpells.add(Factory.parseSpell().get(spellKey));
+                }
             }
-            // TODO : Changer la gestion des spells dans Entity, Monster et Hero ?
 
             String[] itemsKeys = monsterAttribute[9].split(";");
             Item[] monsterLoot = new Item[itemsKeys.length];
-            i = 0;
+            int i = 0;
             for (String itemKey : itemsKeys) {
                 try { monsterLoot[i] = Factory.parseItem().get(itemKey); }
                 catch (NonValidValueException | NonValidWeightException | NotABonusException e) {throw new NotAnItemException(); }
@@ -173,10 +171,8 @@ public abstract class Factory {
             String[] skillsKeys = heroAttribute[2].split(";");
             Set<Skills> heroSkills = new HashSet<>();
             for (String skillKey : skillsKeys) {
-
                 heroSkills.add(Skills.parseSkills(skillKey));
             }
-            // TODO : Changer la gestion des spells dans Entity, Monster et Hero ?
 
             heroes.put(heroAttribute[0], new Hero(heroAttribute[0], heroAttribute[1], heroSkills));
         }
