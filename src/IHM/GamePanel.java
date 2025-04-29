@@ -83,6 +83,7 @@ public class GamePanel extends JPanel {
                 map.getTile(newRow, newCol) != 1) {
             playerRow = newRow;
             playerCol = newCol;
+            if (playerRow == 2 && playerCol == 4) { new FightWindow(); }
             repaint();
         }
     }

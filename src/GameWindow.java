@@ -1,9 +1,8 @@
 import IHM.GamePanel;
 
-import java.awt.event.*;
 import javax.swing.*;
 
-public class Window {
+public class GameWindow {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Mon jeu 2D !");
         GamePanel panel = new GamePanel();

@@ -11,5 +11,4 @@ public class GameMap {
     public int getWidth() { return mapData[0].length; }
     public int getHeight() { return mapData.length; }
     public int getTile(int row, int col) { return mapData[row][col]; }
-
 }
