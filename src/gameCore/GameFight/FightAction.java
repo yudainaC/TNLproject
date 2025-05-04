@@ -20,6 +20,10 @@ public enum FightAction {
         };
 	}
 
+    public static FightAction[] getFightActions() {
+        return new FightAction[]{forfeit, attack, defend, recover, conjure, use};
+    }
+
     public static FightAction getRandAction(int n) {
         Random generator = new Random();
         FightAction[] monsterActions = {attack, defend, conjure, recover};
@@ -30,7 +34,7 @@ public enum FightAction {
 	public String toString() {
         return switch (this) {
             case forfeit -> " a déclarer forfait";
-            case attack -> " a perdu 2 HP";
+            case attack -> " attaque";
             case conjure -> " lance un sort";
             case defend -> " se defend contre la prochaine attaque";
             case use -> " cherche un objet";

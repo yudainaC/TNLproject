@@ -44,6 +44,7 @@ public class Fight {
 	public int getHeroesAlive() { return heroesAlive; } */
 	public HeroTeam getHeroes() { return heroes; }
 	public Group getOpponents() { return opponents; }
+	public List<Entity> getOrder() { return order; }
 
 	/**
 	 * Un tour de jeu. Affiche le menu de selection d'actions dans la console.
@@ -112,7 +113,7 @@ public class Fight {
 	public void fullTeamFight() throws YouAreTargetingYourselfDumbBoyException {
 
 		while (this.opponentsAlive != 0 && this.heroesAlive != 0) {
-			System.out.println("Ordre : "+this.getOrder());
+			System.out.println("Ordre : "+this.getNamesOrder());
 			System.out.println("Tour actuel : " + this.turn);
             for (Entity entity : this.order) {
 				if (this.opponentsAlive != 0 && this.heroesAlive != 0) {
@@ -147,7 +148,7 @@ public class Fight {
 	}
 
 	// Affichage
-	public List<String> getOrder() {
+	public List<String> getNamesOrder() {
 		List<String> parseOrder = new ArrayList<>();
 		for (Entity entities : order) parseOrder.add(entities.getName());
 		return parseOrder;

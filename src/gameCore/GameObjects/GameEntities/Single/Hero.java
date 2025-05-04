@@ -36,20 +36,12 @@ public class Hero extends Entity {
     public Hero(String itName, String itDescription, Set<Skills> itSkills) {
         super(itName, itDescription);
 
-        FightAction[] theActions = new FightAction[6];
-        theActions[0] = FightAction.forfeit;
-        theActions[1] = FightAction.attack;
-        theActions[2] = FightAction.conjure;
-        theActions[3] = FightAction.defend;
-        theActions[4] = FightAction.use;
-        theActions[5] = FightAction.recover;
-
         this.maxLife = 5;
         this.maxMana = 10;
         this.life = this.maxLife;
         this.mana = this.maxMana;
         this.strength = 2;
-        this.actions = theActions;
+        this.actions = FightAction.getFightActions();
         this.defense = 1;
         this.speed = 1;
         this.isReady = false;
