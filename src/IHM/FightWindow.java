@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class FightWindow extends JFrame {
+    public static FightPanel panel;
+
     public FightWindow(List<Entity> fighters) {
 
         setTitle("Combat !");
@@ -21,13 +23,13 @@ public class FightWindow extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        FightPanel panel = new FightPanel(fighters);
+        panel = new FightPanel(fighters);
         add(panel);
 
         setVisible(true);
     }
 
-    public static void main(String[] args) throws NonValidLifeException, NotASkillsException, NonValidManaException, NonValidStrengthException, IOException, NotAnItemException, TeamIsFullException {
+    public static void main(String[] args) throws NonValidLifeException, NotASkillsException, NonValidManaException, NonValidStrengthException, IOException, NotAnItemException, TeamIsFullException, YouAreTargetingYourselfDumbBoyException {
 
         Monster blob = Factory.parseMonster().get("blob");
         Monster mage = Factory.parseMonster().get("sorcier");
@@ -45,6 +47,9 @@ public class FightWindow extends JFrame {
 
         Fight fight1 = new Fight(Player.getTeam(), mobGroup1);
         new FightWindow(fight1.getOrder());
+        fight1.setFightPanel(panel);
+
+        fight1.fullTeamFight();
 
     }
 }

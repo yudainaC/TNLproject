@@ -1,4 +1,5 @@
 package gameCore.GameFight;
+import IHM.FightPanel;
 import exceptions.YouAreTargetingYourselfDumbBoyException;
 import gameCore.GameObjects.GameEntities.Group.Group;
 import gameCore.GameObjects.GameEntities.Group.HeroTeam;
@@ -13,29 +14,36 @@ import java.util.*;
  * Représente un combat
  */
 public class Fight {
+
 	private final HeroTeam heroes;
+	private int heroesAlive;
+
 	private final MobGroup opponents;
 	private int opponentsAlive;
-	private int heroesAlive;
-	private final List<Entity> order;
+
 	private List<Entity> diedThisTurn;
+
+	private final List<Entity> order;
+	private FightPanel fightPanel;
 	private int turn;
 
 	// Constructeur
 	public Fight(HeroTeam fightingHeroes, MobGroup fightingOpponents) {
 
-		this.heroes = fightingHeroes;
-		this.opponents = fightingOpponents;
+		heroes = fightingHeroes;
+		heroesAlive = heroes.getGroup().size();
 
-		this.heroesAlive = heroes.getGroup().size();
-		this.opponentsAlive = opponents.getGroup().size();
+		opponents = fightingOpponents;
+		opponentsAlive = opponents.getGroup().size();
 
-		this.turn = 1;
-		this.order = new ArrayList<>();
-		order.addAll(this.heroes.getGroup());
-		order.addAll(this.opponents.getGroup());
+		diedThisTurn = new ArrayList<>();
+
+		order = new ArrayList<>();
+		order.addAll(heroes.getGroup());
+		order.addAll(opponents.getGroup());
 		order.sort((e1, e2) -> Integer.compare(e2.getSpeed(), e1.getSpeed()));
-		this.diedThisTurn = new ArrayList<>();
+		fightPanel = null;
+		turn = 1;
 	}
 
 	/* Getters
@@ -45,6 +53,11 @@ public class Fight {
 	public HeroTeam getHeroes() { return heroes; }
 	public Group getOpponents() { return opponents; }
 	public List<Entity> getOrder() { return order; }
+
+	public void setFightPanel(FightPanel panel) {
+		fightPanel = panel;
+		fightPanel.actualFighter = order.getFirst();
+	}
 
 	/**
 	 * Un tour de jeu. Affiche le menu de selection d'actions dans la console.
@@ -56,28 +69,56 @@ public class Fight {
 	public String fightTurn(Entity fighter) throws YouAreTargetingYourselfDumbBoyException {
 
 		if (fighter.getLife() > 0) {
-			if (fighter instanceof Hero) {
-				((Hero) fighter).updateBonuses();
-				Scanner sc = new Scanner(System.in);
-				System.out.println(fighter.getName() + ", que voulez-vous faire ?");
-				for (Entity entity : order)
-					System.out.println(entity.getName() + " : " + entity.getLife() + "/" + entity.getMaxLife());
-				for (int i = 0; i < fighter.getActions().length; i++) {
-					System.out.println((i) + ": " + fighter.getActions()[i].getAction());
-				}
-				int chosenOne = sc.nextInt();
 
-				FightAction action = FightAction.recover;
-				if (chosenOne > -1 && chosenOne < fighter.getActions().length) {
-					action = fighter.getActions()[chosenOne];
+			if (fightPanel == null) {
+				if (fighter instanceof Hero) {
+					((Hero) fighter).updateBonuses();
+					Scanner sc = new Scanner(System.in);
+					System.out.println(fighter.getName() + ", que voulez-vous faire ?");
+					for (Entity entity : order)
+						System.out.println(entity.getName() + " : " + entity.getLife() + "/" + entity.getMaxLife());
+					for (int i = 0; i < fighter.getActions().length; i++) {
+						System.out.println((i) + ": " + fighter.getActions()[i].getAction());
+					}
+					int chosenOne = sc.nextInt();
+
+					FightAction action = FightAction.recover;
+					if (chosenOne > -1 && chosenOne < fighter.getActions().length) {
+						action = fighter.getActions()[chosenOne];
+					}
+					System.out.println("Vous avez choisi : " + action.getAction());
+					return fighter.isGoingToDo(action, this);
+				} else {
+					String whatHeDo = ((Monster) fighter).isGoingToDo(this);
+					System.out.println(whatHeDo);
+					return whatHeDo;
 				}
-				System.out.println("Vous avez choisi : " + action.getAction());
-				return fighter.isGoingToDo(action, this);
+
 			} else {
-				String whatHeDo = ((Monster) fighter).isGoingToDo(this);
-				System.out.println(whatHeDo);
-				return whatHeDo;
+				if (fighter instanceof Hero) {
+					((Hero) fighter).updateBonuses();
+					Scanner sc = new Scanner(System.in);
+					System.out.println(fighter.getName() + ", que voulez-vous faire ?");
+					for (Entity entity : order)
+						System.out.println(entity.getName() + " : " + entity.getLife() + "/" + entity.getMaxLife());
+					for (int i = 0; i < fighter.getActions().length; i++) {
+						System.out.println((i) + ": " + fighter.getActions()[i].getAction());
+					}
+					int chosenOne = sc.nextInt();
+
+					FightAction action = FightAction.recover;
+					if (chosenOne > -1 && chosenOne < fighter.getActions().length) {
+						action = fighter.getActions()[chosenOne];
+					}
+					System.out.println("Vous avez choisi : " + action.getAction());
+					return fighter.isGoingToDo(action, this);
+				} else {
+					String whatHeDo = ((Monster) fighter).isGoingToDo(this);
+					System.out.println(whatHeDo);
+					return whatHeDo;
+				}
 			}
+
 		}
 		return "pass";
 	}
@@ -118,6 +159,7 @@ public class Fight {
             for (Entity entity : this.order) {
 				if (this.opponentsAlive != 0 && this.heroesAlive != 0) {
 					System.out.println(entity.getName());
+					fightPanel.actualFighter = entity;
 					while (true) if (!Objects.equals(this.fightTurn(entity), "retour")) break;
 				}
 			}

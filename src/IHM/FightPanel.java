@@ -10,12 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FightPanel extends JPanel {
-    public List<Entity> fighters;
-    public List<EntityPanel> fightersPanel;
+    private final List<Entity> fighters;
+    private final List<EntityPanel> fightersPanel;
+    public Entity actualFighter;
 
     public FightPanel(List<Entity> theFighters) {
         fighters = theFighters;
         fightersPanel = new ArrayList<>();
+        actualFighter = theFighters.getFirst();
 
         setLayout(new BorderLayout());
         
@@ -35,11 +37,9 @@ public class FightPanel extends JPanel {
             if (e instanceof Monster) {
                 ePanel = new EntityPanel(e, true);
                 panelMonsters.add(ePanel);
-                //panelMonsters.add(new JLabel(e.getLife() + "/" + e.getMaxLife()));
             } else {
                 ePanel = new EntityPanel(e, false);
                 panelHeroes.add(ePanel);
-                //panelHeroes.add(new JLabel(e.getLife() + "/" + e.getMaxLife()));
             }
             ePanel.updateHP(); // Pour ne pas avoir les pourcentages.
             fightersPanel.add(ePanel);
@@ -53,14 +53,20 @@ public class FightPanel extends JPanel {
         // Panel du bas : boutons d'action
         JPanel buttonsPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         for (FightAction action : FightAction.getFightActions()) {
-            buttonsPanel.add(makeButton(action, action.toString()));
+            buttonsPanel.add(makeButton(action));
         }
 
+        // Panel du bas : zone d'actions
+        JPanel actionArea = new JPanel(new BorderLayout());
+        actionArea.add(new JLabel("Tour "+ 1 + " : " + actualFighter.getName() + " agis"), BorderLayout.NORTH);
+        actionArea.add(buttonsPanel, BorderLayout.SOUTH);
+
+        // Affichage des Panels
         add(entityArea, BorderLayout.NORTH);
-        add(buttonsPanel, BorderLayout.SOUTH);
+        add(actionArea, BorderLayout.SOUTH);
     }
 
-    private JButton makeButton(FightAction action, String message) {
+    private JButton makeButton(FightAction action) {
         JButton button = new JButton(action.getAction());
         button.addActionListener(e -> {
             switch (action) {
@@ -70,7 +76,7 @@ public class FightPanel extends JPanel {
                         fighter.updateHP();
                     }
                 }
-                default -> System.out.println(message);
+                default -> System.out.println(action);
             }
         });
         return button;
