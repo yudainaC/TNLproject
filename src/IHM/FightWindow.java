@@ -8,22 +8,20 @@ import gameCore.GameObjects.GameEntities.Single.Hero;
 import gameCore.GameObjects.GameEntities.Single.Monster;
 import gameCore.Player;
 import gameFactory.Factory;
-
 import javax.swing.*;
 import java.io.IOException;
-import java.util.List;
 
 public class FightWindow extends JFrame {
     public static FightPanel panel;
 
-    public FightWindow(List<Entity> fighters) {
+    public FightWindow(Fight fight) {
 
         setTitle("Combat !");
         setSize(400, 300);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        panel = new FightPanel(fighters);
+        panel = new FightPanel(fight);
         add(panel);
 
         setVisible(true);
@@ -46,11 +44,10 @@ public class FightWindow extends JFrame {
         Player.putInMyTeam(conny);
 
         Fight fight1 = new Fight(Player.getTeam(), mobGroup1);
-        new FightWindow(fight1.getOrder());
+        new FightWindow(fight1);
         fight1.setFightPanel(panel);
-
-        fight1.fullTeamFight();
-
+        fight1.startTurn(fight1.getOrder().getFirst());
+        //System.exit(1);
     }
 }
 

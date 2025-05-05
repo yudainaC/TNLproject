@@ -27,6 +27,9 @@ public class Fight {
 	private FightPanel fightPanel;
 	private int turn;
 
+	private int turnIndex = 0;         // Index dans la liste "order"
+	private boolean fightOver = false; // Pour éviter de continuer une fois terminé
+
 	// Constructeur
 	public Fight(HeroTeam fightingHeroes, MobGroup fightingOpponents) {
 
@@ -56,7 +59,7 @@ public class Fight {
 
 	public void setFightPanel(FightPanel panel) {
 		fightPanel = panel;
-		fightPanel.actualFighter = order.getFirst();
+		fightPanel.updateTurn(1, order.getFirst());
 	}
 
 	/**
@@ -70,53 +73,27 @@ public class Fight {
 
 		if (fighter.getLife() > 0) {
 
-			if (fightPanel == null) {
-				if (fighter instanceof Hero) {
-					((Hero) fighter).updateBonuses();
-					Scanner sc = new Scanner(System.in);
-					System.out.println(fighter.getName() + ", que voulez-vous faire ?");
-					for (Entity entity : order)
-						System.out.println(entity.getName() + " : " + entity.getLife() + "/" + entity.getMaxLife());
-					for (int i = 0; i < fighter.getActions().length; i++) {
-						System.out.println((i) + ": " + fighter.getActions()[i].getAction());
-					}
-					int chosenOne = sc.nextInt();
-
-					FightAction action = FightAction.recover;
-					if (chosenOne > -1 && chosenOne < fighter.getActions().length) {
-						action = fighter.getActions()[chosenOne];
-					}
-					System.out.println("Vous avez choisi : " + action.getAction());
-					return fighter.isGoingToDo(action, this);
-				} else {
-					String whatHeDo = ((Monster) fighter).isGoingToDo(this);
-					System.out.println(whatHeDo);
-					return whatHeDo;
+			if (fighter instanceof Hero) {
+				((Hero) fighter).updateBonuses();
+				Scanner sc = new Scanner(System.in);
+				System.out.println(fighter.getName() + ", que voulez-vous faire ?");
+				for (Entity entity : order)
+					System.out.println(entity.getName() + " : " + entity.getLife() + "/" + entity.getMaxLife());
+				for (int i = 0; i < fighter.getActions().length; i++) {
+					System.out.println((i) + ": " + fighter.getActions()[i].getAction());
 				}
+				int chosenOne = sc.nextInt();
 
+				FightAction action = FightAction.recover;
+				if (chosenOne > -1 && chosenOne < fighter.getActions().length) {
+					action = fighter.getActions()[chosenOne];
+				}
+				System.out.println("Vous avez choisi : " + action.getAction());
+				return fighter.isGoingToDo(action, this);
 			} else {
-				if (fighter instanceof Hero) {
-					((Hero) fighter).updateBonuses();
-					Scanner sc = new Scanner(System.in);
-					System.out.println(fighter.getName() + ", que voulez-vous faire ?");
-					for (Entity entity : order)
-						System.out.println(entity.getName() + " : " + entity.getLife() + "/" + entity.getMaxLife());
-					for (int i = 0; i < fighter.getActions().length; i++) {
-						System.out.println((i) + ": " + fighter.getActions()[i].getAction());
-					}
-					int chosenOne = sc.nextInt();
-
-					FightAction action = FightAction.recover;
-					if (chosenOne > -1 && chosenOne < fighter.getActions().length) {
-						action = fighter.getActions()[chosenOne];
-					}
-					System.out.println("Vous avez choisi : " + action.getAction());
-					return fighter.isGoingToDo(action, this);
-				} else {
-					String whatHeDo = ((Monster) fighter).isGoingToDo(this);
-					System.out.println(whatHeDo);
-					return whatHeDo;
-				}
+				String whatHeDo = ((Monster) fighter).isGoingToDo(this);
+				System.out.println(whatHeDo);
+				return whatHeDo;
 			}
 
 		}
@@ -159,8 +136,9 @@ public class Fight {
             for (Entity entity : this.order) {
 				if (this.opponentsAlive != 0 && this.heroesAlive != 0) {
 					System.out.println(entity.getName());
-					fightPanel.actualFighter = entity;
-					while (true) if (!Objects.equals(this.fightTurn(entity), "retour")) break;
+					if (fightPanel != null) {
+						fightPanel.updateTurn(turn, entity);
+					} else while (true) if (!Objects.equals(this.fightTurn(entity), "retour")) break;
 				}
 			}
 			this.turn++;
@@ -171,6 +149,49 @@ public class Fight {
 			this.victory();
 		} else {
 			System.out.println("Votre équipe a péri");
+		}
+	}
+
+	public void startTurn(Entity fighter) {
+		fightPanel.updateTurn(turn, fighter);
+
+		if (fighter instanceof Hero) {
+			((Hero) fighter).updateBonuses();
+			fightPanel.resetButtonAction(); // Affiche les boutons : Attaquer, Sort, Objet...
+		} else {
+			Monster m = (Monster) fighter;
+			String result = m.isGoingToDo(this);
+			System.out.println(result); // ou affichage dans le panel
+			nextTurn(); // Passe au prochain tour
+		}
+	}
+
+	public void nextTurn() {
+
+		System.out.println("En vie : "+opponentsAlive);
+
+		if (heroesAlive == 0 || opponentsAlive == 0) {
+			fightOver = true;
+			if (heroesAlive > 0) victory();
+			else System.out.println("Votre équipe a péri");
+		}
+
+		if (fightOver) return;
+
+		if (turnIndex >= order.size()) {
+			deleteDead(); // Supprime les morts et met à jour la liste
+			turn++;
+			turnIndex = 0;
+		}
+
+		Entity entity = order.get(turnIndex);
+		if (entity.getLife() > 0) {
+			System.out.println("Tour de : " + entity.getName());
+			turnIndex++;
+			startTurn(entity);
+		} else {
+			turnIndex++;
+			nextTurn(); // saute les morts
 		}
 	}
 

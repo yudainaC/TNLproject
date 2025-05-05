@@ -1,5 +1,6 @@
 package gameCore.GameObjects.GameEntities.Single;
 
+import IHM.FightPanel;
 import exceptions.*;
 import gameCore.GameFight.Fight;
 import gameCore.GameFight.FightAction;
@@ -201,30 +202,33 @@ public class Entity extends Model {
 	 * La cible.
 	 */
 	public Entity whoIsTargeted(Boolean allies, Fight fight) {
+		//if (fightPanel == null) {
+			Scanner sc = new Scanner(System.in);
+			System.out.println("Qui voulez-vous viser ?");
+			List<Entity> groupTarget = fight.getOpponents().getGroup();
+			if (allies) {
+				groupTarget = fight.getHeroes().getGroup();
+				int index = 0;
+				for (int i = 0; i < groupTarget.size(); i++) if (groupTarget.get(i) == this) index = i;
+				groupTarget.remove(index);
+			}
 
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Qui voulez-vous viser ?");
-		List<Entity> groupTarget = fight.getOpponents().getGroup();
-		if (allies) {
-			groupTarget = fight.getHeroes().getGroup();
-			int index = 0;
-			for (int i = 0; i < groupTarget.size(); i++) if (groupTarget.get(i) == this) index = i;
-			groupTarget.remove(index);
-		}
+			for (int i = 0; i < groupTarget.size(); i++) {
+				Entity target = groupTarget.get(i);
+				System.out.println((i + 1) + ": " + target.name + ", " + target.life + "/" + target.maxLife + " PV restant");
+			}
+			System.out.println((groupTarget.size() + 1) + ": Retour");
 
-		for (int i = 0; i < groupTarget.size(); i++) {
-			Entity target = groupTarget.get(i);
-			System.out.println((i + 1) + ": " + target.name + ", " + target.life + "/" + target.maxLife + " PV restant");
-		}
-		System.out.println((groupTarget.size()+1) + ": Retour");
+			int chosenOne = sc.nextInt();
 
-		int chosenOne = sc.nextInt();
+			if (chosenOne > 0 && chosenOne < groupTarget.size() + 1 && groupTarget.get(chosenOne - 1).life > 0) {
+				Entity target = groupTarget.get(chosenOne - 1);
+				System.out.println("Vous avez ciblé : " + target.name);
+				return target;
+			}
+		//} else {
 
-		if (chosenOne > 0 && chosenOne < groupTarget.size()+1 && groupTarget.get(chosenOne-1).life > 0) {
-			Entity target = groupTarget.get(chosenOne-1);
-			System.out.println("Vous avez ciblé : " + target.name);
-			return target;
-		}
+		//}
 		return null;
 	}
 
@@ -320,9 +324,11 @@ public class Entity extends Model {
 	public String toString() {
 		System.out.println(this.name + " : " + this.life + "/" + this.maxLife + " PV");
 		System.out.println(this.mana + "/" + this.maxMana + " mana");
-		System.out.println("Sorts appris :");
-		for (Spell spell : this.spells) {
-			System.out.println("   " + spell);
+		if (this.spells != null) {
+			System.out.println("Sorts appris :");
+			for (Spell spell : this.spells) {
+				System.out.println("   " + spell);
+			}
 		}
 		return this.description;
 	}

@@ -1,5 +1,6 @@
 package gameCore.GameObjects.GameEntities.Single;
 
+import IHM.FightPanel;
 import gameCore.GameFight.Fight;
 import gameCore.GameFight.FightAction;
 import gameCore.GameObjects.GameElements.Items.Bonus;
@@ -165,7 +166,7 @@ public class Hero extends Entity {
     /**
      * Voir méthode dans Entity.
      */
-    @Override
+
     public String isGoingToDo(FightAction action, Fight fight) {
 
         return switch (action) {

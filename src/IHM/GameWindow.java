@@ -1,4 +1,4 @@
-import IHM.GamePanel;
+package IHM;
 
 import javax.swing.*;
 
