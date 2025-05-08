@@ -26,8 +26,8 @@ public class DamageSpell extends Spell {
 	 * @return Renvoie l'appel de la fonction "isTarget" sur la cible avec en paramètre le montant de PV perdu.
 	 */
 	@Override
-	public boolean cast(Entity target) {
-		return target.isTarget(this.damage);
+	public void cast(Entity target) {
+		target.isTarget(this.damage);
 	}
 
 	// Affichage

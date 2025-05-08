@@ -1,6 +1,5 @@
 package gameCore.GameObjects.GameEntities.Single;
 
-import IHM.FightPanel;
 import gameCore.GameFight.Fight;
 import gameCore.GameFight.FightAction;
 import gameCore.GameObjects.GameElements.Items.Bonus;
@@ -172,18 +171,13 @@ public class Hero extends Entity {
         return switch (action) {
             case forfeit -> {
                 this.life = 0;
-                fight.hasDied(this);
                 yield this.name + FightAction.forfeit;
             }
             case attack -> {
                 Entity opponent = whoIsTargeted(false, fight);
                 if (opponent == null) yield "retour";
-                boolean isAlive = opponent.isTarget(this.strength);
-                if (isAlive) yield this.name + " attaque";
-                else {
-                    fight.hasDied(opponent);
-                    yield this.name + " a tué " + opponent.getName();
-                }
+                opponent.isTarget(this.strength);
+                yield this.name + " attaque";
             }
             case conjure -> this.spellAction(fight);
             case defend -> {

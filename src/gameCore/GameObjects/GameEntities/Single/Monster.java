@@ -9,7 +9,6 @@ import gameCore.GameObjects.GameElements.Items.Item;
 import gameCore.GameObjects.GameElements.Spells.DamageSpell;
 import gameCore.GameObjects.GameElements.Spells.Spell;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -77,15 +76,11 @@ public class Monster extends Entity {
             if (this.mana >= this.spells.get(chosenOne).getMana()) {
                 Spell spell = this.spells.get(chosenOne);
                 this.mana -= spell.getMana();
-                Entity target;
                 if (spell instanceof DamageSpell) {
-                    target = whoIsTargeted(false, fight);
+                    spell.cast(whoIsTargeted(false, fight));
                 } else { //if (spell instanceof SupportSpell) {
-                    target = whoIsTargeted(true, fight);
+                    spell.cast(whoIsTargeted(true, fight));
                 }
-                boolean isAlive = true;
-                if (target != null) isAlive = spell.cast(target);
-                if (!isAlive) fight.hasDied(target);
                 return this.name + FightAction.conjure;
             }
         }
@@ -135,12 +130,8 @@ public class Monster extends Entity {
             case attack -> {
                 Entity opponent = whoIsTargeted(false, fight);
                 if (opponent == null) return "retour";
-                boolean isAlive = opponent.isTarget(this.strength);
-                if (isAlive) return this.name + " attaque" + opponent.getName();
-                else {
-                    fight.hasDied(opponent);
-                    return this.name + " a tué " + opponent.getName();
-                }
+                opponent.isTarget(this.strength);
+                return this.name + " attaque" + opponent.getName();
             }
             case conjure -> {
                 return this.spellAction(fight);

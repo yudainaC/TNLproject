@@ -23,8 +23,8 @@ public class SupportSpell extends Spell {
 	 * @return Renvoie l'appel de la fonction "isTarget" sur la cible avec en paramètre le montant de PV restoré.
 	 */
 	@Override
-	public boolean cast(Entity target) {
-		return target.isTarget(this.healPoint);
+	public void cast(Entity target) {
+		target.isTarget(this.healPoint);
 	}
 
 	// Affichage

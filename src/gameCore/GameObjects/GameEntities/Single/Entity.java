@@ -1,6 +1,5 @@
 package gameCore.GameObjects.GameEntities.Single;
 
-import IHM.FightPanel;
 import exceptions.*;
 import gameCore.GameFight.Fight;
 import gameCore.GameFight.FightAction;
@@ -146,15 +145,11 @@ public class Entity extends Model {
 			Spell spell = this.spells.get(chosenOne-1);
 			System.out.println("Vous avez choisi : " + spell.getName());
 			this.mana -= spell.getMana();
-			Entity target;
 			if (spell instanceof DamageSpell) {
-				target = whoIsTargeted(false, fight);
+				spell.cast(whoIsTargeted(false, fight));
 			} else {
-				target = whoIsTargeted(true, fight);
+				spell.cast(whoIsTargeted(true, fight));
 			}
-			boolean isAlive = true;
-			if (target != null) isAlive = spell.cast(target);
-			if (!isAlive) fight.hasDied(target);
 			return this.name + FightAction.conjure;
 		}
 		return "retour";
@@ -284,10 +279,9 @@ public class Entity extends Model {
 	 * @return
 	 * Renvoie un bref résumé de la modification.
 	 */
-	public boolean isTarget(int howMuch) {
+	public void isTarget(int howMuch) {
 
 		String result = this.name;
-		boolean isAlive = true;
 
 		if (howMuch > 0) {
 			result += " prend " + howMuch + " dégâts.";
@@ -305,11 +299,9 @@ public class Entity extends Model {
 		this.life -= howMuch;
 		if (this.life <= 0) {
 			result = this.name + " est mort";
-			isAlive = false;
 		}
 		this.verifyHPMana();
 		System.out.println(result);
-		return isAlive;
 	}
 
 	/**

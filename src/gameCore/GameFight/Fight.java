@@ -102,22 +102,27 @@ public class Fight {
 
 	/**
 	 * Ajoute l'entité à la liste des entités mortes ce tour-ci.
-	 * @param entity
 	 * L'entité morte.
 	 */
-	public void hasDied(Entity entity) {
-		if (entity instanceof Hero) this.heroesAlive--;
-		else this.opponentsAlive--;
-		diedThisTurn.add(entity);
+	public void checkDead() {
+		for (Entity entity: order) {
+			if (entity.getLife() <= 0 && !diedThisTurn.contains(entity)) {
+				if (entity instanceof Hero) this.heroesAlive--;
+				else this.opponentsAlive--;
+				diedThisTurn.add(entity);
+			}
+		}
 	}
 
 	/**
 	 * Enlève les entités mortes du combat.
 	 */
 	public void deleteDead() {
+		System.out.println(diedThisTurn);
 		for (Entity entity : diedThisTurn) {
 			int index = 0;
 			for (int i = 0; i < order.size(); i++) if (this.order.get(i)==entity) index = i;
+			System.out.println(index);
 			order.remove(index);
 		}
 		diedThisTurn = new ArrayList<>();
@@ -183,7 +188,7 @@ public class Fight {
 			turn++;
 			turnIndex = 0;
 		}
-
+		getNamesOrder();
 		Entity entity = order.get(turnIndex);
 		if (entity.getLife() > 0) {
 			System.out.println("Tour de : " + entity.getName());
@@ -193,6 +198,7 @@ public class Fight {
 			turnIndex++;
 			nextTurn(); // saute les morts
 		}
+		this.checkDead();
 	}
 
 	public void victory() {

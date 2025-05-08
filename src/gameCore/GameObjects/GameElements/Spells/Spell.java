@@ -27,5 +27,5 @@ public class Spell extends Model {
 		return this.description;
 	}
 
-	public boolean cast(Entity target) { return true;}
+	public void cast(Entity target) {}
 }
