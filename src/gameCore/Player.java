@@ -2,9 +2,7 @@ package gameCore;
 
 import exceptions.NotASkillsException;
 import exceptions.TeamIsFullException;
-import gameCore.GameFight.FightAction;
 import gameCore.GameObjects.GameElements.Inventory;
-import gameCore.GameObjects.GameElements.Items.Consumable;
 import gameCore.GameObjects.GameElements.Items.Item;
 import gameCore.GameObjects.GameElements.Skills.Skills;
 import gameCore.GameObjects.GameEntities.Group.HeroTeam;
@@ -64,15 +62,14 @@ public abstract class Player {
     public static boolean addSkill(Skills skills) throws NotASkillsException {
 
         if (playerSkills.size() == 4) {
-            System.out.println("vous avez trop de skill equipé, voulez vous en enlever un (yes,no)");
+            System.out.println("vous avez trop de talent équipé, voulez vous en enlever un (yes,no)");
             Scanner sc = new Scanner(System.in);
             String rep = sc.nextLine();
             if (rep.equals("yes")) {
                 System.out.println("choisissez quel skill vous voulez supprimer (name skill)");
                 System.out.println(playerSkills);
                 String choice = sc.nextLine();
-                Skills suppr = Skills.parseSkills(choice);
-                echangeSkill(suppr,skills);
+                exchangeSkill(Skills.parseSkills(choice),skills);
                 System.out.println(skills + " appris !");
                 return true;
             }
@@ -100,7 +97,7 @@ public abstract class Player {
      * @return
      * vraie si les compétences ont bien été échangées.
      */
-    public static boolean echangeSkill(Skills remove, Skills skills) {
+    public static boolean exchangeSkill(Skills remove, Skills skills) {
         playerSkills.remove(remove);
         System.out.println(remove + " supprimé !");
         return playerSkills.add(skills);
@@ -147,9 +144,9 @@ public abstract class Player {
 
     // Affichage
     public String showFollowers() {
-        String heros = "Vos héros :\n";
-        for (Hero hero : followers) heros += hero  + "\n<------->\n";
-        return heros;
+        StringBuilder heroes = new StringBuilder("Vos héros :\n");
+        for (Hero hero : followers) heroes.append(hero).append("\n<------->\n");
+        return heroes.toString();
     }
 
     @Override
